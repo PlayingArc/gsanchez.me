@@ -1,0 +1,31 @@
+---
+// Static stand-in for a language redirect: picks /es/ when the browser prefers Spanish, else /en/.
+// Keeps the query string so shared filter links survive. The links are the no-JS fallback.
+interface Props {
+  slug: string;
+  title: string;
+}
+const { slug, title } = Astro.props;
+const en = `/en/demos/${slug}`;
+const es = `/es/demos/${slug}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>{title}</title>
+    <link rel="alternate" hreflang="en" href={new URL(en, Astro.site)} />
+    <link rel="alternate" hreflang="es" href={new URL(es, Astro.site)} />
+    <script is:inline define:vars={{ en, es }}>
+      const langs = navigator.languages?.length ? navigator.languages : [navigator.language || 'en'];
+      const first = langs.find((l) => /^(en|es)\b/i.test(l)) ?? 'en';
+      location.replace((/^es/i.test(first) ? es : en) + location.search);
+    </script>
+  </head>
+  <body>
+    <p><a href={en}>English</a> / <a href={es} lang="es">Español</a></p>
+  </body>
+</html>

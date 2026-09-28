@@ -1,0 +1,17 @@
+---
+// The thin portfolio bar above every demo dashboard: back to the site, what this is, language.
+interface Props {
+  back: string;
+  note: string;
+  langLabel: string;
+  langHref: string;
+  langCode: 'en' | 'es';
+}
+const { back, note, langLabel, langHref, langCode } = Astro.props;
+---
+
+<nav class="dz-frame" aria-label="gsanchez.me">
+  <a class="dz-frame__back" href="/#work"><span aria-hidden="true">←</span> {back}</a>
+  <p class="dz-frame__note">{note}</p>
+  <a class="dz-frame__lang" href={langHref} hreflang={langCode} lang={langCode} data-keep-query>{langLabel}</a>
+</nav>
