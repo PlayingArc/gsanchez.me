@@ -1,0 +1,33 @@
+---
+import { profile } from '../data/site';
+
+const nav = [
+  ['About', '#about'],
+  ['Experience', '#experience'],
+  ['Work', '#work'],
+  ['Contact', '#contact'],
+];
+---
+
+<header class="header" data-header data-on="green">
+  <a class="header__mark mono" href="#top" data-scramble-hover>
+    <span data-scramble-target>{profile.firstName[0]}{profile.lastName[0]}/PORTFOLIO</span>
+  </a>
+  {
+    profile.available && (
+      <p class="header__status mono">
+        <span class="dot" aria-hidden="true" /> (Open to new roles)
+      </p>
+    )
+  }
+  <nav class="header__nav mono" aria-label="Sections">
+    {
+      nav.map(([label, href]) => (
+        <a href={href} data-scramble-hover>
+          <span data-scramble-target>{label}</span>
+        </a>
+      ))
+    }
+  </nav>
+  <a class="header__cta" href={`mailto:${profile.email}`}>Get in touch →</a>
+</header>

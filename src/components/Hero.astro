@@ -1,0 +1,63 @@
+---
+import { profile, projects, experience } from '../data/site';
+import { asciiRows, asciiHtml } from '../lib/ascii-type';
+
+const names = [asciiRows(profile.firstName), asciiRows(profile.lastName)];
+// Both lines share one character size, set by the wider of the two.
+const cols = Math.max(...names.map((n) => n.cols));
+
+const index = [
+  ['01', 'About', 'Who I am, what I work with', '#about'],
+  ['02', 'Experience', `${experience.length} roles, ${experience.at(-1)?.start}–now`, '#experience'],
+  ['03', 'Work', `${projects.length} live dashboard demos`, '#work'],
+  ['04', 'Contact', 'Email, GitHub, LinkedIn', '#contact'],
+];
+---
+
+<section class="hero" id="top" data-theme="green">
+  <canvas class="hero__field" data-ascii="hero" aria-hidden="true"></canvas>
+
+  <div class="hero__top">
+    <p class="hero__meta mono">
+      (Portfolio ©{new Date().getFullYear()})<br />
+      {profile.role}
+    </p>
+    <p class="hero__pitch">{profile.pitch}</p>
+
+    <ol class="index" aria-label="On this page">
+      {
+        index.map(([no, label, note, href]) => (
+          <li>
+            <a href={href} data-scramble-hover>
+              <span class="index__no mono">{no}</span>
+              <span class="index__label" data-scramble-target>{label}</span>
+              <span class="index__note">{note}</span>
+              <span class="index__arrow mono" aria-hidden="true">↘</span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+
+  <h1 class="hero__name" data-ascii-name>
+    <span class="sr-only">{profile.firstName} {profile.lastName}</span>
+    {
+      names.map((n, i) => (
+        <pre
+          class:list={['ascii', i ? 'hero__last' : 'hero__first']}
+          style={`--cols:${cols}; --delay:${i * n.rows.length}`}
+          data-drift={i ? 1 : -1}
+          aria-hidden="true"
+          set:html={asciiHtml(n.rows)}
+        />
+      ))
+    }
+  </h1>
+
+  <div class="hero__foot mono">
+    <span>Based in {profile.location}</span>
+    <span><span data-clock={profile.timezone}>--:--:--</span> local</span>
+    <span class="hero__scroll">Scroll ↓</span>
+  </div>
+</section>

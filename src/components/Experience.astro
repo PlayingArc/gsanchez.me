@@ -1,0 +1,43 @@
+---
+import { experience, profile } from '../data/site';
+---
+
+<section class="section experience" id="experience" data-theme="paper">
+  <div class="section__head">
+    <span class="pill mono">02</span>
+    <h2 class="section__title mono">Experience</h2>
+    <a class="section__aside mono" href={profile.resumeUrl} data-scramble-hover>
+      <span data-scramble-target>Full résumé ↗</span>
+    </a>
+  </div>
+
+  <ol class="jobs" data-dim-group>
+    {
+      experience.map((job, i) => (
+        <li class="job" data-dim-item data-reveal data-delay={i * 80}>
+          <span class="job__no mono">{String(i + 1).padStart(2, '0')}</span>
+          <span class="job__dates mono">
+            {job.start} — {job.end}
+          </span>
+          <h3 class="job__role">
+            {job.href ? (
+              <a href={job.href}>
+                {job.role} <span class="job__at">@ {job.company}</span> <span aria-hidden="true">↗</span>
+              </a>
+            ) : (
+              <>
+                {job.role} <span class="job__at">@ {job.company}</span>
+              </>
+            )}
+          </h3>
+          <p class="job__summary">{job.summary}</p>
+          <ul class="tags" aria-label="Tools">
+            {job.tags.map((t) => (
+              <li class="pill mono">{t}</li>
+            ))}
+          </ul>
+        </li>
+      ))
+    }
+  </ol>
+</section>

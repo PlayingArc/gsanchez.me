@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Experience from '../components/Experience.astro';
+import Contact from '../components/Contact.astro';
+---
+
+<Base>
+  <a class="skip mono" href="#about">Skip to content</a>
+  <Header />
+  <main>
+    <Hero />
+    <About />
+    <Experience />
+    <Contact />
+  </main>
+</Base>
+
+<script>
+  import { mountAsciiFields } from '../scripts/ascii-field';
+  import { mountScramble } from '../scripts/scramble';
+  import { mountAsciiName } from '../scripts/ascii-name';
+  import { mountChrome } from '../scripts/chrome';
+
+  mountChrome();
+  mountScramble();
+  mountAsciiName();
+  mountAsciiFields();
+</script>
