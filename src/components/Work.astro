@@ -2,16 +2,10 @@
 import { projects } from '../data/site';
 import { renderDash } from '../scripts/dashboards';
 
-// How each set sits in the stack: size relative to the wall's base height,
-// side-panel width, and casing finish. The first two sit on top.
-const sets = [
-  { f: 1.12, panel: 0.34, casing: 'graphite', knobs: 2 },
-  { f: 0.92, panel: 0.3, casing: 'plastic', knobs: 1 },
-  { f: 1, panel: 0.36, casing: 'charcoal', knobs: 2 },
-  { f: 1, panel: 0.28, casing: 'plastic', knobs: 1 },
-  { f: 1, panel: 0.4, casing: 'graphite', knobs: 3 },
-];
-const rows = [projects.slice(0, 2), projects.slice(2, 5)];
+// How big each TV is relative to the wall's base height. The first two sit on
+// top of the other two, so they are a little smaller.
+const sizes = [0.9, 0.97, 1.06, 1];
+const rows = [projects.slice(0, 2), projects.slice(2, 4)];
 ---
 
 <section class="work" id="work" data-theme="black">
@@ -28,33 +22,21 @@ const rows = [projects.slice(0, 2), projects.slice(2, 5)];
           <div class:list={['wall__row', r === 0 && 'wall__row--top']}>
             {row.map((p) => {
               const i = projects.indexOf(p);
-              const set = sets[i % sets.length];
               return (
                 <a
-                  class={`tv tv--${set.casing}`}
+                  class="tv"
                   href={p.href}
-                  style={`--f:${set.f}; --panel:${set.panel}`}
+                  style={`--f:${sizes[i] ?? 1}`}
                   data-tv={i}
                   data-preview={p.preview}
                   aria-label={`${p.title} — open the demo`}
                 >
-                  <span class="tv__case">
-                    <span class="tv__screen">
-                      <span class="tv__img" data-dash set:html={renderDash(p.preview, 0)} />
-                      <span class="tv__fx" aria-hidden="true" />
-                    </span>
-                    <span class="tv__panel" aria-hidden="true">
-                      {Array.from({ length: set.knobs }, (_, k) => (
-                        <span class:list={['tv__knob', k > 0 && 'tv__knob--sm']} />
-                      ))}
-                      <span class="tv__grille" />
-                      <span class="tv__led" />
-                    </span>
-                    <span class="tv__plate mono" aria-hidden="true">
-                      {String(i + 1).padStart(2, '0')} · {p.title}
-                    </span>
+                  <span class="tv__screen">
+                    <span class="tv__img" data-dash set:html={renderDash(p.preview, 0)} />
+                    <span class="tv__fx" aria-hidden="true" />
                   </span>
-                  <span class="tv__feet" aria-hidden="true" />
+                  <img class="tv__body" src="/tv/field-black.webp" width="1200" height="980" alt="" loading="lazy" decoding="async" />
+                  <img class="tv__glass" src="/tv/field-black-glass.webp" width="1200" height="980" alt="" loading="lazy" decoding="async" />
                 </a>
               );
             })}
