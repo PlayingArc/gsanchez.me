@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
 import About from '../components/About.astro';
 import Experience from '../components/Experience.astro';
+import Work from '../components/Work.astro';
 import Contact from '../components/Contact.astro';
 ---
 
@@ -14,6 +15,7 @@ import Contact from '../components/Contact.astro';
     <Hero />
     <About />
     <Experience />
+    <Work />
     <Contact />
   </main>
 </Base>
@@ -22,10 +24,12 @@ import Contact from '../components/Contact.astro';
   import { mountAsciiFields } from '../scripts/ascii-field';
   import { mountScramble } from '../scripts/scramble';
   import { mountAsciiName } from '../scripts/ascii-name';
+  import { mountWall } from '../scripts/tv-wall';
   import { mountChrome } from '../scripts/chrome';
 
   mountChrome();
   mountScramble();
   mountAsciiName();
+  mountWall();
   mountAsciiFields();
 </script>
