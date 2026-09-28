@@ -209,7 +209,7 @@
 .dz-col:focus-visible { outline: none; }
 .dz-col:focus-visible .dz-hit { stroke: var(--z-focus); stroke-width: 2; }
 
-.dz-label { font-size: 14px; fill: var(--z-ink) !important; }
+.dz-label { font-size: 14px; fill: var(--z-ink) !important; pointer-events: none; }
 .dz-note { font-size: 13px; }
 .dz-group { font-size: 12px; font-weight: 700; fill: var(--z-ink) !important; }
 .dz-group.is-act { cursor: pointer; }
