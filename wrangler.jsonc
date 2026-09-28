@@ -11,5 +11,7 @@
   "routes": [
     { "pattern": "gsanchez.me", "custom_domain": true }
   ],
-  "observability": { "enabled": true }
+  "observability": { "enabled": true },
+  // Required by `wrangler preview`, which Workers Builds runs on non-main branches. Empty is fine.
+  "previews": {}
 }
