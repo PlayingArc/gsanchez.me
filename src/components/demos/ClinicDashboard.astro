@@ -1,0 +1,168 @@
+---
+// Molara Dental demo dashboard (#13). Static shell; src/demos/clinic/app.ts draws the data.
+import Base from '../../layouts/Base.astro';
+import DemoFrame from './DemoFrame.astro';
+import { strings } from '../../demos/clinic/i18n';
+import { data } from '../../demos/clinic/model';
+import { makeFormat, type Locale } from '../../demos/kit/format';
+import '../../styles/demo.css';
+import '../../styles/demo-clinic.css';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = strings[locale];
+const fmt = makeFormat(locale);
+const name = (x: { en: string; es: string }) => x[locale];
+const other: Locale = locale === 'en' ? 'es' : 'en';
+const path = (l: Locale) => `/${l}/demos/clinic`;
+const last = data.months.length - 1;
+---
+
+<Base title={t.title} description={t.metaDescription} lang={locale} bodyClass="dz-page">
+  <Fragment slot="head">
+    <link rel="canonical" href={new URL(path(locale), Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL(path('en'), Astro.site)} />
+    <link rel="alternate" hreflang="es" href={new URL(path('es'), Astro.site)} />
+  </Fragment>
+
+  <DemoFrame back={t.frameBack} note={t.frameNote} langLabel={t.frameLang} langHref={path(other)} langCode={other} />
+
+  <main class="dz" data-dash="clinic" data-brand="molara" data-locale={locale}>
+    <header class="dz-head">
+      <div class="dz-brand">
+        <svg class="dz-logo" viewBox="0 0 40 40" aria-hidden="true">
+          <!-- A molar, drawn as one stroke. -->
+          <path d="M9 11c0-4 4-6 7-5 2 1 3 1 4 1s2 0 4-1c3-1 7 1 7 5 0 5-2 7-2 11 0 4-1 11-4 11-2 0-2-4-3-7-1-2-1-3-2-3s-1 1-2 3c-1 3-1 7-3 7-3 0-4-7-4-11 0-4-2-6-2-11z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" />
+        </svg>
+        <div>
+          <h1>Molara Dental</h1>
+          <p>{t.tagline}</p>
+        </div>
+      </div>
+    </header>
+
+    <form class="dz-filters" onsubmit="return false" aria-label={locale === 'en' ? 'Filters' : 'Filtros'}>
+      <p class="dz-sentence">
+        <span>{t.showing}</span>
+        <label class="sr-only" for="f-clinic">{`${t.clinicFilter} / ${t.dentistFilter}`}</label>
+        <select id="f-clinic" data-filter="clinic">
+          <option value="">{t.allClinics}</option>
+          {data.clinics.map((c) => (
+            <optgroup label={c.name}>
+              <option value={`clinic:${c.id}`}>{c.name}</option>
+              {data.dentists.filter((d) => d.clinic === c.id).map((d) => <option value={`dentist:${d.id}`}>{`${d.title} ${d.name}`}</option>)}
+            </optgroup>
+          ))}
+        </select><span class="dz-comma">,</span>
+        <label class="sr-only" for="f-treatment">{t.treatmentFilter}</label>
+        <select id="f-treatment" data-filter="treatment">
+          <option value="">{t.allTreatments}</option>
+          {data.treatments.map((x) => <option value={x.id}>{name(x)}</option>)}
+        </select>
+        <span data-view="slot-chip" hidden></span>
+        <span data-view="lead-chip" hidden></span><span class="dz-comma">,</span>
+        <span>{t.from}</span>
+        <label class="sr-only" for="f-from">{t.fromFilter}</label>
+        <select id="f-from" data-filter="from">
+          {data.months.map((m, i) => <option value={i} selected={i === last - 11}>{fmt.month(m)}</option>)}
+        </select>
+        <span>{t.to}</span>
+        <label class="sr-only" for="f-to">{t.toFilter}</label>
+        <select id="f-to" data-filter="to">
+          {data.months.map((m, i) => <option value={i} selected={i === last}>{fmt.month(m)}</option>)}
+        </select><span class="dz-comma">.</span>
+      </p>
+      <div class="dz-quick">
+        <div class="dz-presets" role="group" aria-label={t.presets}>
+          <button type="button" data-preset="last3">{t.presetLabels.last3}</button>
+          <button type="button" data-preset="last6">{t.presetLabels.last6}</button>
+          <button type="button" data-preset="last12">{t.presetLabels.last12}</button>
+          <button type="button" data-preset="all">{t.presetLabels.all}</button>
+        </div>
+        <button type="button" class="dz-reset" data-reset disabled>{t.reset}</button>
+      </div>
+    </form>
+
+    <noscript><p class="dz-noscript">{t.noscript}</p></noscript>
+
+    <section class="dz-kpi-strip" aria-label={t.kpiLabel}>
+      <dl class="dz-kpis" data-view="kpis"></dl>
+      <p class="dz-period" data-view="kpi-period"></p>
+    </section>
+
+    <div class="dz-grid dz-grid--clinic">
+      <section class="dz-panel dz-panel--heat">
+        <header>
+          <h2>{t.heatTitle}</h2>
+          <div class="dz-toggle" role="group" aria-label={t.heatShow}>
+            <span>{t.heatShow}</span>
+            <button type="button" data-heat="util" aria-pressed="true">{t.heatUtil}</button>
+            <button type="button" data-heat="noshow" aria-pressed="false">{t.heatNoShow}</button>
+          </div>
+        </header>
+        <p class="dz-hint" data-view="heat-hint">{t.heatHintUtil}</p>
+        <div class="dz-chart" data-view="heat"></div>
+      </section>
+
+      <section class="dz-panel dz-panel--noshow">
+        <header><h2>{t.noShowTitle}</h2></header>
+        <p class="dz-hint">{t.noShowHint}</p>
+        <h3 class="dz-sub">{t.byClinic}</h3>
+        <div class="dz-chart" data-view="noshow-clinic"></div>
+        <h3 class="dz-sub">{t.byLead}</h3>
+        <div class="dz-chart" data-view="noshow-lead"></div>
+      </section>
+
+      <section class="dz-panel dz-panel--drill">
+        <header>
+          <h2>{t.revenueTitle}</h2>
+          <nav class="dz-crumb" data-view="crumb" aria-label={t.revenueTitle}></nav>
+        </header>
+        <p class="dz-hint" data-view="drill-hint">{t.hintClinic}</p>
+        <div class="dz-chart" data-view="drill"></div>
+      </section>
+
+      <section class="dz-panel dz-panel--patients">
+        <header>
+          <h2>{t.patientsTitle}</h2>
+          <ul class="dz-legend">
+            <li><span><i class="is-returning"></i>{t.returning}</span></li>
+            <li><span><i class="is-new"></i>{t.newPatients}</span></li>
+          </ul>
+        </header>
+        <h3 class="dz-sub">{t.visitsBy}</h3>
+        <p class="dz-hint">{t.patientsHint}</p>
+        <div class="dz-chart" data-view="patients"></div>
+        <h3 class="dz-sub">{t.recallTitle}</h3>
+        <p class="dz-hint">{t.recallHint}</p>
+        <div class="dz-chart" data-view="recall"></div>
+      </section>
+
+      <section class="dz-panel dz-panel--table">
+        <header>
+          <h2>{t.tableTitle}</h2>
+          <div class="dz-toggle" role="group" aria-label={t.rowsBy}>
+            <span>{t.rowsBy}</span>
+            <button type="button" data-rows="dentist" aria-pressed="true">{t.rowsDentist}</button>
+            <button type="button" data-rows="treatment" aria-pressed="false">{t.rowsTreatment}</button>
+          </div>
+        </header>
+        <div class="dz-table-wrap" data-view="table"></div>
+      </section>
+    </div>
+
+    <footer class="dz-foot">
+      <p>{t.footer}</p>
+      <a href={`/#work`}>{t.footerLink}</a>
+    </footer>
+  </main>
+</Base>
+
+<script>
+  import { mountClinic } from '../../demos/clinic/app';
+  const root = document.querySelector<HTMLElement>('[data-dash="clinic"]');
+  if (root) mountClinic(root);
+</script>
