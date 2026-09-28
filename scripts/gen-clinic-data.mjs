@@ -101,7 +101,7 @@ const monthNoShow = [1.0, 1.0, 1.0, 1.2, 1.0, 1.0, 1.15, 1.05, 1.0, 1.0, 1.05, 1
 const hourFill = [0.86, 1.0, 1.03, 1.03, 0.98, 0.55, 0.9, 1.02, 1.08, 1.0]; // 9:00..18:00
 const dayFill = [0.95, 1.0, 1.0, 1.02, 0.96, 1.08];
 
-function noShowOf(c, ci, mi, wd, h, ti, lead, isNew) {
+function noShowOf(c, mi, wd, h, ti, lead, isNew) {
   let p = leadNoShow[lead] * treatments[ti].noShow * c.noShow * monthNoShow[Number(months[mi].slice(5)) - 1];
   if (isNew) p *= 1.35;
   if (wd === 0 && h < 2) p *= 1.35; // Monday first thing
@@ -166,7 +166,7 @@ for (const { mi, wd } of calendar) {
       const tr = treatments[ti];
       const isNew = rand() < tr.newShare * (c.ramp ? 1 + 1.2 * (1 - ramp) : 1) ? 1 : 0;
       const lead = pick(tr.lead);
-      const ns = rand() < noShowOf(c, ci, mi, wd, h, ti, lead, isNew) ? 1 : 0;
+      const ns = rand() < noShowOf(c, mi, wd, h, ti, lead, isNew) ? 1 : 0;
       appts.push(pack(mi, wd * 10 + h, t % 60 ? 1 : 0, di, ti, lead, ns, isNew));
       if (!ns && ti === T.checkup) checkupsAttended[di][mi]++;
       t += tr.minutes;

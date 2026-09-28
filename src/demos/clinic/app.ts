@@ -9,9 +9,12 @@ import { mountTooltip } from '../kit/tooltip';
 import { readParams, syncLangLinks, writeParams } from '../kit/url';
 import { strings } from './i18n';
 import {
-  HOURS, data, defaultState, detailRows, drill, heat, kpis, noShowRate, noShowsByClinic, noShowsByLead, patients, recall,
+  HOURS, byTreatment, data, defaultState, detailRows, drill, heat, kpis, noShowRate, noShowsByClinic, noShowsByLead, patients, recall,
   stateFromParams, stateToParams, type DetailRow, type Heat, type Rows, type State, type Totals,
 } from './model';
+
+/** Fewer bookings than this in a heatmap cell and its no-show rate is left blank. */
+const MIN_BOOKED = 5;
 
 export function mountClinic(root: HTMLElement) {
   const locale = (root.dataset.locale as Locale) ?? 'en';
@@ -193,7 +196,7 @@ export function mountClinic(root: HTMLElement) {
       { label: t.kpiNew, value: fmt.int(cur.newPatients), change: delta(ratio(cur.newPatients, prev?.newPatients), '%', true) },
     ];
     view('kpis').innerHTML = rows
-      .map((r) => `<div class="dz-kpi"><dt>${esc(r.label)}</dt><dd class="dz-kpi__value">${esc(r.value)}</dd><dd class="dz-kpi__change">${r.change}</dd></div>`)
+      .map((r) => `<div class="dz-kpi"><dt>${esc(r.label)}</dt><dd><strong>${esc(r.value)}</strong>${r.change}</dd></div>`)
       .join('');
     const range = fmt.range(data.months[state.from], data.months[state.to]);
     view('kpi-period').textContent = k.prevRange
@@ -203,17 +206,20 @@ export function mountClinic(root: HTMLElement) {
 
   function renderHeat() {
     const cells = heat(state);
-    const maxRate = Math.max(0.2, ...cells.filter((c) => c.open && c.booked >= 20).map((c) => c.booked ? c.noShows / c.booked : 0));
+    const maxRate = Math.max(0.2, ...cells.filter((c) => c.open && c.booked >= MIN_BOOKED * 4).map((c) => c.booked ? c.noShows / c.booked : 0));
     const marks: HeatCell[] = cells.map((c) => {
       const rate = c.booked ? c.noShows / c.booked : 0;
+      // A rate over a handful of bookings is noise, so say nothing rather than 0% or 100%.
+      const thin = state.heat === 'noshow' && c.booked < MIN_BOOKED;
       const value = state.heat === 'util' ? c.util : rate;
+      const text = thin ? '—' : fmt.pct(value);
       const nm = slotName(c.slot);
       return {
         open: c.open,
-        level: state.heat === 'util' ? c.util : rate / maxRate,
-        text: fmt.pct(value),
+        level: thin ? 0 : state.heat === 'util' ? c.util : rate / maxRate,
+        text,
         act: `slot:${c.slot}`,
-        label: `${t.filterBy(nm)}: ${fmt.pct(value)}`,
+        label: `${t.filterBy(nm)}: ${text}`,
         selected: state.slot === c.slot,
         dimmed: state.slot != null && state.slot !== c.slot,
         tip: tip(nm, [
@@ -300,7 +306,8 @@ export function mountClinic(root: HTMLElement) {
         };
       });
     const el = view('drill');
-    el.innerHTML = hbars(widthOf(el), rows, { noteW: 64 });
+    const dw = widthOf(el);
+    el.innerHTML = hbars(dw, rows, { noteW: 64, labelW: Math.min(170, dw * 0.42) });
 
     const crumbs: string[] = [];
     const crumb = (label: string, a: string | null) =>
@@ -310,6 +317,36 @@ export function mountClinic(root: HTMLElement) {
     if (state.dentist) crumbs.push(crumb(dentistName(state.dentist), null));
     view('crumb').innerHTML = crumbs.join('<span class="dz-crumb__sep" aria-hidden="true">›</span>');
     view('drill-hint').textContent = d.level === 'clinic' ? t.hintClinic : d.level === 'dentist' ? t.hintDentist : t.hintTreatment;
+
+    // Below the drill, treatments for the same scope, until the drill itself reaches treatments.
+    const wrap = view('by-treatment-wrap');
+    wrap.hidden = d.level === 'treatment';
+    if (wrap.hidden) return;
+    const tr = byTreatment(state);
+    const trTotal = tr.reduce((a, r) => a + r.t.revenue, 0) || 1;
+    const trRows: BarRow[] = [...tr]
+      .sort((a, b) => b.t.revenue - a.t.revenue)
+      .map((r) => {
+        const label = name(treatment(r.id));
+        const sel = state.treatment === r.id;
+        return {
+          label,
+          act: `treatment:${r.id}`,
+          segs: [{ value: r.t.revenue, cls: 'dz-bar' }],
+          note: fmt.moneyShort(r.t.revenue),
+          selected: sel,
+          dimmed: state.treatment != null && !sel,
+          tip: tip(label, [
+            [t.tipRevenue, fmt.money(r.t.revenue)],
+            [t.tipShare, fmt.pct1(r.t.revenue / trTotal)],
+            [t.tipAttended, fmt.int(r.t.attended)],
+            [t.tipNoShowRate, fmt.pct1(noShowRate(r.t))],
+          ]),
+        };
+      });
+    const tel = view('by-treatment');
+    const tw = widthOf(tel);
+    tel.innerHTML = hbars(tw, trRows, { noteW: 64, labelW: Math.min(170, tw * 0.42) });
   }
 
   function renderPatients() {
@@ -339,7 +376,7 @@ export function mountClinic(root: HTMLElement) {
     el.innerHTML = columns(width, width < 520 ? 190 : 220, cols, (v) => fmt.int(v));
 
     const rc = recall(state);
-    const rrows: BarRow[] = rc.rows.map((r) => {
+    const rrows: BarRow[] = rc.rows.filter((r) => r.due > 0).map((r) => {
       const label = rc.level === 'clinic' ? clinic(r.id).name : dentistName(r.id);
       const sel = rc.level === 'clinic' ? state.clinic === r.id : state.dentist === r.id;
       return {

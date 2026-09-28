@@ -299,7 +299,7 @@ export function drill(s: State) {
   }
   if (!s.dentist) {
     const ci = data.clinics.findIndex((c) => c.id === s.clinic);
-    const ids = data.dentists.map((d, k) => (clinicOf[k] === ci ? k : -1)).filter((k) => k >= 0);
+    const ids = data.dentists.map((_d, k) => (clinicOf[k] === ci ? k : -1)).filter((k) => k >= 0);
     const rows = ids.map((k) => ({ id: data.dentists[k].id, t: zero() }));
     each(filterOf(s, ['dentist']), s.from, s.to, (i) => add(rows[ids.indexOf(A.dentist[i])].t, i));
     return { level: 'dentist' as const, rows };
@@ -307,6 +307,13 @@ export function drill(s: State) {
   const rows = data.treatments.map((t) => ({ id: t.id, t: zero() }));
   each(filterOf(s, ['treatment']), s.from, s.to, (i) => add(rows[A.treatment[i]].t, i));
   return { level: 'treatment' as const, rows: rows.filter((r) => r.t.booked > 0) };
+}
+
+/** Revenue by treatment for everything but the treatment filter (which only highlights). */
+export function byTreatment(s: State) {
+  const rows = data.treatments.map((t) => ({ id: t.id, t: zero() }));
+  each(filterOf(s, ['treatment']), s.from, s.to, (i) => add(rows[A.treatment[i]].t, i));
+  return rows.filter((r) => r.t.booked > 0);
 }
 
 /** All 24 months (the date filter only highlights): visits by new and by returning patients. */
@@ -338,7 +345,7 @@ export function recall(s: State) {
   };
   const chain = sum(() => true);
   if (ci < 0) return { level: 'clinic' as const, chain, rows: data.clinics.map((c, k) => ({ id: c.id, ...sum((d) => clinicOf[d] === k) })) };
-  const ids = data.dentists.map((d, k) => (clinicOf[k] === ci ? k : -1)).filter((k) => k >= 0);
+  const ids = data.dentists.map((_d, k) => (clinicOf[k] === ci ? k : -1)).filter((k) => k >= 0);
   return { level: 'dentist' as const, chain, rows: ids.map((k) => ({ id: data.dentists[k].id, ...sum((d) => d === k) })) };
 }
 
