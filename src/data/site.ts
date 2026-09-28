@@ -3,13 +3,13 @@
 
 export const profile = {
   firstName: 'Gerardo',
-  lastName: 'Sánchez',
-  role: 'Data & AI Engineer',
+  lastName: 'Sanchez',
+  role: 'Modern Engineer',
   location: 'Monterrey, Mexico',
   timezone: 'America/Monterrey',
   available: true,
   email: 'hello@gsanchez.me',
-  resumeUrl: '#', // TODO(#5): which CV goes public, and without the phone number
+  resumeUrl: '/gerardo-sanchez-resume.pdf', // public CV, no phone; source ~/Documents/CVs/build/cv_modern_engineer_2026.html
   pitch:
     'I turn scattered business data into dashboards and AI tools people actually use, from the warehouse to the screen.',
   statement: ['I build', 'data systems', 'that turn', 'operations', 'into', 'answers.'],
@@ -48,9 +48,9 @@ export const experience: Experience[] = [
     start: '2025',
     end: 'Now',
     role: 'Independent Data & AI Engineer',
-    company: 'Freelance',
+    company: 'Corporate clients',
     summary:
-      'Built a serverless data platform on Google Cloud for a returning client: Cloud Functions, Pub/Sub and BigQuery, modelled with dbt, with a Looker Studio dashboard for leadership on top. Added a Meta Conversions API service that feeds offline sales back to Meta, in production within a week. I run and maintain it on a monthly retainer.',
+      'Build serverless data platforms on Google Cloud for corporate clients: Cloud Functions, Pub/Sub and BigQuery, modelled with dbt, with a Looker Studio dashboard for leadership on top. Shipped a Meta Conversions API service that feeds offline sales back to Meta, in production within a week. I run and maintain what I ship on monthly service agreements.',
     tags: ['GCP', 'BigQuery', 'dbt', 'Python', 'Looker Studio', 'Meta CAPI'],
   },
   {
