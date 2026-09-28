@@ -1,5 +1,5 @@
-// The stacked wall of CRT sets: scales each dashboard to its screen, powers
-// the sets on when the wall scrolls into view, keeps the screens ticking,
+// The stacked wall of TVs: scales each dashboard to its screen, powers
+// the TVs on when the wall scrolls into view, keeps the screens ticking,
 // shows the hovered project's details, and zooms into a screen on click.
 
 import type { Preview } from '../data/site';
@@ -25,14 +25,14 @@ export function mountWall() {
   });
   tvs.forEach((tv) => ro.observe(tv.querySelector('[data-dash]')!));
 
-  // Power on, one set at a time, the first time the wall is seen.
+  // Power on, one TV at a time, the first time the wall is seen.
   let visible = false;
   new IntersectionObserver(
     ([e]) => {
       visible = e.isIntersecting;
       if (!visible || wall.classList.contains('is-powered')) return;
       wall.classList.add('is-powered');
-      const order = [2, 0, 4, 1, 3].filter((i) => i < tvs.length);
+      const order = [2, 0, 3, 1].filter((i) => i < tvs.length);
       tvs.forEach((_, i) => order.includes(i) || order.push(i));
       order.forEach((i, k) => setTimeout(() => tvs[i].classList.add('is-on'), reduced() ? 0 : 250 + k * 220));
     },
@@ -50,7 +50,7 @@ export function mountWall() {
     }, 1600);
   }
 
-  // Details for the set under the pointer (or keyboard focus).
+  // Details for the TV under the pointer (or keyboard focus).
   let active = 0;
   const show = (i: number) => {
     wall.classList.add('is-hovering');

@@ -273,9 +273,9 @@ a.section__aside:hover { text-decoration: underline; text-underline-offset: 3px;
 .work { background: radial-gradient(ellipse 90% 55% at 50% 30%, #141714 0%, var(--black) 72%); }
 .work__intro { padding-bottom: clamp(40px, 6vw, 80px); }
 
-/* A physical stack: two sets resting on three. Everything scales off --H. */
+/* A physical stack: two TVs resting on two. Everything scales off --H. */
 .wall {
-  --H: min(calc((100vw - 2 * var(--gutter)) / 5.2), 220px);
+  --H: min(calc((100vw - 2 * var(--gutter)) / 3.1), 330px);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -294,55 +294,40 @@ a.section__aside:hover { text-decoration: underline; text-underline-offset: 3px;
   background: radial-gradient(ellipse at center, rgb(160 190 255 / 0.1), transparent 70%);
   filter: blur(6px);
 }
-.wall__row { display: flex; align-items: flex-end; justify-content: center; }
-.wall__row--top { margin-left: -7%; }
+.wall__row { display: flex; align-items: flex-end; justify-content: center; gap: calc(var(--H) * 0.015); }
+.wall__row--top { margin-left: -9%; }
 
+/* Each TV is a flat render of the field monitor's front (see the
+   prototype/crt-bodies branch, prototype/crt-render/) with the live screen
+   behind its punched-out tube and the glass highlights on top. */
 .tv {
   --h: calc(var(--H) * var(--f, 1));
   position: relative;
-  display: flex;
-  flex-direction: column;
+  display: block;
+  height: var(--h);
+  aspect-ratio: 1200 / 980;
   cursor: pointer;
-  transition: filter 0.35s;
+  transition: opacity 0.35s;
   -webkit-tap-highlight-color: transparent;
 }
-.wall.is-hovering .tv:not(.is-active) { filter: brightness(0.5) saturate(0.6); }
-.tv:focus-visible { outline: 2px dashed var(--green); outline-offset: -6px; }
+.wall.is-hovering .tv:not(.is-active) { opacity: 0.45; }
+.tv:focus-visible { outline: 2px dashed var(--green); outline-offset: 4px; }
+.tv__body, .tv__glass { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; user-select: none; }
+.tv__body { z-index: 2; }
+.tv__glass { z-index: 3; }
 
-.tv--graphite { --case: linear-gradient(180deg, #4b4d49 0%, #353733 55%, #2a2c29 100%); --hl: 0.2; --plate: #a9aca3; --knob: #1c1d1b; --grille: rgb(0 0 0 / 0.5); }
-.tv--charcoal { --case: linear-gradient(180deg, #2e2f2d 0%, #1e1f1d 60%, #171816 100%); --hl: 0.12; --plate: #8f9289; --knob: #0d0e0d; --grille: rgb(0 0 0 / 0.6); }
-.tv--plastic { --case: linear-gradient(180deg, #eff1eb 0%, #dde0d8 55%, #c6c9c0 100%); --hl: 0.9; --plate: #6b6f68; --knob: #b7bab1; --grille: rgb(0 0 0 / 0.22); }
-
-.tv__case {
-  position: relative;
-  display: flex;
-  gap: calc(var(--h) * 0.05);
-  height: var(--h);
-  padding: calc(var(--h) * 0.07) calc(var(--h) * 0.07) calc(var(--h) * 0.11);
-  border-radius: calc(var(--h) * 0.045);
-  background: var(--case);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / var(--hl)),
-    inset 0 -3px 0 rgb(0 0 0 / 0.35),
-    inset 0 0 0 1px rgb(0 0 0 / 0.25);
-}
+/* The render's tube opening (geometry.json: left .1812, top .1294, width
+   .6375, height .5855), plus a hair of bleed under the bezel. */
 .tv__screen {
-  position: relative;
-  height: 100%;
-  aspect-ratio: 4 / 3;
-  border-radius: 7% / 9%;
+  position: absolute;
+  z-index: 1;
+  left: 17.72%;
+  top: 12.54%;
+  width: 64.55%;
+  height: 59.35%;
+  border-radius: 2.9% / 3.9%;
   overflow: hidden;
   background: radial-gradient(ellipse at 40% 35%, #1a1d1b, #050605 75%);
-  box-shadow:
-    0 0 0 calc(var(--h) * 0.014) #0a0b0a,
-    0 0 0 calc(var(--h) * 0.024) rgb(255 255 255 / 0.07);
-  transition: box-shadow 0.35s;
-}
-.tv.is-active .tv__screen {
-  box-shadow:
-    0 0 0 calc(var(--h) * 0.014) #0a0b0a,
-    0 0 0 calc(var(--h) * 0.024) rgb(255 255 255 / 0.07),
-    0 0 calc(var(--h) * 0.3) rgb(200 220 255 / 0.18);
 }
 
 /* The dashboard, drawn at 640×480 and scaled to the screen by --k. */
@@ -386,40 +371,6 @@ a.section__aside:hover { text-decoration: underline; text-underline-offset: 3px;
   animation: roll 7s linear infinite;
 }
 @keyframes roll { to { transform: translateY(460%); } }
-
-.tv__panel {
-  width: calc(var(--h) * var(--panel));
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: calc(var(--h) * 0.05);
-  padding-top: calc(var(--h) * 0.02);
-}
-.tv__knob {
-  position: relative;
-  width: calc(var(--h) * 0.16);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, rgb(255 255 255 / 0.35), transparent 45%), var(--knob);
-  box-shadow: 0 2px 3px rgb(0 0 0 / 0.5), inset 0 0 0 1px rgb(0 0 0 / 0.35);
-}
-.tv__knob::after { content: ''; position: absolute; left: 50%; top: 10%; width: 2px; height: 32%; margin-left: -1px; background: rgb(255 255 255 / 0.45); border-radius: 1px; }
-.tv__knob--sm { width: calc(var(--h) * 0.11); }
-.tv__knob--sm::after { transform-origin: 50% 125%; transform: rotate(40deg); }
-.tv__grille { flex: 1; width: 100%; border-radius: 3px; background: repeating-linear-gradient(to bottom, var(--grille) 0 2px, transparent 2px 5px); }
-.tv__led { width: max(5px, calc(var(--h) * 0.03)); aspect-ratio: 1; border-radius: 50%; background: #3b2e2e; transition: background 0.3s, box-shadow 0.3s; }
-.tv.is-on .tv__led { background: var(--green); box-shadow: 0 0 6px var(--green); }
-.tv__plate {
-  position: absolute;
-  left: calc(var(--h) * 0.07);
-  bottom: calc(var(--h) * 0.028);
-  font-size: clamp(8px, calc(var(--h) * 0.046), 11px);
-  letter-spacing: 0.12em;
-  white-space: nowrap;
-  color: var(--plate);
-}
-.tv__feet { display: flex; justify-content: space-between; height: calc(var(--h) * 0.035); padding: 0 14%; }
-.tv__feet::before, .tv__feet::after { content: ''; width: 12%; background: #0c0d0c; border-radius: 0 0 3px 3px; }
 
 .wall__caption { border-top: 1px solid var(--line); padding-top: 16px; min-height: 170px; }
 .panel[hidden] { display: none; }
@@ -637,10 +588,8 @@ a.section__aside:hover { text-decoration: underline; text-underline-offset: 3px;
   .job .tags { justify-content: flex-start; }
 
   .ascii { font-size: calc(100cqw / var(--cols) / 0.6); }
-  .wall { --H: calc((100vw - 2 * var(--gutter)) / 1.72); }
-  .wall__row { flex-direction: column; align-items: center; }
+  .wall { --H: calc((100vw - 2 * var(--gutter)) / 2.72); }
   .wall__row--top { margin-left: 0; }
-  .tv { --h: var(--H); }
   .panel { display: flex; flex-direction: column; gap: 8px; }
   .panel__summary { font-size: 14px; }
   .panel .tags, .panel__links { justify-content: flex-start; }
