@@ -2,7 +2,6 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  // Set this to your domain once hosting is decided.
-  site: 'https://example.com',
+  site: 'https://gsanchez.me',
   devToolbar: { enabled: false },
 });

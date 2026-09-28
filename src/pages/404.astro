@@ -1,0 +1,26 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="404 — Not found">
+  <main class="not-found">
+    <p class="mono">Error 404 · No signal</p>
+    <h1>This channel is off the air.</h1>
+    <p>Este canal está fuera del aire.</p>
+    <a class="mono" href="/">← Back to gsanchez.me</a>
+  </main>
+</Base>
+
+<style>
+  .not-found {
+    min-height: 100svh;
+    display: grid;
+    place-content: center;
+    gap: 16px;
+    padding: var(--gutter);
+    background: var(--black);
+    color: var(--paper);
+  }
+  h1 { font-size: clamp(32px, 6vw, 72px); line-height: 1; color: var(--green); }
+  a { color: var(--green); }
+</style>
