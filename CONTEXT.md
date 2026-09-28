@@ -1,6 +1,6 @@
 # Portfolio
 
-Gerardo Sanchez's one-page portfolio: who he is, what he has built, and dashboards a prospective client can open and explore.
+Gerardo Sanchez's one-page portfolio: who he is, what he has built, and dashboards a prospective client or recruiter can open and explore.
 
 ## Language
 
@@ -21,8 +21,12 @@ Real work Gerardo built that is shown on the wall and can be opened by a visitor
 _Avoid_: Project, real dashboard
 
 **Demo dashboard**:
-A dashboard built on invented data to show prospective clients what Gerardo can build for them; not tied to any employer or client.
+A dashboard built on invented data for a fictional company, to show prospective clients what Gerardo can build for them and recruiters how he works; not tied to any employer or client (e.g. Casa Zenzontle, Molara Dental).
 _Avoid_: Mockup, sample, fake dashboard
+
+**Fictional company**:
+The invented business a demo dashboard is built for; its name must not belong to a real business.
+_Avoid_: Fake client, sample company
 
 **Internal work**:
 Work built for an employer that cannot be shown publicly; it is only described in the Experience section, never given a TV (e.g. the Power BI production dashboard, the Looker Studio dashboard, Dashboard de Mantenimiento).
