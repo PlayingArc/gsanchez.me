@@ -1,0 +1,80 @@
+/* ------------------------------------------------------------------
+   Molara Dental: the clinic demo dashboard's tokens and the few marks
+   only it draws. Everything else comes from demo.css.
+   ------------------------------------------------------------------ */
+
+/* Porcelain ground, plum ink, Querétaro's rose cantera in mulberry; rust is always a no-show. */
+[data-brand='molara'] {
+  --z-ground: #ecebef;
+  --z-panel: #fbfafc;
+  --z-ink: #231a2b;
+  --z-soft: #5f5669;
+  --z-rule: #d8d2dc;
+  --z-a: #7a2e5c;       /* revenue, returning patients */
+  --z-a-soft: #e2c9d7;
+  --z-b: #2f6f79;       /* new patients, recall */
+  --z-b-soft: #c3dadd;
+  --z-target: #b8860b;  /* chain average */
+  --z-up: #1f7a55;
+  --z-down: #b3372c;
+  --z-warn: #b3372c;
+  --z-focus: #7a2e5c;
+  --m-noshow: #b4492f;
+  --m-noshow-soft: #edcbbf;
+}
+
+[data-dash='clinic'] .dz-kpis { grid-template-columns: repeat(6, 1fr); }
+
+/* Heatmap and no-shows on top, revenue and patients below, table last. */
+.dz-panel--heat { grid-column: span 7; }
+.dz-panel--noshow { grid-column: span 5; }
+.dz-panel--drill { grid-column: span 5; }
+.dz-panel--patients { grid-column: span 7; }
+
+.dz-sub { font-size: 14px; font-weight: 600; margin: 14px 0 2px; }
+.dz-sub + .dz-hint { margin-top: 0; }
+
+/* ------------------------------------------------------------------ bars and columns */
+.dz-bar { fill: var(--z-a); }
+.dz-bar.is-noshow { fill: var(--m-noshow); }
+.dz-bar.is-recall { fill: var(--z-soft); }
+.dz-row.is-dimmed .dz-bar { fill: var(--z-a-soft); }
+.dz-row.is-dimmed .dz-bar.is-noshow { fill: var(--m-noshow-soft); }
+.dz-row.is-dimmed .dz-bar.is-recall { fill: var(--z-rule); }
+
+.is-returning { fill: var(--z-a); }
+.is-new { fill: var(--z-b); }
+.dz-col.is-out .is-returning { fill: var(--z-a-soft); }
+.dz-col.is-out .is-new { fill: var(--z-b-soft); }
+.dz-legend i.is-returning { background: var(--z-a); }
+.dz-legend i.is-new { background: var(--z-b); }
+
+/* ------------------------------------------------------------------ heatmap */
+[data-view='heat'] { --h0: #f2e7ee; --h1: #ddbfd1; --h2: #bf8dab; --h3: #985580; --h4: #6b2250; }
+[data-view='heat'][data-metric='noshow'] { --h0: #f7e6df; --h1: #ecbfae; --h2: #da8f74; --h3: #bd5c40; --h4: #8a3120; }
+.dz-h0 { fill: var(--h0); }
+.dz-h1 { fill: var(--h1); }
+.dz-h2 { fill: var(--h2); }
+.dz-h3 { fill: var(--h3); }
+.dz-h4 { fill: var(--h4); }
+.dz-heat { cursor: pointer; }
+.dz-heat rect { stroke: transparent; stroke-width: 2; }
+.dz-heat:hover rect { stroke: var(--z-ink); }
+.dz-heat.is-selected rect { stroke: var(--z-ink); stroke-width: 3; }
+.dz-heat.is-dimmed { opacity: 0.35; }
+.dz-heat:focus-visible { outline: none; }
+.dz-heat:focus-visible rect { stroke: var(--z-focus); stroke-width: 3; }
+.dz-svg .dz-heat-text { font-size: 12px; fill: var(--z-ink); pointer-events: none; }
+.dz-svg .dz-heat-text.is-dark { fill: #fbfafc; }
+.dz-heat-closed { fill: transparent; stroke: var(--z-rule); stroke-dasharray: 3 3; }
+
+/* ------------------------------------------------------------------ responsive */
+@media (max-width: 1100px) {
+  [data-dash='clinic'] .dz-kpis { grid-template-columns: repeat(3, 1fr); row-gap: 12px; }
+  .dz-panel--heat, .dz-panel--patients { grid-column: 1 / -1; }
+  .dz-panel--noshow, .dz-panel--drill { grid-column: span 6; }
+}
+@media (max-width: 720px) {
+  [data-dash='clinic'] .dz-kpis { grid-template-columns: repeat(2, 1fr); }
+  .dz-panel--noshow, .dz-panel--drill { grid-column: 1 / -1; }
+}
