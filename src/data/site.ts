@@ -1,32 +1,32 @@
 // Everything personal lives in this folder. Edit these files; the page reads from them.
-// All copy below is placeholder text.
+// Profile, links and experience are real (#5). Projects are placeholders until the wall tickets land.
 
 export const profile = {
   firstName: 'Gerardo',
   lastName: 'Sanchez',
-  role: 'Data Analyst & Dashboard Developer',
-  location: 'City, Country',
-  timezone: 'America/Mexico_City',
+  role: 'Modern Engineer',
+  location: 'Monterrey, Mexico',
+  timezone: 'America/Monterrey',
   available: true,
-  email: 'hello@example.com',
-  resumeUrl: '#',
+  email: 'hello@gsanchez.me',
+  resumeUrl: '/gerardo-sanchez-resume.pdf', // public CV, no phone; source ~/Documents/CVs/build/cv_modern_engineer_2026.html
   pitch:
-    'I turn messy data into dashboards people actually open — clear, fast, and built to answer the question behind the question.',
-  statement: ['I build', 'dashboards', 'that make', 'numbers', 'read like', 'sentences.'],
+    'I turn scattered business data into dashboards and AI tools people actually use, from the warehouse to the screen.',
+  statement: ['I build', 'data systems', 'that turn', 'operations', 'into', 'answers.'],
   about: [
-    'Placeholder bio. A couple of sentences about where you come from, what kind of problems you like, and the tools you reach for first.',
-    'A second short paragraph: what you are learning right now, what you want to do next, and the kind of team you want to do it with.',
+    'I trained as a physicist at UANL, where my thesis simulated gravitational microlensing to build a 223k light-curve dataset for a machine-learning classifier. Then I went into industry and found the same problem everywhere: the data exists, but nobody can see it.',
+    'At a Monterrey food-manufacturing group I led the data side of an ERP rollout and gave management its first live view of sales, production and costs. Now I freelance: warehouses on Google Cloud, dashboards, and LLM-powered tools, like Money on Rails, my budgeting app built on the YNAB API.',
   ],
   now: [
-    ['Currently', 'Placeholder role @ Company'],
-    ['Learning', 'TypeScript, D3, web development'],
-    ['Based in', 'City, Country'],
+    ['Currently', 'Freelance data & AI engineering'],
+    ['Building', 'Money on Rails'],
+    ['Based in', 'Monterrey, Mexico · open to remote & relocation'],
   ] as [string, string][],
 };
 
 export const links = [
-  { label: 'GitHub', href: 'https://github.com/', handle: '@username' },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/', handle: 'in/username' },
+  { label: 'GitHub', href: 'https://github.com/PlayingArc', handle: '@PlayingArc' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/gerardo-s-4ab806105', handle: 'in/gerardo-s-4ab806105' },
   { label: 'Email', href: `mailto:${profile.email}`, handle: profile.email },
   { label: 'Résumé', href: profile.resumeUrl, handle: 'PDF' },
 ];
@@ -41,36 +41,35 @@ export type Experience = {
   tags: string[];
 };
 
+// Internal work (Power BI production dashboard, Looker Studio dashboard, Dashboard de
+// Mantenimiento) is described here only, never linked. See CONTEXT.md.
 export const experience: Experience[] = [
   {
-    start: '2024',
+    start: '2025',
     end: 'Now',
-    role: 'Data Analyst',
-    company: 'Company One',
-    href: '#',
+    role: 'Independent Data & AI Engineer',
+    company: 'Corporate clients',
     summary:
-      'Placeholder. Built and maintained the reporting layer for a team of 40. Replaced a weekly spreadsheet ritual with a live dashboard and cut report prep from a day to minutes.',
-    tags: ['SQL', 'Power BI', 'Python'],
+      'Build serverless data platforms on Google Cloud for corporate clients: Cloud Functions, Pub/Sub and BigQuery, modelled with dbt, with a Looker Studio dashboard for leadership on top. Shipped a Meta Conversions API service that feeds offline sales back to Meta, in production within a week. I run and maintain what I ship on monthly service agreements.',
+    tags: ['GCP', 'BigQuery', 'dbt', 'Python', 'Looker Studio', 'Meta CAPI'],
+  },
+  {
+    start: '2024',
+    end: '2025',
+    role: 'Lead Data Analyst',
+    company: 'TortiRegias · Nyjisa · Chilokia',
+    summary:
+      'Led the data side of an Alpha ERP rollout across the whole group, working with every department head. Built the Power BI production dashboard and Dashboard de Mantenimiento, the first live view of operations management had. Shipped App Tarimas, which cut Walmart pallet labelling to about two minutes, and automated reports worth roughly two months of manual work a year.',
+    tags: ['SQL', 'Power BI', 'Python', 'Streamlit', 'React'],
   },
   {
     start: '2022',
-    end: '2024',
-    role: 'Business Intelligence Intern',
-    company: 'Company Two',
-    href: '#',
+    end: '2023',
+    role: 'Undergraduate Researcher',
+    company: 'UANL · Facultad de Ciencias Físico Matemáticas',
     summary:
-      'Placeholder. Modelled sales and inventory data, shipped the first Looker Studio suite for regional managers, and documented the metrics so everyone agreed on one number.',
-    tags: ['Looker Studio', 'BigQuery', 'dbt'],
-  },
-  {
-    start: '2021',
-    end: '2022',
-    role: 'Research Assistant',
-    company: 'University Lab',
-    href: '#',
-    summary:
-      'Placeholder. Cleaned survey datasets, automated figures for two papers, and built a small Streamlit tool the lab still uses.',
-    tags: ['Python', 'Pandas', 'Streamlit'],
+      'Thesis on gravitational microlensing. Derived the lensing model from first principles, simulated it in Fortran across a wide parameter sweep, and produced 223k labelled light curves to train a classifier that detects microlensing events.',
+    tags: ['Fortran', 'Python', 'Machine learning'],
   },
 ];
 
