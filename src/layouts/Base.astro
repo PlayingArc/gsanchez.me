@@ -5,16 +5,20 @@ import { profile } from '../data/site';
 interface Props {
   title?: string;
   description?: string;
+  lang?: 'en' | 'es';
+  bodyClass?: string;
 }
 
 const {
   title = `${profile.firstName} ${profile.lastName} — ${profile.role}`,
   description = profile.pitch,
+  lang = 'en',
+  bodyClass,
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -29,8 +33,9 @@ const {
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=JetBrains+Mono:wght@400;500&family=Xanh+Mono&display=swap"
     />
+    <slot name="head" />
   </head>
-  <body>
+  <body class={bodyClass}>
     <slot />
   </body>
 </html>
