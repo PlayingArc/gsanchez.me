@@ -8,6 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
+    "sync:tarimas": "node scripts/sync-tarimas.mjs",
     "deploy": "astro build && wrangler deploy",
     "cf:dev": "astro build && wrangler dev"
   },
