@@ -66,6 +66,12 @@ export class AsciiField {
   private raf = 0;
   private visible = false;
   private t0 = performance.now();
+  // Touch only: the field speeds up and melts with scroll speed (#39).
+  private touch = matchMedia('(hover: none)').matches;
+  private clock = 0;
+  private last = performance.now();
+  private lastY = scrollY;
+  private energy = 0;
   private pointer = { x: 0, y: 0, tx: 0, ty: 0, on: 0, target: 0 };
   private reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   private colors: { ink: string; faint: string; accent: string };
@@ -103,7 +109,18 @@ export class AsciiField {
       this.pointer.target = 1;
       if (this.reduced) this.draw();
     });
-    host.addEventListener('pointerleave', () => (this.pointer.target = 0));
+    host.addEventListener('pointerleave', (e) => e.pointerType === 'mouse' && (this.pointer.target = 0));
+    // A tap pulls the bars toward the finger for a moment, then lets go.
+    host.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'mouse') return;
+      const r = this.canvas.getBoundingClientRect();
+      const s = Math.min(r.width, r.height) / 2;
+      this.pointer.tx = this.pointer.x = (e.clientX - r.left - r.width / 2) / s;
+      this.pointer.ty = this.pointer.y = (e.clientY - r.top - r.height / 2) / s;
+      this.pointer.target = 1;
+      setTimeout(() => (this.pointer.target = 0), 900);
+      if (this.reduced) this.draw();
+    });
     addEventListener('scroll', () => this.reduced && this.draw(), { passive: true });
 
     document.addEventListener('visibilitychange', () => {
@@ -147,7 +164,16 @@ export class AsciiField {
 
   draw() {
     if (!this.cols) return;
-    const t = this.reduced ? 12 : (performance.now() - this.t0) / 1000;
+    const now = performance.now();
+    const dt = Math.min((now - this.last) / 1000, 0.1);
+    this.last = now;
+    if (this.touch && !this.reduced) {
+      const v = Math.abs(scrollY - this.lastY) / Math.max(dt, 0.001); // px/s
+      this.energy += (Math.min(v / 2500, 1) - this.energy) * 0.08;
+    }
+    this.lastY = scrollY;
+    this.clock += dt * (1 + 2.5 * this.energy);
+    const t = this.reduced ? 12 : this.touch ? this.clock : (now - this.t0) / 1000;
     const scroll = -this.canvas.getBoundingClientRect().top / innerHeight;
 
     const p = this.pointer;
@@ -199,7 +225,7 @@ export class AsciiField {
     }
 
     // Bars breathe between crisp and melted; scrolling melts them further.
-    const k = 0.04 + 0.1 * (0.5 + 0.5 * Math.sin(t * 0.35)) + Math.min(Math.max(scroll, 0), 1) * 0.2;
+    const k = 0.04 + 0.1 * (0.5 + 0.5 * Math.sin(t * 0.35)) + Math.min(Math.max(scroll, 0), 1) * 0.2 + this.energy * 0.25;
     const ramp = BARS_RAMP;
     const rl = ramp.length;
     const pr = 0.22 * p.on;
