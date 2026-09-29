@@ -1,0 +1,214 @@
+/* ------------------------------------------------------------------
+   TV screens (src/scripts/dashboards.ts). Everything here is in the
+   screen's own 640×480 pixel space; the wall scales it by --k.
+   Each screen wears the colours of the real thing behind it.
+   ------------------------------------------------------------------ */
+
+.dash {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 640px;
+  height: 480px;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  font-variation-settings: 'wdth' 100;
+  font-size: 8px;
+  line-height: 1.25;
+  letter-spacing: 0;
+  text-transform: none;
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+.dash * { box-sizing: border-box; margin: 0; }
+.dash svg { display: block; overflow: visible; }
+.dash h3, .dash h4, .dash h5 { font-weight: 600; }
+.dash small { display: block; }
+
+/* ------------------------------------------------------------------ Money on Rails (dark) */
+.mor {
+  --bg: #121110; --surface: #1a1918; --surface-2: #211f1d; --line: rgb(255 250 240 / 0.09);
+  --ink: #f5f2eb; --ink-2: #ada79c; --ink-3: #7d776d; --accent: #9085e9; --good: #4cc27a;
+  display: grid;
+  grid-template-columns: 112px 1fr;
+  grid-template-rows: 32px 1fr;
+  background: var(--bg);
+  color: var(--ink);
+}
+.mor-rail { grid-row: 1 / span 2; background: var(--surface); border-right: 1px solid var(--line); padding: 8px 6px; }
+.mor-brand { display: flex; align-items: center; gap: 5px; padding: 0 2px 10px; }
+.mor-brand b { display: block; font-size: 8px; font-weight: 600; }
+.mor-brand small { font-size: 5.5px; color: var(--ink-3); }
+.mor-logo { display: grid; place-items: center; width: 17px; height: 17px; border-radius: 5px; background: linear-gradient(150deg, #6c5ce0, #4a3aa7); box-shadow: 0 2px 6px -2px #6c5ce0; }
+.mor-rail nav { display: flex; flex-direction: column; gap: 2px; }
+.mor-rail nav span { display: flex; align-items: center; gap: 5px; padding: 5px 6px; border-radius: 5px; font-size: 7.5px; color: var(--ink-2); }
+.mor-rail nav span.is-on { background: rgb(144 133 233 / 0.14); color: var(--accent); font-weight: 600; }
+.mor-top { display: flex; align-items: center; justify-content: space-between; padding: 0 10px; background: var(--surface); border-bottom: 1px solid var(--line); }
+.mor-chip { padding: 3px 7px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface-2); }
+.mor-chip b, .mor-user b { display: block; font-size: 7px; font-weight: 600; }
+.mor-chip small { font-family: var(--font-code); font-size: 5.5px; color: var(--ink-3); }
+.mor-user { display: flex; align-items: center; gap: 5px; text-align: right; }
+.mor-user small { font-size: 5.5px; color: var(--ink-3); }
+.mor-user i { display: grid; place-items: center; width: 17px; height: 17px; border-radius: 50%; background: linear-gradient(135deg, #1baf7a, #2a78d6); font-style: normal; font-size: 6px; font-weight: 700; }
+.mor-main { display: flex; flex-direction: column; gap: 6px; padding: 7px 9px 8px; min-width: 0; }
+.mor-banner { display: flex; justify-content: space-between; gap: 8px; padding: 4px 7px; border: 1px dashed rgb(255 250 240 / 0.16); border-radius: 5px; font-size: 6px; color: var(--ink-3); }
+.mor-banner b { color: var(--ink-2); font-weight: 600; }
+.mor-banner span { color: var(--accent); white-space: nowrap; }
+.mor-head { display: flex; align-items: center; justify-content: space-between; }
+.mor-head h3 { font-size: 12px; letter-spacing: -0.01em; }
+.mor-step { display: flex; align-items: center; gap: 8px; font-size: 7.5px; font-weight: 600; }
+.mor-step i { display: grid; place-items: center; width: 14px; height: 14px; border: 1px solid var(--line); border-radius: 4px; font-style: normal; color: var(--ink-2); }
+.mor-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; height: 164px; }
+.mor-row--b { grid-template-columns: 334px 1fr; flex: 1; height: auto; min-height: 0; }
+.mor-card { display: flex; flex-direction: column; gap: 5px; padding: 8px; min-width: 0; min-height: 0; overflow: hidden; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.03); }
+.mor-card h4 { font-size: 8px; letter-spacing: -0.01em; }
+.mor-card p { font-size: 6px; color: var(--ink-3); }
+.mor-card__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 6px; }
+.mor-ringnum { font-family: var(--font-code); font-size: 11px; font-weight: 600; fill: var(--ink); }
+.mor-pill { align-self: flex-start; padding: 2px 5px; border-radius: 4px; background: rgb(76 194 122 / 0.13); color: var(--good); font-size: 5.8px; font-weight: 600; }
+.mor-spark { margin-top: auto; }
+.mor-axis { display: flex; justify-content: space-between; font-family: var(--font-code); font-size: 5.5px !important; }
+.mor-q { display: grid; grid-template-columns: 1fr 34px 14px; align-items: center; gap: 5px; padding-top: 4px; }
+.mor-q span:first-child { font-size: 6.8px; }
+.mor-q small { font-family: var(--font-code); font-size: 5.5px; color: var(--ink-3); }
+.mor-q__bar { height: 3px; border-radius: 2px; background: rgb(255 255 255 / 0.09); }
+.mor-q__bar i { display: block; height: 100%; border-radius: 2px; }
+.mor-q b { font-family: var(--font-code); font-size: 7px; text-align: right; }
+.mor-saved { padding: 2px 4px; border-radius: 4px; background: rgb(76 194 122 / 0.13); color: var(--good); font-family: var(--font-code); font-size: 5.5px; white-space: nowrap; }
+.mor-io { display: grid; grid-template-columns: 40px 1fr 34px; align-items: center; gap: 5px; font-size: 6.5px; line-height: 1.1; }
+.mor-io__track { position: relative; height: 4px; }
+.mor-io__track i { display: block; height: 100%; border-radius: 2px; }
+.mor-io__track b { position: absolute; top: -2px; width: 1.2px; height: 8px; background: var(--ink); }
+.mor-io__v { font-family: var(--font-code); font-size: 6.5px; font-weight: 600; text-align: right; }
+.mor-io__v small { font-size: 5px; font-weight: 400; color: var(--ink-3); }
+.mor-eyebrow { font-size: 5.5px !important; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; border-top: 1px solid var(--line); padding-top: 3px; }
+.mor-seg { display: flex; gap: 2px; padding: 2px; border: 1px solid var(--line); border-radius: 5px; font-size: 6px; color: var(--ink-3); }
+.mor-seg b, .mor-seg span { padding: 1px 5px; border-radius: 3px; }
+.mor-seg b { background: var(--surface-2); color: var(--ink); font-weight: 600; }
+.mor-sankey text { font-size: 6px; fill: var(--ink-2); font-family: var(--font-sans); }
+.mor-sankey .mor-sk-v { font-family: var(--font-code); font-size: 5px; fill: var(--ink-3); }
+.mor-stack { display: flex; flex-direction: column; gap: 6px; min-height: 0; }
+.mor-stack .mor-card { flex: 1; }
+.mor-att { display: flex; flex-direction: column; gap: 5px; padding: 2px 0 0; list-style: none; font-size: 6.5px; font-weight: 600; }
+.mor-att li { display: flex; gap: 5px; align-items: flex-start; }
+.mor-att i { display: grid; place-items: center; flex: none; width: 11px; height: 11px; border-radius: 3px; background: rgb(224 112 61 / 0.12); font-style: normal; font-size: 6px; }
+.mor-nws { display: flex; gap: 1px; height: 7px; margin-top: 3px; border-radius: 4px; overflow: hidden; }
+.mor-nws i.is-left { flex: 1; background: repeating-linear-gradient(135deg, #c96e4a 0 2px, #3a2a24 2px 4px); }
+.mor-buckets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+.mor-buckets span { display: flex; align-items: center; gap: 3px; font-size: 6px; }
+.mor-buckets span i { display: grid; place-items: center; width: 8px; height: 8px; border-radius: 2px; font-style: normal; font-family: var(--font-code); font-size: 4.5px; color: #121110; font-weight: 700; }
+.mor-buckets b { display: block; font-size: 9px; margin-top: 2px; }
+.mor-buckets small { font-family: var(--font-code); font-size: 5px; color: var(--ink-3); }
+
+/* ------------------------------------------------------------------ App Tarimas (Ant Design defaults) */
+.tar {
+  --primary: #1677ff; --text: rgb(0 0 0 / 0.88); --text-2: rgb(0 0 0 / 0.45); --border: #d9d9d9;
+  display: flex;
+  flex-direction: column;
+  background: #f5f5f5;
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+.tar-banner { padding: 4px 10px; background: #1f1f1f; color: #f0f0f0; font-size: 7px; text-align: center; }
+.tar-banner u { color: #91caff; }
+.tar-banner small { font-size: 6px; opacity: 0.75; }
+.tar-cols { display: grid; grid-template-columns: 124px 124px 128px 1fr; gap: 6px; align-items: start; padding: 9px 8px; }
+.tar-card { background: #fff; border: 1px solid #f0f0f0; border-radius: 6px; overflow: hidden; }
+.tar-card h4 { display: flex; align-items: center; gap: 4px; padding: 6px 8px; border-bottom: 1px solid #f0f0f0; font-size: 10.5px; }
+.tar-card h4 small { margin-left: auto; font-size: 6.5px; font-weight: 400; color: var(--text-2); }
+.tar-body { display: flex; flex-direction: column; gap: 4px; padding: 7px 8px 8px; }
+.tar-body label { font-size: 6.5px; }
+.tar-body label i { color: #ff4d4f; font-style: normal; }
+.tar-input { display: flex; justify-content: space-between; margin-bottom: 3px; padding: 3px 5px; border: 1px solid var(--border); border-radius: 4px; font-size: 7px; }
+.tar-input i { font-style: normal; color: var(--text-2); }
+.tar-btn { display: block; padding: 4px; border-radius: 4px; background: var(--primary); color: #fff; font-size: 7px; text-align: center; box-shadow: 0 2px 0 rgb(5 145 255 / 0.1); }
+.tar-btn--dashed { background: #fff; color: var(--text); border: 1px dashed var(--border); box-shadow: none; }
+.tar-btn--lg { display: flex; align-items: center; justify-content: center; gap: 4px; padding: 6px; font-size: 8px; margin-top: 4px; }
+.tar-body h5 { margin-top: 5px; font-size: 7.5px; }
+.tar-line { display: flex; justify-content: space-between; align-items: center; gap: 4px; padding: 3px 0; border-bottom: 1px solid #f0f0f0; font-size: 6.5px; }
+.tar-line small { font-size: 5px; color: var(--text-2); }
+.tar-tag { flex: none; padding: 0 4px; border: 1px solid #91caff; border-radius: 3px; background: #e6f4ff; color: #0958d9; font-size: 6px; line-height: 10px; }
+.tar-tag--orange { border-color: #ffd591; background: #fff7e6; color: #d46b08; }
+.tar-tag--geek { margin-left: auto; border-color: #adc6ff; background: #f0f5ff; color: #1d39c4; }
+.tar-tag--grey { margin-left: auto; border-color: var(--border); background: #fafafa; color: var(--text); }
+.tar-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.tar-tile { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 2px; border: 1px solid var(--border); border-radius: 5px; background: #fff; font-size: 6px; font-weight: 500; text-align: center; }
+.tar-tile.is-partial { border: 1.5px solid #faad14; background: #fff7e6; }
+/* Three boxes mid-drag from Inventario onto Tarima 2, with the pointer. */
+.tar-tile.is-drag { position: absolute; left: 222px; top: 156px; z-index: 2; width: 54px; transform: rotate(3deg) scale(1.05); box-shadow: 0 4px 12px rgb(0 0 0 / 0.15); }
+.tar-tile.is-drag::after { content: ''; position: absolute; right: -4px; bottom: -6px; width: 9px; height: 11px; background: #fff; clip-path: polygon(0 0, 100% 62%, 52% 64%, 70% 100%, 52% 100%, 36% 68%, 0 90%); filter: drop-shadow(0 0 0.6px #000) drop-shadow(0 0 0.4px #000); }
+.tar-pallet { display: flex; flex-direction: column; gap: 3px; margin-bottom: 3px; padding: 5px; border: 1px solid var(--border); border-radius: 5px; }
+.tar-pallet.is-picked { border-color: var(--primary); box-shadow: 0 0 0 2px rgb(22 119 255 / 0.12); }
+.tar-pallet header { display: flex; align-items: center; gap: 3px; font-size: 7px; }
+.tar-row { display: flex; align-items: center; gap: 3px; font-size: 6px; }
+.tar-row svg { width: 14px; height: 10px; }
+.tar-drop { padding: 6px; border: 1.5px dashed #1890ff; border-radius: 4px; background: #e6f7ff; color: #1890ff; font-size: 6.5px; font-weight: 700; text-align: center; }
+.tar-sheet { display: flex; flex-direction: column; gap: 3px; margin: 0 auto; width: 176px; padding: 8px 10px; border: 1px solid #000; background: #fff; color: #000; }
+.tar-sheet > b { font-size: 6.5px; }
+.tar-code { display: inline-flex; flex-direction: column; align-items: center; }
+.tar-code svg { fill: #000; }
+.tar-code small { font-family: var(--font-code); font-size: 5.5px; letter-spacing: 0.08em; }
+.tar-upc { display: flex; justify-content: space-between; align-items: flex-start; }
+.tar-foot { display: flex; justify-content: space-between; margin-top: 6px; }
+.tar-foot span { display: flex; flex-direction: column; align-items: center; gap: 1px; }
+.tar-foot b { font-size: 4.5px; }
+
+/* ------------------------------------------------------------------ demo dashboards (demo.css, shrunk) */
+.dzs {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 13px 14px 12px;
+  background: var(--z-ground);
+  color: var(--z-ink);
+}
+.zen { --z-ground: #eceee9; --z-panel: #fafbf8; --z-ink: #18202f; --z-soft: #586173; --z-rule: #d3d7cf; --z-a: #2346a8; --z-up: #1d7a4c; --z-down: #b9392a; }
+.mol { --z-ground: #ecebef; --z-panel: #fbfafc; --z-ink: #231a2b; --z-soft: #5f5669; --z-rule: #d8d2dc; --z-a: #7a2e5c; --z-up: #1f7a55; --z-down: #b3372c; }
+.dzs-head { display: flex; align-items: center; gap: 9px; padding-bottom: 8px; border-bottom: 1.5px solid var(--z-ink); }
+.dzs-logo { flex: none; width: 24px; height: 24px; fill: var(--z-a); color: var(--z-a); }
+.dzs-head h3 { font-size: 21px; font-weight: 800; font-variation-settings: 'wdth' 125; letter-spacing: -0.01em; line-height: 1; }
+.dzs-head p { margin-top: 3px; font-size: 7px; color: var(--z-soft); }
+.dzs-sentence { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 4px; font-size: 12px; font-weight: 500; font-variation-settings: 'wdth' 88; color: var(--z-soft); }
+.dzs-sentence .is-punct { margin-left: -4px; }
+.dzs-sel { color: var(--z-ink); border-bottom: 1px dotted var(--z-soft); }
+.dzs-sel i { margin-left: 2px; font-style: normal; font-size: 6px; vertical-align: 2px; }
+.dzs-presets { display: flex; gap: 4px; padding-bottom: 6px; border-bottom: 1px solid var(--z-rule); }
+.dzs-presets span { padding: 2px 5px; border: 1px solid var(--z-rule); border-radius: 3px; background: #fff; font-size: 6px; }
+.dzs-presets .is-on { background: var(--z-ink); border-color: var(--z-ink); color: #fff; }
+.dzs-presets .dzs-reset { margin-left: auto; color: var(--z-rule); }
+.dzs-kpis { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; }
+.dzs-kpis > div { padding: 2px 8px 3px; border-left: 1px solid var(--z-rule); }
+.dzs-kpis > div:last-child { border-right: 1px solid var(--z-rule); }
+.dzs-kpis dt { font-size: 6.5px; color: var(--z-soft); white-space: nowrap; }
+.dzs-kpis dd { display: flex; align-items: baseline; gap: 4px; margin: 1px 0 0; }
+.dzs-kpis b { font-size: 17px; font-weight: 600; font-variation-settings: 'wdth' 75; letter-spacing: -0.01em; }
+.dzs-kpis dd span { font-size: 6px; font-weight: 600; }
+.dzs-kpis .is-up { color: var(--z-up); }
+.dzs-kpis .is-down { color: var(--z-down); }
+.dzs-kpis small { font-size: 5.5px; color: var(--z-soft); }
+.dzs-grid { display: grid; grid-template-columns: 386px 1fr; gap: 8px; flex: 1; min-height: 0; }
+.mol .dzs-grid { grid-template-columns: 346px 1fr; }
+.dzs-panel { display: flex; flex-direction: column; gap: 3px; min-width: 0; padding: 7px 8px; background: var(--z-panel); border-top: 1.5px solid var(--z-ink); overflow: hidden; }
+.dzs-panel header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.dzs-panel h4 { font-size: 9px; font-weight: 700; }
+.dzs-legend { display: flex; gap: 7px; list-style: none; padding: 0; font-size: 6px; color: var(--z-soft); }
+.dzs-legend li { display: flex; align-items: center; gap: 3px; }
+.dzs-legend i { width: 6px; height: 6px; }
+.dzs-legend i.is-target { height: 0; border-top: 1.5px dashed #d9960f; }
+.dzs-svg text { font-size: 5.5px; fill: var(--z-soft); font-family: var(--font-sans); }
+.dzs-svg .dzs-grid { stroke: var(--z-rule); stroke-width: 0.6; }
+.dzs-group { margin-top: 3px; font-size: 6.5px; font-weight: 700; }
+.dzs-toggle { display: flex; gap: 3px; font-size: 6px; }
+.dzs-toggle b, .dzs-toggle span { padding: 2px 5px; border: 1px solid var(--z-rule); border-radius: 3px; font-weight: 400; background: #fff; }
+.dzs-toggle b { background: var(--z-ink); border-color: var(--z-ink); color: #fff; }
+.zen-store { margin: 3px 0; display: grid; grid-template-columns: 52px 1fr 20px; align-items: center; gap: 5px; padding-left: 5px; font-size: 6.5px; }
+.zen-store > span:last-child, .mol-ns > span:last-child { text-align: right; color: var(--z-soft); }
+.zen-store__bar { position: relative; display: flex; height: 6px; }
+.zen-store__bar i { display: block; height: 100%; }
+.zen-store__bar b { position: absolute; top: -2px; width: 1.5px; height: 10px; background: #d9960f; }
+.mol-heat text { font-size: 6px; }
+.mol-heat text.is-light { fill: #fff; }
+.mol-ns { margin: 2px 0; display: grid; grid-template-columns: 62px 1fr 22px; align-items: center; gap: 5px; font-size: 6.5px; }
+.mol-ns__bar { position: relative; height: 6px; }
+.mol-ns__bar i { display: block; height: 100%; background: #b4492f; }
+.mol-ns__bar b { position: absolute; top: -2px; width: 1.5px; height: 10px; background: #b8860b; }

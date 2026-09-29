@@ -1,6 +1,14 @@
 ---
-import { projects } from '../data/site';
+import { projectsByLocale } from '../data/site';
 import { renderDash } from '../scripts/dashboards';
+import '../styles/screens.css';
+
+interface Props {
+  locale?: 'en' | 'es';
+}
+
+const { locale = 'en' } = Astro.props;
+const projects = projectsByLocale[locale];
 
 // How big each TV is relative to the wall's base height. The first two sit on
 // top of the other two, so they are a little smaller.
@@ -32,7 +40,7 @@ const rows = [projects.slice(0, 2), projects.slice(2, 4)];
                   aria-label={`${p.title} — open the demo`}
                 >
                   <span class="tv__screen">
-                    <span class="tv__img" data-dash set:html={renderDash(p.preview, 0)} />
+                    <span class="tv__img" data-dash set:html={renderDash(p.preview, locale)} />
                     <span class="tv__fx" aria-hidden="true" />
                   </span>
                   <img class="tv__body" src="/tv/field-black.webp" width="1200" height="980" alt="" loading="lazy" decoding="async" />
