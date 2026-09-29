@@ -8,10 +8,12 @@ interface Props {
   langCode: 'en' | 'es';
 }
 const { back, note, langLabel, langHref, langCode } = Astro.props;
+// The frame offers the other language, so the page itself is in the opposite one.
+const home = `/${langCode === 'en' ? 'es' : 'en'}/#work`;
 ---
 
 <nav class="dz-frame" aria-label="gsanchez.me">
-  <a class="dz-frame__back" href="/#work"><span aria-hidden="true">←</span> {back}</a>
+  <a class="dz-frame__back" href={home}><span aria-hidden="true">←</span> {back}</a>
   <p class="dz-frame__note">{note}</p>
   <a class="dz-frame__lang" href={langHref} hreflang={langCode} lang={langCode} data-keep-query>{langLabel}</a>
 </nav>

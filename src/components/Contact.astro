@@ -1,5 +1,10 @@
 ---
-import { links, profile } from '../data/site';
+import { profile, site, type Locale } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+const t = site(Astro.props.locale);
 ---
 
 <section class="contact" id="contact" data-theme="green">
@@ -7,7 +12,7 @@ import { links, profile } from '../data/site';
 
   <div class="section__head">
     <span class="pill pill--ink mono">04</span>
-    <h2 class="section__title mono">Contact</h2>
+    <h2 class="section__title mono">{t.nav.contact}</h2>
   </div>
 
   <p class="contact__prompt mono" data-scramble>&gt; say --hello</p>
@@ -17,7 +22,7 @@ import { links, profile } from '../data/site';
 
   <ul class="contact__links">
     {
-      links.map((l) => (
+      t.contact.links.map((l) => (
         <li>
           <a href={l.href} data-scramble-hover target={l.href.startsWith('http') ? '_blank' : undefined} rel="noopener">
             <span class="mono contact__label">{l.label}</span>
@@ -31,8 +36,8 @@ import { links, profile } from '../data/site';
 
   <footer class="footer mono">
     <span>© {new Date().getFullYear()} {profile.firstName} {profile.lastName}</span>
-    <span>Built with Astro · ASCII after play.core</span>
-    <span>Palette after <i>Cyberfeminism Index</i> (2023)</span>
-    <a href="#top">Back to top ↑</a>
+    <span>{t.contact.builtWith}</span>
+    <span>{t.contact.palette} <i>Cyberfeminism Index</i> (2023)</span>
+    <a href="#top">{t.contact.backToTop}</a>
   </footer>
 </section>

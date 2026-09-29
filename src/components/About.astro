@@ -1,5 +1,10 @@
 ---
-import { profile } from '../data/site';
+import { site, type Locale } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+const t = site(Astro.props.locale);
 
 // Staggered indents for the statement lines, in grid columns (of 12).
 const indents = [4, 0, 6, 2, 5, 1];
@@ -8,12 +13,12 @@ const indents = [4, 0, 6, 2, 5, 1];
 <section class="section about" id="about" data-theme="paper">
   <div class="section__head">
     <span class="pill mono">01</span>
-    <h2 class="section__title mono">About</h2>
+    <h2 class="section__title mono">{t.nav.about}</h2>
   </div>
 
-  <p class="statement" aria-label={profile.statement.join(' ')}>
+  <p class="statement" aria-label={t.statement.join(' ')}>
     {
-      profile.statement.map((line, i) => (
+      t.statement.map((line, i) => (
         <span class="statement__line" style={`--indent:${indents[i % indents.length]}`} data-reveal data-delay={i * 160} aria-hidden="true">
           <span data-scramble-child>{line}</span>
         </span>
@@ -23,11 +28,11 @@ const indents = [4, 0, 6, 2, 5, 1];
 
   <div class="about__body">
     <div class="about__text">
-      {profile.about.map((p) => <p data-reveal>{p}</p>)}
+      {t.about.map((p) => <p data-reveal>{p}</p>)}
     </div>
     <dl class="about__now">
       {
-        profile.now.map(([k, v]) => (
+        t.now.map(([k, v]) => (
           <div>
             <dt class="mono">{k}</dt>
             <dd>{v}</dd>

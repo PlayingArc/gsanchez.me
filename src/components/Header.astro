@@ -1,11 +1,18 @@
 ---
-import { profile } from '../data/site';
+import { otherLocale, profile, site, type Locale } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = site(locale);
+const other = otherLocale(locale);
 
 const nav = [
-  ['About', '#about'],
-  ['Experience', '#experience'],
-  ['Work', '#work'],
-  ['Contact', '#contact'],
+  [t.nav.about, '#about'],
+  [t.nav.experience, '#experience'],
+  [t.nav.work, '#work'],
+  [t.nav.contact, '#contact'],
 ];
 ---
 
@@ -16,11 +23,11 @@ const nav = [
   {
     profile.available && (
       <p class="header__status mono">
-        <span class="dot" aria-hidden="true" /> (Open to new roles)
+        <span class="dot" aria-hidden="true" /> {t.header.status}
       </p>
     )
   }
-  <nav class="header__nav mono" aria-label="Sections">
+  <nav class="header__nav mono" aria-label={t.hero.onThisPage}>
     {
       nav.map(([label, href]) => (
         <a href={href} data-scramble-hover>
@@ -29,5 +36,10 @@ const nav = [
       ))
     }
   </nav>
-  <a class="header__cta" href={`mailto:${profile.email}`}>Get in touch →</a>
+  <div class="header__end">
+    <a class="header__lang mono" href={`/${other}/`} hreflang={other} lang={other} aria-label={site(other).langName}>
+      {site(other).switchLabel}
+    </a>
+    <a class="header__cta" href={`mailto:${profile.email}`}>{t.header.cta}</a>
+  </div>
 </header>

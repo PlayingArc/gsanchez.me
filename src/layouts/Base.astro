@@ -1,18 +1,18 @@
 ---
 import '../styles/global.css';
-import { profile } from '../data/site';
+import { profile, site, type Locale } from '../data/site';
 
 interface Props {
   title?: string;
   description?: string;
-  lang?: 'en' | 'es';
+  lang?: Locale;
   bodyClass?: string;
 }
 
 const {
   title = `${profile.firstName} ${profile.lastName} — ${profile.role}`,
-  description = profile.pitch,
   lang = 'en',
+  description = site(lang).pitch,
   bodyClass,
 } = Astro.props;
 ---
