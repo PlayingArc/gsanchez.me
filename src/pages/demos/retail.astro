@@ -1,6 +1,12 @@
 ---
 // Bare /demos/retail sends visitors to their language (Spanish if the browser prefers it).
 import LanguageRedirect from '../../components/LanguageRedirect.astro';
+import { strings } from '../../demos/retail/i18n';
 ---
 
-<LanguageRedirect path="/demos/retail" title="Casa Zenzontle" />
+<LanguageRedirect
+  path="/demos/retail/"
+  title={strings.en.title}
+  description={strings.en.metaDescription}
+  image="/og/retail-en.png"
+/>

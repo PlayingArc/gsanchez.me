@@ -17,11 +17,11 @@ const t = strings[locale];
 const fmt = makeFormat(locale);
 const name = (x: { en: string; es: string }) => x[locale];
 const other: Locale = locale === 'en' ? 'es' : 'en';
-const path = (l: Locale) => `/${l}/demos/clinic`;
+const path = (l: Locale) => `/${l}/demos/clinic/`;
 const last = data.months.length - 1;
 ---
 
-<Base title={t.title} description={t.metaDescription} lang={locale} bodyClass="dz-page">
+<Base title={t.title} description={t.metaDescription} lang={locale} bodyClass="dz-page" image={`/og/clinic-${locale}.png`}>
   <Fragment slot="head">
     <link rel="canonical" href={new URL(path(locale), Astro.site)} />
     <link rel="alternate" hreflang="en" href={new URL(path('en'), Astro.site)} />
