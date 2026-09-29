@@ -73,12 +73,25 @@ export class AsciiField {
   constructor(private canvas: HTMLCanvasElement, private scene: Scene) {
     this.ctx = canvas.getContext('2d')!;
     const css = getComputedStyle(canvas);
-    this.colors = {
-      ink: css.getPropertyValue('--ascii-ink').trim() || '#000',
-      faint: css.getPropertyValue('--ascii-faint').trim() || 'rgba(0,0,0,.25)',
-      accent: css.getPropertyValue('--ascii-accent').trim() || '#fff',
-    };
+    this.colors = this.readColors();
     this.bind();
+  }
+
+  // The colours live in CSS custom properties. If this runs before the
+  // stylesheet has applied (seen on phones), they read empty and the old
+  // fallback was solid black; keep re-reading until they resolve, and fall back
+  // to the same translucent ink the CSS uses.
+  private resolved = false;
+  private readColors() {
+    const css = getComputedStyle(this.canvas);
+    const get = (name: string) => css.getPropertyValue(name).trim();
+    const ink = get('--ascii-ink');
+    this.resolved = !!ink;
+    return {
+      ink: ink || 'rgb(11 12 11 / 0.36)',
+      faint: get('--ascii-faint') || 'rgb(11 12 11 / 0.2)',
+      accent: get('--ascii-accent') || '#f2f4f0',
+    };
   }
 
   private bind() {
@@ -160,6 +173,7 @@ export class AsciiField {
 
     const { ctx, w, h, rows, ch } = this;
     ctx.clearRect(0, 0, w, h);
+    if (!this.resolved) this.colors = this.readColors();
     const colors = [this.colors.faint, this.colors.ink, this.colors.accent];
     layers.forEach((lines, k) => {
       ctx.fillStyle = colors[k];
