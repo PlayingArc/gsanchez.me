@@ -325,7 +325,10 @@ const SCENES: Record<string, Scene> = {
 };
 
 export async function mountAsciiFields() {
-  await document.fonts.load('14px "JetBrains Mono"').catch(() => {});
+  await Promise.all([
+    document.fonts.load('14px "JetBrains Mono"'),
+    document.fonts.load('14px "JetBrains Mono"', '█▓▒░'),
+  ]).catch(() => {});
   document.querySelectorAll<HTMLCanvasElement>('canvas[data-ascii]').forEach((canvas) => {
     new AsciiField(canvas, SCENES[canvas.dataset.ascii ?? ''] ?? SCENES.hero);
   });
