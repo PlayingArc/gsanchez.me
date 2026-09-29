@@ -1,6 +1,7 @@
 ---
 import { site, type Locale } from '../data/site';
 import { renderDash } from '../scripts/dashboards';
+import '../styles/screens.css';
 
 interface Props {
   locale: Locale;
@@ -38,7 +39,7 @@ const rows = [projects.slice(0, 2), projects.slice(2, 4)];
                   aria-label={`${p.title} — ${t.work.open}`}
                 >
                   <span class="tv__screen">
-                    <span class="tv__img" data-dash set:html={renderDash(p.preview, 0)} />
+                    <span class="tv__img" data-dash set:html={renderDash(p.preview, Astro.props.locale)} />
                     <span class="tv__fx" aria-hidden="true" />
                   </span>
                   <img class="tv__body" src="/tv/field-black.webp" width="1200" height="980" alt="" loading="lazy" decoding="async" />
