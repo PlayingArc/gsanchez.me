@@ -112,8 +112,12 @@ export class AsciiField {
   }
 
   resize() {
-    const dpr = Math.min(devicePixelRatio || 1, 2);
+    // Phones get a 1x backing store: the glyphs are soft background texture, and
+    // two full-section 2x/3x canvases are a big share of iOS Safari's memory budget.
+    const dpr = matchMedia('(pointer: coarse)').matches ? 1 : Math.min(devicePixelRatio || 1, 2);
     const { width, height } = this.canvas.getBoundingClientRect();
+    // Setting width/height reallocates the bitmap, so skip no-op resizes.
+    if (Math.round(width * dpr) === this.canvas.width && Math.round(height * dpr) === this.canvas.height) return;
     this.w = width;
     this.h = height;
     this.canvas.width = Math.round(width * dpr);

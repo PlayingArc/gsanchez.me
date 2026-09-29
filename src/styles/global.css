@@ -174,7 +174,6 @@ ol, ul { list-style: none; }
   letter-spacing: 0;
   white-space: pre;
   color: var(--ink);
-  will-change: transform;
 }
 .ascii i {
   display: inline-block;
@@ -350,6 +349,18 @@ a.section__aside:hover { text-decoration: underline; text-underline-offset: 3px;
   100% { opacity: 1; transform: none; filter: saturate(1.15) contrast(1.06) brightness(1.03) blur(0.25px); }
 }
 @keyframes flicker { 0%, 100% { opacity: 1; } 47% { opacity: 0.94; } 48% { opacity: 1; } 81% { opacity: 0.97; } }
+/* Touch devices (#29): no resting CRT filter and no endless flicker, which keep four
+   filtered GPU layers repainting on iOS. The power-on keeps its shape, ends unfiltered. */
+@media (pointer: coarse) {
+  .tv__img { filter: none; }
+  .js .tv.is-on .tv__img { animation: tv-on-lite 0.75s var(--ease) forwards; }
+  .tv__fx::after { animation: none; }
+}
+@keyframes tv-on-lite {
+  0% { opacity: 1; transform: scale(0, 0.006); }
+  35% { opacity: 1; transform: scale(1, 0.006); }
+  100% { opacity: 1; transform: none; }
+}
 
 /* The CRT on top: scanlines, aperture grille, vignette, glass glare, a slow roll bar. */
 .tv__fx {
