@@ -1,13 +1,21 @@
 ---
+// One 404 for every path, so it speaks both languages; each link goes home in its own.
 import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+
+const en = site('en').notFound;
+const es = site('es').notFound;
 ---
 
-<Base title="404 — Not found">
+<Base title={`${en.title} · ${es.title}`}>
   <main class="not-found">
-    <p class="mono">Error 404 · No signal</p>
-    <h1>This channel is off the air.</h1>
-    <p>Este canal está fuera del aire.</p>
-    <a class="mono" href="/">← Back to gsanchez.me</a>
+    <p class="mono">{en.kicker}</p>
+    <h1>{en.heading}</h1>
+    <p lang="es">{es.heading}</p>
+    <p class="mono">
+      <a href="/en/">{en.back}</a><br />
+      <a href="/es/" lang="es">{es.back}</a>
+    </p>
   </main>
 </Base>
 

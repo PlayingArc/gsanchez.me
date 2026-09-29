@@ -1,6 +1,12 @@
 ---
-import { projects } from '../data/site';
+import { site, type Locale } from '../data/site';
 import { renderDash } from '../scripts/dashboards';
+
+interface Props {
+  locale: Locale;
+}
+const t = site(Astro.props.locale);
+const projects = t.work.projects;
 
 // How big each TV is relative to the wall's base height. The first two sit on
 // top of the other two, so they are a little smaller.
@@ -12,8 +18,8 @@ const rows = [projects.slice(0, 2), projects.slice(2, 4)];
   <div class="section work__intro">
     <div class="section__head">
       <span class="pill mono">03</span>
-      <h2 class="section__title mono">Work</h2>
-      <span class="section__aside mono">{String(projects.length).padStart(2, '0')} live demos</span>
+      <h2 class="section__title mono">{t.nav.work}</h2>
+      <span class="section__aside mono">{String(projects.length).padStart(2, '0')} {t.work.liveDemos}</span>
     </div>
 
     <div class="wall" data-wall>
@@ -29,7 +35,7 @@ const rows = [projects.slice(0, 2), projects.slice(2, 4)];
                   style={`--f:${sizes[i] ?? 1}`}
                   data-tv={i}
                   data-preview={p.preview}
-                  aria-label={`${p.title} — open the demo`}
+                  aria-label={`${p.title} — ${t.work.open}`}
                 >
                   <span class="tv__screen">
                     <span class="tv__img" data-dash set:html={renderDash(p.preview, 0)} />
@@ -56,38 +62,38 @@ const rows = [projects.slice(0, 2), projects.slice(2, 4)];
               <span data-scramble-child>{p.title}</span>
             </h3>
             <p class="panel__summary">{p.summary}</p>
-            <ul class="tags" aria-label="Stack">
+            <ul class="tags" aria-label={t.work.stackLabel}>
               {p.stack.map((s) => (
                 <li class="pill pill--glow mono">{s}</li>
               ))}
             </ul>
             <p class="panel__links mono">
               <a href={p.href} data-launch={i}>
-                Step inside ↗
+                {t.work.stepInside}
               </a>
-              {p.repo && <a href={p.repo}>Source</a>}
+              {p.repo && <a href={p.repo}>{t.work.source}</a>}
             </p>
           </article>
         ))
       }
-      <p class="wall__hint mono">Hover a screen · click to step inside</p>
+      <p class="wall__hint mono">{t.work.hint}</p>
     </div>
   </div>
 
   <div class="section work__index">
     <div class="section__head">
       <span class="pill mono">03.1</span>
-      <h2 class="section__title mono">Index</h2>
+      <h2 class="section__title mono">{t.work.index}</h2>
     </div>
     <table class="table">
       <thead class="mono">
         <tr>
-          <th scope="col">No.</th>
-          <th scope="col">Project</th>
-          <th scope="col">Type</th>
-          <th scope="col" class="table__stack">Stack</th>
-          <th scope="col">Year</th>
-          <th scope="col"><span class="sr-only">Link</span></th>
+          <th scope="col">{t.work.cols.no}</th>
+          <th scope="col">{t.work.cols.project}</th>
+          <th scope="col">{t.work.cols.type}</th>
+          <th scope="col" class="table__stack">{t.work.cols.stack}</th>
+          <th scope="col">{t.work.cols.year}</th>
+          <th scope="col"><span class="sr-only">{t.work.cols.link}</span></th>
         </tr>
       </thead>
       <tbody>

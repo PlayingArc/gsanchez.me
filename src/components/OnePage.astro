@@ -1,0 +1,48 @@
+---
+// The one-page site in one language; /en/ and /es/ each render it.
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import About from './About.astro';
+import Experience from './Experience.astro';
+import Work from './Work.astro';
+import Contact from './Contact.astro';
+import { locales, profile, site, type Locale } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = site(locale);
+---
+
+<Base title={`${profile.firstName} ${profile.lastName} — ${profile.role}`} description={t.pitch} lang={locale}>
+  <Fragment slot="head">
+    {locales.map((l) => <link rel="alternate" hreflang={l} href={new URL(`/${l}/`, Astro.site)} />)}
+    <link rel="alternate" hreflang="x-default" href={new URL('/', Astro.site)} />
+    <link rel="canonical" href={new URL(`/${locale}/`, Astro.site)} />
+  </Fragment>
+  <a class="skip mono" href="#about">{t.skip}</a>
+  <Header locale={locale} />
+  <main>
+    <Hero locale={locale} />
+    <About locale={locale} />
+    <Experience locale={locale} />
+    <Work locale={locale} />
+    <Contact locale={locale} />
+  </main>
+</Base>
+
+<script>
+  import { mountAsciiFields } from '../scripts/ascii-field';
+  import { mountScramble } from '../scripts/scramble';
+  import { mountAsciiName } from '../scripts/ascii-name';
+  import { mountWall } from '../scripts/tv-wall';
+  import { mountChrome } from '../scripts/chrome';
+
+  mountChrome();
+  mountScramble();
+  mountAsciiName();
+  mountWall();
+  mountAsciiFields();
+</script>

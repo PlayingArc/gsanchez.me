@@ -1,16 +1,22 @@
 ---
-import { profile, projects, experience } from '../data/site';
+import { profile, site, type Locale } from '../data/site';
 import { asciiRows, asciiHtml } from '../lib/ascii-type';
+
+interface Props {
+  locale: Locale;
+}
+const t = site(Astro.props.locale);
+const jobs = t.experience.jobs;
 
 const names = [asciiRows(profile.firstName), asciiRows(profile.lastName)];
 // Both lines share one character size, set by the wider of the two.
 const cols = Math.max(...names.map((n) => n.cols));
 
 const index = [
-  ['01', 'About', 'Who I am, what I work with', '#about'],
-  ['02', 'Experience', `${experience.length} roles, ${experience.at(-1)?.start}–now`, '#experience'],
-  ['03', 'Work', `${projects.length} live dashboard demos`, '#work'],
-  ['04', 'Contact', 'Email, GitHub, LinkedIn', '#contact'],
+  ['01', t.nav.about, t.hero.notes.about, '#about'],
+  ['02', t.nav.experience, t.hero.notes.experience(jobs.length, jobs.at(-1)?.start ?? ''), '#experience'],
+  ['03', t.nav.work, t.hero.notes.work(t.work.projects.length), '#work'],
+  ['04', t.nav.contact, t.hero.notes.contact, '#contact'],
 ];
 ---
 
@@ -19,12 +25,12 @@ const index = [
 
   <div class="hero__top">
     <p class="hero__meta mono">
-      (Portfolio ©{new Date().getFullYear()})<br />
+      ({t.hero.portfolio} ©{new Date().getFullYear()})<br />
       {profile.role}
     </p>
-    <p class="hero__pitch">{profile.pitch}</p>
+    <p class="hero__pitch">{t.pitch}</p>
 
-    <ol class="index" aria-label="On this page">
+    <ol class="index" aria-label={t.hero.onThisPage}>
       {
         index.map(([no, label, note, href]) => (
           <li>
@@ -56,8 +62,8 @@ const index = [
   </h1>
 
   <div class="hero__foot mono">
-    <span>Based in {profile.location}</span>
-    <span><span data-clock={profile.timezone}>--:--:--</span> local</span>
-    <span class="hero__scroll">Scroll ↓</span>
+    <span>{t.hero.basedIn} {t.location}</span>
+    <span><span data-clock={profile.timezone}>--:--:--</span> {t.hero.local}</span>
+    <span class="hero__scroll">{t.hero.scroll}</span>
   </div>
 </section>

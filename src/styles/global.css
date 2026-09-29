@@ -105,9 +105,15 @@ ol, ul { list-style: none; }
   transform: scaleX(0); transform-origin: left; transition: transform 0.35s var(--ease);
 }
 .header__nav a:hover::after, .header__mark:hover::after { transform: scaleX(1); }
+.header__end { grid-column: 11 / span 2; justify-self: end; display: flex; align-items: center; gap: 16px; }
+.header__lang { position: relative; }
+.header__lang::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -3px; height: 1px; background: currentColor;
+  transform: scaleX(0); transform-origin: left; transition: transform 0.35s var(--ease);
+}
+.header__lang:hover::after { transform: scaleX(1); }
 .header__cta {
-  grid-column: 11 / span 2;
-  justify-self: end;
+  white-space: nowrap;
   font-size: 13px;
   font-weight: 600;
   padding: 7px 12px;
@@ -573,7 +579,7 @@ a.section__aside:hover { text-decoration: underline; text-underline-offset: 3px;
   .mono { font-size: 12px; }
   .header__nav { display: none; }
   .header__mark { grid-column: 1 / span 6; }
-  .header__cta { grid-column: 7 / span 6; }
+  .header__end { grid-column: 7 / span 6; }
   .hero__top { display: flex; flex-direction: column; gap: 16px; }
   .index { margin-top: 12px; align-self: stretch; }
   .index a { grid-template-columns: 2.6em 1fr auto; }
