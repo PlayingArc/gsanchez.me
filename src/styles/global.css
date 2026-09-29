@@ -493,6 +493,20 @@ a.section__aside:hover { text-decoration: underline; text-underline-offset: 3px;
 .footer { background: var(--bg); display: flex; flex-wrap: wrap; gap: 8px 28px; justify-content: space-between; font-size: 12px; }
 .footer i { font-style: italic; text-transform: none; }
 
+/* ------------------------------------------------------------------ touch (#39)
+   No sticky hover: the job in the middle of the screen is current, links flash
+   on press. .is-touch is set by touch.ts on devices without hover. */
+.is-touch .job:hover::before, .is-touch .job:focus-within::before { transform: scaleY(0); }
+.is-touch .job:hover .job__summary, .is-touch .job:hover .job__at { color: var(--soft); }
+.is-touch .job.is-current::before { transform: scaleY(1); }
+.is-touch .jobs.is-surfing .job:not(.is-current) { opacity: 0.4; }
+.is-touch .job.is-current .job__summary, .is-touch .job.is-current .job__at { color: var(--fg); }
+.is-touch .job.is-current .pill { border-color: var(--ink); }
+.is-touch .contact__links a:hover { background: none; color: inherit; }
+.is-touch .contact__links a.is-pressed { background: var(--ink); color: var(--green); }
+.is-touch .contact__email:hover { color: inherit; }
+.is-touch .contact__email.is-pressed { color: var(--paper); }
+
 /* ------------------------------------------------------------------ responsive */
 @media (max-width: 1100px) {
   .header__status { display: none; }

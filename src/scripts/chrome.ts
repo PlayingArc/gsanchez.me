@@ -1,6 +1,8 @@
 // Page chrome: the fixed header takes on the colours of whichever section is
 // under it, the local clock ticks, and the hero name drifts apart on scroll.
 
+import { isTouch } from './touch';
+
 export function mountChrome() {
   const header = document.querySelector<HTMLElement>('[data-header]');
   const sections = [...document.querySelectorAll<HTMLElement>('[data-theme]')];
@@ -50,7 +52,9 @@ export function mountChrome() {
     setInterval(tick, 1000);
   });
 
-  // Experience rows: dim the others while one is hovered or focused.
+  // Experience rows: dim the others while one is hovered or focused. Touch
+  // devices get the scroll-driven version in touch.ts instead.
+  if (isTouch()) return;
   document.querySelectorAll<HTMLElement>('[data-dim-group]').forEach((group) => {
     const on = () => group.classList.add('is-dimming');
     const off = () => group.classList.remove('is-dimming');

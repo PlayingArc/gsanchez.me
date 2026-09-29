@@ -4,6 +4,7 @@
 
 import { DASH_W, DASH_H } from './dashboards';
 import { scramble } from './scramble';
+import { isTouch } from './touch';
 
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -53,7 +54,7 @@ export function mountWall() {
   };
   tvs.forEach((tv) => {
     const i = Number(tv.dataset.tv);
-    tv.addEventListener('pointerenter', () => show(i));
+    tv.addEventListener('pointerenter', (e) => e.pointerType === 'mouse' && show(i));
     tv.addEventListener('focus', () => show(i));
     tv.addEventListener('blur', clear);
     tv.addEventListener('click', (e) => {
@@ -61,7 +62,9 @@ export function mountWall() {
       launch(tv);
     });
   });
-  wall.addEventListener('pointerleave', clear);
+  wall.addEventListener('pointerleave', (e) => e.pointerType === 'mouse' && clear());
+
+  if (isTouch()) channelSurf(wall, tvs, panels, show);
 
   document.querySelectorAll<HTMLAnchorElement>('[data-launch]').forEach((a) =>
     a.addEventListener('click', (e) => {
@@ -107,4 +110,46 @@ function launch(tv: HTMLAnchorElement) {
   screen.style.transform = 'none';
 
   setTimeout(() => (location.href = tv.href), reduced() ? 0 : 800);
+}
+
+// Touch devices have no hover to pick a TV, so while the wall is on screen the
+// TVs take turns, like flicking through channels, and the caption follows. The
+// caption keeps the height of its tallest panel so switching never moves the
+// page under the finger.
+function channelSurf(wall: HTMLElement, tvs: HTMLElement[], panels: HTMLElement[], show: (i: number) => void) {
+  const caption = panels[0]?.parentElement;
+  const fit = () => {
+    if (!caption) return;
+    caption.style.minHeight = '';
+    let tallest = 0;
+    panels.forEach((p) => {
+      const was = p.hidden;
+      p.hidden = false;
+      tallest = Math.max(tallest, caption.getBoundingClientRect().height);
+      p.hidden = was;
+    });
+    // Measured with one panel shown at a time, so hide all but the active one.
+    caption.style.minHeight = `${Math.ceil(tallest)}px`;
+  };
+  panels.forEach((p) => (p.hidden = true));
+  fit();
+  panels.forEach((p, k) => (p.hidden = k !== 0));
+  addEventListener('resize', fit);
+
+  const order = tvs.map((tv) => Number(tv.dataset.tv));
+  let k = 0;
+  let timer = 0;
+  const step = () => {
+    show(order[k % order.length]);
+    k++;
+  };
+  new IntersectionObserver(
+    ([e]) => {
+      clearInterval(timer);
+      if (!e.isIntersecting || reduced()) return;
+      step();
+      timer = window.setInterval(step, 3200);
+    },
+    { threshold: 0.5 },
+  ).observe(wall);
 }

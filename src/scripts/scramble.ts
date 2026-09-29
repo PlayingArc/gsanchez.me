@@ -90,10 +90,26 @@ export function mountScramble() {
   );
   document.querySelectorAll<HTMLElement>('[data-scramble], [data-reveal]').forEach((el) => io.observe(el));
 
+  const touch = matchMedia('(hover: none)').matches;
+  // Touch (#39): no hover to trigger them, so hover-scramble links also decode
+  // each time they scroll into view. Tapping still scrambles as before.
+  const seen = touch
+    ? new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue;
+            const el = e.target as HTMLElement;
+            scramble(el.querySelector<HTMLElement>('[data-scramble-target]') ?? el, 650, { restart: false });
+          }
+        },
+        { rootMargin: '-15% 0px -15% 0px' },
+      )
+    : null;
   document.querySelectorAll<HTMLElement>('[data-scramble-hover]').forEach((el) => {
     const target = el.querySelector<HTMLElement>('[data-scramble-target]') ?? el;
     const play = () => scramble(target, 650, { restart: false });
     el.addEventListener('pointerenter', play);
     el.addEventListener('focus', play);
+    seen?.observe(el);
   });
 }

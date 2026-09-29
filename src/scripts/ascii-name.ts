@@ -40,7 +40,7 @@ export function mountAsciiName() {
     tick();
   };
 
-  root.addEventListener('pointermove', (e) => {
+  const disturb = (e: PointerEvent) => {
     for (const { pre, grid } of blocks) {
       const r = pre.getBoundingClientRect();
       if (e.clientY < r.top - 20 || e.clientY > r.bottom + 20) continue;
@@ -60,5 +60,18 @@ export function mountAsciiName() {
         }
       }
     }
-  });
+  };
+  root.addEventListener('pointermove', disturb);
+  // Touch (#39): a tap flickers the blocks under the finger, and while the name
+  // is on screen a few random blocks shimmer on their own now and then.
+  root.addEventListener('pointerdown', (e) => e.pointerType !== 'mouse' && disturb(e));
+  if (matchMedia('(hover: none)').matches) {
+    const cells = blocks.flatMap(({ grid }) => grid.flat().filter((c): c is HTMLElement => !!c));
+    let visible = false;
+    new IntersectionObserver(([e]) => (visible = e.isIntersecting)).observe(root);
+    setInterval(() => {
+      if (!visible || document.hidden) return;
+      for (let n = 0; n < 6; n++) flicker(cells[(Math.random() * cells.length) | 0]);
+    }, 1400);
+  }
 }
