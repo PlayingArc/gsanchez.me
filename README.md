@@ -21,6 +21,15 @@ npm run build    # static site in dist/
 | `src/components/Work.astro` | TV layout: which set goes where, size, casing (`sets`) |
 | `src/scripts/scramble.ts` | Decode-on-scroll and hover text effects (overlay, so layout never shifts) |
 
+## App Tarimas demo
+
+`public/demos/tarimas/` is the committed demo build of App Tarimas (a separate repo), served at `/demos/tarimas/`. Don't edit it by hand; rebuild it with:
+
+```
+npm run sync:tarimas                                   # clones the app's main branch
+TARIMAS_DIR=../path/to/checkout npm run sync:tarimas   # or builds a local checkout
+```
+
 ## Palette
 
 Sampled from *Cyberfeminism Index* (Inventory Press, 2023, design by Laura Coombs): green `#4DE74C`, off-white `#F2F4F0`, ink `#0B0C0B`.
