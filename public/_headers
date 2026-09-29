@@ -1,0 +1,5 @@
+# Workers static assets reads this file; it is never served.
+# PR previews live at <branch>.gsanchez.me and <deploy-id>-<branch>.gsanchez.me. Keep them out of
+# search; production is the bare domain only (www redirects before reaching the Worker).
+https://:preview.gsanchez.me/*
+  X-Robots-Tag: noindex

@@ -8,8 +8,10 @@
     "directory": "./dist",
     "not_found_handling": "404-page"
   },
+  // previews_enabled serves PR previews at <branch>.gsanchez.me; without it each deploy from main
+  // switches them off again. public/_headers keeps those hosts out of search.
   "routes": [
-    { "pattern": "gsanchez.me", "custom_domain": true }
+    { "pattern": "gsanchez.me", "custom_domain": true, "previews_enabled": true }
   ],
   "observability": { "enabled": true },
   // Required by `wrangler preview`, which Workers Builds runs on non-main branches. Empty is fine.

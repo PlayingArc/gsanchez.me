@@ -189,7 +189,7 @@ const copy: Record<Locale, Copy> = {
           summary:
             'Sales for an invented home-goods retailer with eight stores and an online shop: net sales against target by month, store, category and product, with filters that read as a sentence and charts that filter each other.',
           stack: ['TypeScript', 'SVG', 'Astro'],
-          href: '/en/demos/retail',
+          href: '/en/demos/retail/',
           preview: 'retail',
         },
         {
@@ -200,7 +200,7 @@ const copy: Record<Locale, Copy> = {
           summary:
             'Chairs, no-shows and revenue for an invented chain of five dental clinics: when the chairs are full, where and how far ahead no-shows happen, where revenue comes from, and which patients are due back.',
           stack: ['TypeScript', 'SVG', 'Astro'],
-          href: '/en/demos/clinic',
+          href: '/en/demos/clinic/',
           preview: 'clinic',
         },
       ],
@@ -330,7 +330,7 @@ const copy: Record<Locale, Copy> = {
           summary:
             'Ventas de una tienda inventada de artículos para el hogar, con ocho sucursales y tienda en línea: ventas netas contra meta por mes, tienda, categoría y producto, con filtros que se leen como una frase y gráficas que se filtran entre sí.',
           stack: ['TypeScript', 'SVG', 'Astro'],
-          href: '/es/demos/retail',
+          href: '/es/demos/retail/',
           preview: 'retail',
         },
         {
@@ -341,7 +341,7 @@ const copy: Record<Locale, Copy> = {
           summary:
             'Sillones, inasistencias e ingresos de una cadena inventada de cinco clínicas dentales: cuándo se llenan los sillones, dónde y con cuánta anticipación faltan los pacientes, de dónde vienen los ingresos y quién debe volver.',
           stack: ['TypeScript', 'SVG', 'Astro'],
-          href: '/es/demos/clinic',
+          href: '/es/demos/clinic/',
           preview: 'clinic',
         },
       ],

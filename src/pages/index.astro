@@ -1,7 +1,12 @@
 ---
 // Bare / sends visitors to their language (Spanish if the browser prefers it, else English).
 import LanguageRedirect from '../components/LanguageRedirect.astro';
-import { profile } from '../data/site';
+import { profile, site } from '../data/site';
 ---
 
-<LanguageRedirect path="/" title={`${profile.firstName} ${profile.lastName} — ${profile.role}`} />
+<LanguageRedirect
+  path="/"
+  title={`${profile.firstName} ${profile.lastName} — ${profile.role}`}
+  description={site('en').pitch}
+  image="/og/home-en.png"
+/>

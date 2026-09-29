@@ -10,7 +10,8 @@
     "check": "astro check",
     "sync:tarimas": "node scripts/sync-tarimas.mjs",
     "deploy": "astro build && wrangler deploy",
-    "cf:dev": "astro build && wrangler dev"
+    "cf:dev": "astro build && wrangler dev",
+    "og:images": "node scripts/og-images.mjs"
   },
   "dependencies": {
     "astro": "^7.3.5",
@@ -18,6 +19,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "playwright-core": "^1.63.0",
     "typescript": "^6.0.3",
     "wrangler": "^4.143.0"
   }
