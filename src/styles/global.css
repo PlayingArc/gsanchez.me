@@ -1,3 +1,15 @@
+/* Google Fonts serves JetBrains Mono without box-drawing and block glyphs, so the
+   ASCII name and fields fell back to the system mono on phones (misaligned, clipped).
+   Self-hosted subset of just those glyphs, from Google's text= endpoint. */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: block;
+  src: url('/fonts/jetbrains-mono-glyphs-400.woff2') format('woff2');
+  unicode-range: U+2190-21FF, U+2304, U+2500-259F, U+25BE, U+25D4;
+}
+
 /* ------------------------------------------------------------------
    Tokens. Palette sampled from the Cyberfeminism Index (Inventory Press,
    2023): cover green, page off-white, text black.
