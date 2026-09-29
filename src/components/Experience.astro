@@ -1,19 +1,24 @@
 ---
-import { experience, profile } from '../data/site';
+import { profile, site, type Locale } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+const t = site(Astro.props.locale);
 ---
 
 <section class="section experience" id="experience" data-theme="paper">
   <div class="section__head">
     <span class="pill mono">02</span>
-    <h2 class="section__title mono">Experience</h2>
+    <h2 class="section__title mono">{t.nav.experience}</h2>
     <a class="section__aside mono" href={profile.resumeUrl} data-scramble-hover>
-      <span data-scramble-target>Full résumé ↗</span>
+      <span data-scramble-target>{t.experience.resume}</span>
     </a>
   </div>
 
   <ol class="jobs" data-dim-group>
     {
-      experience.map((job, i) => (
+      t.experience.jobs.map((job, i) => (
         <li class="job" data-dim-item data-reveal data-delay={i * 80}>
           <span class="job__no mono">{String(i + 1).padStart(2, '0')}</span>
           <span class="job__dates mono">
@@ -31,9 +36,9 @@ import { experience, profile } from '../data/site';
             )}
           </h3>
           <p class="job__summary">{job.summary}</p>
-          <ul class="tags" aria-label="Tools">
-            {job.tags.map((t) => (
-              <li class="pill mono">{t}</li>
+          <ul class="tags" aria-label={t.experience.tools}>
+            {job.tags.map((tag) => (
+              <li class="pill mono">{tag}</li>
             ))}
           </ul>
         </li>
