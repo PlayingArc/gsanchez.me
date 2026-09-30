@@ -29,7 +29,8 @@ const bars = ['#c0c0c0', '#c0c000', '#00c0c0', '#00c000', '#c000c0', '#c00000', 
       <span class="section__aside mono">{String(projects.length).padStart(2, '0')} {t.work.liveDemos}</span>
     </div>
 
-    <div class="stage" data-stage style={`--n:${projects.length}`}>
+    {/* Focusable, so its number keys only work while you're in it. */}
+    <div class="stage" data-stage style={`--n:${projects.length}`} role="group" tabindex="0" aria-label={s.label(projects.length)}>
       {/* The channel on air, as an exhibit label, and a pager to flip channels. */}
       <div class="placard">
         <div aria-live="polite">

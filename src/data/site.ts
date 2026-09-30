@@ -70,6 +70,8 @@ type Copy = {
     stepInside: string;
     // The TV, its channel details and the pager that flips channels.
     set: {
+      // The TV's name when it has focus, which is when its number keys work.
+      label: (n: number) => string;
       channels: string;
       channelUp: string;
       channelDown: string;
@@ -161,6 +163,7 @@ const copy: Record<Locale, Copy> = {
       liveDemos: 'live demos',
       stepInside: 'Step inside ↗',
       set: {
+        label: (n) => `TV: keys 1 to ${n} pick a channel, plus and minus flip through them`,
         channels: 'Channels',
         channelUp: 'Channel up',
         channelDown: 'Channel down',
@@ -312,6 +315,7 @@ const copy: Record<Locale, Copy> = {
       liveDemos: 'demos en vivo',
       stepInside: 'Entrar ↗',
       set: {
+        label: (n) => `TV: las teclas 1 a ${n} eligen el canal; más y menos los recorren`,
         channels: 'Canales',
         channelUp: 'Canal siguiente',
         channelDown: 'Canal anterior',

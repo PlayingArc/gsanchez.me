@@ -12,6 +12,7 @@
   gap: clamp(18px, 2vw, 32px) clamp(20px, 3vw, 56px);
   margin-top: clamp(12px, 2vw, 32px);
 }
+.stage:focus-visible { outline: 2px dashed var(--green); outline-offset: 8px; }
 
 /* ------------------------------------------------------------------ the channel's label */
 .placard { grid-area: placard; display: flex; flex-direction: column; gap: 34px; min-width: 0; padding-bottom: 4%; }

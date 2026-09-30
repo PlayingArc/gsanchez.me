@@ -211,10 +211,9 @@ export function mountCrt() {
     }),
   );
 
-  // Number keys pick a channel, +/- step, while the set is on screen.
-  let visible = false;
-  addEventListener('keydown', (e) => {
-    if (!visible || e.metaKey || e.ctrlKey || e.altKey) return;
+  // Number keys pick a channel, +/- step, while focus is in the TV (the stage takes focus).
+  stage.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
     if ((e.target as HTMLElement).closest('input, textarea, select, [contenteditable]')) return;
     const n = Number(e.key);
     if (n >= 1 && n <= chans.length) tune(n - 1);
@@ -225,7 +224,6 @@ export function mountCrt() {
   // Power on to colour bars the first time the set is seen, then land on CH 01.
   new IntersectionObserver(
     ([e]) => {
-      visible = e.isIntersecting;
       if (!e.isIntersecting || crt.classList.contains('is-on')) return;
       crt.classList.add('is-on');
       setTimeout(() => current < 0 && tune(0), reduced() ? 0 : 1300);
