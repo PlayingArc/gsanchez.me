@@ -114,7 +114,7 @@ const copy: Record<Locale, Copy> = {
       notes: {
         about: 'Who I am, what I work with',
         experience: (roles, since) => `${roles} roles, ${since}–now`,
-        work: (n) => `${n} live dashboard demos`,
+        work: (n) => `${n} live demos`, // matches the Work header's count
         contact: 'Email, GitHub, LinkedIn',
       },
       basedIn: 'Based in',
@@ -267,7 +267,7 @@ const copy: Record<Locale, Copy> = {
       notes: {
         about: 'Quién soy, con qué trabajo',
         experience: (roles, since) => `${roles} roles, ${since}–hoy`,
-        work: (n) => `${n} demos de dashboards en vivo`,
+        work: (n) => `${n} demos en vivo`,
         contact: 'Correo, GitHub, LinkedIn',
       },
       basedIn: 'Desde',
