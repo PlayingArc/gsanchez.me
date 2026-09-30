@@ -140,8 +140,8 @@
 }
 .crt__ch.is-live .crt__live { opacity: 1; }
 .crt__ch.is-live .crt__dash { visibility: hidden; transition: visibility 0s 0.5s; }
-/* On touch there's no hover to play with, and a tiny scrolling page would trap the
-   finger: the demo still plays, but a tap on it steps inside. */
+/* A coarse pointer that can still hover (touch screens that can't don't load the demo at
+   all): a tiny scrolling page would trap the finger, so the demo plays but a tap steps inside. */
 @media (pointer: coarse) { .crt__live { pointer-events: none; } }
 
 /* Colour bars while warming up. */

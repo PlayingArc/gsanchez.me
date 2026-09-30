@@ -7,6 +7,7 @@
 
 import { DASH_W, DASH_H } from './dashboards';
 import { scramble } from './scramble';
+import { isTouch } from './touch';
 
 type Rect = { left: number; top: number; width: number; height: number }; // % of the render
 
@@ -81,6 +82,15 @@ export function mountCrt() {
     () => {},
   );
 
+  // Hovering the screen with a mouse lets you try the live demo; leaving puts it back.
+  let mouseOver = false;
+  const tryLive = (e: PointerEvent) => {
+    mouseOver = e.type === 'pointerenter' && e.pointerType === 'mouse';
+    screen.querySelectorAll('iframe').forEach((f) => (f.inert = !mouseOver));
+  };
+  screen.addEventListener('pointerenter', tryLive);
+  screen.addEventListener('pointerleave', tryLive);
+
   let current = -1;
   let osdTimer = 0;
   let tuneTimer = 0;
@@ -90,7 +100,7 @@ export function mountCrt() {
     if (current < 0) return;
     const c = chans[current];
     const live = c.classList.contains('is-live');
-    tag.textContent = !c.dataset.live
+    tag.textContent = !c.querySelector('iframe')
       ? `▶ ${tag.dataset.previewText}`
       : live
         ? `● ${tag.dataset.liveText}`
@@ -99,12 +109,17 @@ export function mountCrt() {
   };
 
   // Made the first time its channel is tuned and then kept, so a demo's state
-  // survives flipping away and back.
+  // survives flipping away and back. Not on touch screens, where there's no hover to
+  // try it with: those keep the static preview.
   const goLive = (c: HTMLElement) => {
     const href = c.dataset.live;
-    if (!href || c.querySelector('iframe')) return;
+    if (!href || isTouch() || c.querySelector('iframe')) return;
     const f = document.createElement('iframe');
     f.className = 'crt__live';
+    // Out of the Tab order and the accessibility tree until a mouse is over the screen
+    // (above); keyboards and screen readers have "Step inside".
+    f.tabIndex = -1;
+    f.inert = !mouseOver;
     f.title = panels[Number(c.dataset.crtCh)]?.querySelector('.panel__title')?.textContent?.trim() ?? href;
     // astro dev doesn't serve a public/ folder's index.html or extensionless .html (Cloudflare
     // does), e.g. /demos/tarimas/ or /en/demos/money-on-rails/overview.
