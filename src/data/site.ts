@@ -70,11 +70,14 @@ type Copy = {
     stepInside: string;
     // The TV, its channel details and the pager that flips channels.
     set: {
+      // The TV's name when it has focus, which is when its number keys work.
+      label: (n: number) => string;
       channels: string;
       channelUp: string;
       channelDown: string;
       signal: string;
       liveNote: string;
+      tryNote: string; // how to try a live demo on the screen; not shown on touch screens
       previewNote: string;
       tag: { live: string; preview: string; tuning: string };
       credit: string;
@@ -159,13 +162,15 @@ const copy: Record<Locale, Copy> = {
     },
     work: {
       liveDemos: 'live demos',
-      stepInside: 'Step inside ↗',
+      stepInside: 'Step inside →',
       set: {
+        label: (n) => `TV: keys 1 to ${n} pick a channel, plus and minus flip through them`,
         channels: 'Channels',
         channelUp: 'Channel up',
         channelDown: 'Channel down',
         signal: 'Signal',
-        liveNote: 'Live · hover the screen to try it',
+        liveNote: 'Live',
+        tryNote: 'hover the screen to try it',
         previewNote: 'Preview · runs on its own site',
         tag: { live: 'Live', preview: 'Preview', tuning: 'Tuning in…' },
         credit: 'TV: “IBM PCjr 4863 Computer” by Freepoly.org, CC BY 4.0',
@@ -310,13 +315,15 @@ const copy: Record<Locale, Copy> = {
     },
     work: {
       liveDemos: 'demos en vivo',
-      stepInside: 'Entrar ↗',
+      stepInside: 'Entrar →',
       set: {
+        label: (n) => `TV: las teclas 1 a ${n} eligen el canal; más y menos los recorren`,
         channels: 'Canales',
         channelUp: 'Canal siguiente',
         channelDown: 'Canal anterior',
         signal: 'Señal',
-        liveNote: 'En vivo · pasa sobre la pantalla para probarla',
+        liveNote: 'En vivo',
+        tryNote: 'pasa sobre la pantalla para probarla',
         previewNote: 'Vista previa · vive en su propio sitio',
         tag: { live: 'En vivo', preview: 'Vista previa', tuning: 'Sintonizando…' },
         credit: 'TV: “IBM PCjr 4863 Computer” de Freepoly.org, CC BY 4.0',

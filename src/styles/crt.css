@@ -12,6 +12,7 @@
   gap: clamp(18px, 2vw, 32px) clamp(20px, 3vw, 56px);
   margin-top: clamp(12px, 2vw, 32px);
 }
+.stage:focus-visible { outline: 2px dashed var(--green); outline-offset: 8px; }
 
 /* ------------------------------------------------------------------ the channel's label */
 .placard { grid-area: placard; display: flex; flex-direction: column; gap: 34px; min-width: 0; padding-bottom: 4%; }
@@ -25,6 +26,8 @@
 .panel__spec div { display: grid; grid-template-columns: 6.5em minmax(0, 1fr); gap: 12px; align-items: baseline; padding: 7px 0; border-top: 1px solid var(--line); }
 .panel__spec dt { font-size: 11px; color: var(--soft); }
 .panel__spec dd.is-live { color: var(--green); }
+/* Touch screens can't hover, so the hover-to-try note is hidden (a tap steps inside). */
+@media (hover: none) { .panel__try { display: none; } }
 .panel__links { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; font-size: 13px; }
 .panel__links a:first-child { padding: 8px 14px; border-radius: 6px; background: var(--green); color: var(--ink); font-weight: 600; transition: transform 0.25s var(--ease); }
 .panel__links a:first-child:hover { transform: translateY(-1px); }
@@ -35,7 +38,7 @@
 .pager { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: end; gap: 12px; }
 .pager__arrow { width: 38px; height: 38px; border: 1px solid var(--line); border-radius: 50%; transition: background 120ms, color 120ms; }
 .pager__ticks { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 6px; }
-.pager__tick { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; padding-top: 9px; border-top: 2px solid rgb(242 244 240 / 0.2); color: rgb(242 244 240 / 0.45); text-align: left; transition: border-color 150ms, color 150ms; }
+.pager__tick { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; padding-top: 9px; border-top: 2px solid rgb(242 244 240 / 0.2); color: rgb(242 244 240 / 0.55); text-align: left; transition: border-color 150ms, color 150ms; }
 .pager__tick span { font-size: 11px; }
 /* Only the channel on air (or under the pointer) names itself, running over its hidden
    neighbours' names; the last one runs leftward, clear of the arrow. */
@@ -53,7 +56,7 @@
 }
 .pager__tick:active { border-top-color: var(--paper); }
 
-.placard__credit { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.02em; color: rgb(242 244 240 / 0.38); }
+.placard__credit { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.02em; color: rgb(242 244 240 / 0.55); }
 .placard__credit:hover { color: var(--paper); }
 
 /* ------------------------------------------------------------------ the set */
@@ -116,6 +119,8 @@
 /* A channel: its static 640×480 screen, scaled to fit and centred (--k, --ox, --oy). */
 .crt__ch { position: absolute; inset: 0; transition: transform 0.2s, filter 0.2s; }
 .crt__ch[hidden] { display: none; }
+/* CH 01 is served on air for a page without JavaScript; with it, the set warms up first. */
+.js .crt:not(.has-signal) .crt__ch { display: none; }
 .crt__dash { position: absolute; inset: 0; filter: saturate(1.15) contrast(1.06) brightness(1.03) blur(0.25px); }
 .crt__dash .dash {
   transform: translate(var(--ox, 0), var(--oy, 0)) scale(var(--k, 1));

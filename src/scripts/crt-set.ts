@@ -7,6 +7,7 @@
 
 import { DASH_W, DASH_H } from './dashboards';
 import { scramble } from './scramble';
+import { isTouch } from './touch';
 
 type Rect = { left: number; top: number; width: number; height: number }; // % of the render
 
@@ -81,6 +82,16 @@ export function mountCrt() {
     () => {},
   );
 
+  // Hovering the screen with a mouse lets you try the live demo; leaving puts it back.
+  let mouseOver = false;
+  const tryLive = (e: PointerEvent) => {
+    if (isTouch()) return; // never frozen on touch (below), so nothing to thaw
+    mouseOver = e.type === 'pointerenter' && e.pointerType === 'mouse';
+    screen.querySelectorAll('iframe').forEach((f) => (f.inert = !mouseOver));
+  };
+  screen.addEventListener('pointerenter', tryLive);
+  screen.addEventListener('pointerleave', tryLive);
+
   let current = -1;
   let osdTimer = 0;
   let tuneTimer = 0;
@@ -90,7 +101,7 @@ export function mountCrt() {
     if (current < 0) return;
     const c = chans[current];
     const live = c.classList.contains('is-live');
-    tag.textContent = !c.dataset.live
+    tag.textContent = !c.querySelector('iframe')
       ? `▶ ${tag.dataset.previewText}`
       : live
         ? `● ${tag.dataset.liveText}`
@@ -99,12 +110,18 @@ export function mountCrt() {
   };
 
   // Made the first time its channel is tuned and then kept, so a demo's state
-  // survives flipping away and back.
+  // survives flipping away and back. Touch screens get it too (the static preview
+  // rendered black on the iPhone); crt.css makes a tap on it step inside.
   const goLive = (c: HTMLElement) => {
     const href = c.dataset.live;
     if (!href || c.querySelector('iframe')) return;
     const f = document.createElement('iframe');
     f.className = 'crt__live';
+    // Out of the Tab order and the accessibility tree until a mouse is over the screen
+    // (above); keyboards and screen readers have "Step inside".
+    f.tabIndex = -1;
+    // Not on touch: iOS WebKit paints an inert iframe black, and a tap steps inside anyway.
+    f.inert = !isTouch() && !mouseOver;
     f.title = panels[Number(c.dataset.crtCh)]?.querySelector('.panel__title')?.textContent?.trim() ?? href;
     // astro dev doesn't serve a public/ folder's index.html or extensionless .html (Cloudflare
     // does), e.g. /demos/tarimas/ or /en/demos/money-on-rails/overview.
@@ -188,18 +205,19 @@ export function mountCrt() {
     b.addEventListener('click', () => tune((current < 0 ? 0 : current) + Number(b.dataset.crtStep))),
   );
   crt.querySelector('[data-crt-enter]')!.addEventListener('click', () => (current < 0 ? tune(0) : enter(current)));
-  // The details' "Step inside" and the index below.
+  // The details' "Step inside" and the index below. A modified or middle click is left to
+  // the browser (a new tab or window), like any link.
   document.querySelectorAll<HTMLAnchorElement>('[data-launch]').forEach((a) =>
     a.addEventListener('click', (e) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
       e.preventDefault();
       enter(Number(a.dataset.launch));
     }),
   );
 
-  // Number keys pick a channel, +/- step, while the set is on screen.
-  let visible = false;
-  addEventListener('keydown', (e) => {
-    if (!visible || e.metaKey || e.ctrlKey || e.altKey) return;
+  // Number keys pick a channel, +/- step, while focus is in the TV (the stage takes focus).
+  stage.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
     if ((e.target as HTMLElement).closest('input, textarea, select, [contenteditable]')) return;
     const n = Number(e.key);
     if (n >= 1 && n <= chans.length) tune(n - 1);
@@ -210,7 +228,6 @@ export function mountCrt() {
   // Power on to colour bars the first time the set is seen, then land on CH 01.
   new IntersectionObserver(
     ([e]) => {
-      visible = e.isIntersecting;
       if (!e.isIntersecting || crt.classList.contains('is-on')) return;
       crt.classList.add('is-on');
       setTimeout(() => current < 0 && tune(0), reduced() ? 0 : 1300);
