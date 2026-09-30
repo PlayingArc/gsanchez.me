@@ -7,13 +7,15 @@
 import { writeFileSync } from 'node:fs';
 import { deflateSync } from 'node:zlib';
 
-// kx: how far the left/right edges bow at the top and bottom (fraction of the half-width), ky the
-// same for the top/bottom edges; ZOOM < 1 pulls the picture back so less of it is lost to the bend.
-const KX = 0.1;
-const KY = 0.14;
-const ZOOM = 0.94;
+// The bend grows with u⁴ (u from −1 to 1 across each axis), so the middle of the tube stays nearly
+// flat and the curve piles up at the rim: 0 at the centre, 1 at the middle of each edge, 2 at the
+// corners, along contours shaped like the tube's rounded opening. BEND is how far the rim pulls in;
+// EDGE is where the middle of each edge lands (1 = right on the rim of the glass).
+const BEND = Number(process.env.BEND ?? 0.1);
+const EDGE = Number(process.env.EDGE ?? 0.995);
+const ZOOM = EDGE / (1 + BEND);
 // Must match CRT.curve.scale: the largest shift the map can hold, as a fraction of the screen's width.
-const SCALE = 0.065;
+const SCALE = Number(process.env.SCALE ?? 0.1);
 // The tube's opening (CRT.screen, CRT.image): height over width.
 const ASPECT = (0.523 * 1282) / (0.758 * 1200);
 
@@ -31,8 +33,9 @@ for (let j = 0; j < H; j++) {
   for (let i = 0; i < W; i++) {
     const ux = ((i + 0.5) / W) * 2 - 1;
     const uy = ((j + 0.5) / H) * 2 - 1;
-    const sx = ux * (1 + uy * uy * KX) * ZOOM;
-    const sy = uy * (1 + ux * ux * KY) * ZOOM;
+    const rim = 1 + BEND * (ux ** 4 + uy ** 4);
+    const sx = ux * rim * ZOOM;
+    const sy = uy * rim * ZOOM;
     const dx = (sx - ux) / 2; // in screen widths
     const dy = ((sy - uy) / 2) * ASPECT;
     worst = Math.max(worst, Math.abs(dx), Math.abs(dy));

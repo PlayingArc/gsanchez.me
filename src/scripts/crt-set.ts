@@ -22,7 +22,7 @@ export const CRT = {
   screen: { left: 12.9, top: 5.9, width: 75.8, height: 52.3, radius: '6% / 8%' },
   /** The tube's bend (scripts/crt-curve-map.mjs): a displacement map, the largest shift it holds as
    *  a fraction of the screen's width, and how far each gun (red, green, blue) lands along it. */
-  curve: { map: '/tv/ibm-pcjr-curve.png', scale: 0.065, guns: [1.012, 1, 0.988] as const },
+  curve: { map: '/tv/ibm-pcjr-curve.png', scale: 0.1, guns: [1.012, 1, 0.988] as const },
   keys: [
     { left: 56.25, top: 64.7, width: 3.4, height: 3.1 },
     { left: 62.1, top: 64.7, width: 3.4, height: 3.1 },
