@@ -1,10 +1,20 @@
 /* Google Fonts serves JetBrains Mono without box-drawing and block glyphs, so the
    ASCII name and fields fell back to the system mono on phones (misaligned, clipped).
-   Self-hosted subset of just those glyphs, from Google's text= endpoint. */
+   Self-hosted subset of just those glyphs, from Google's text= endpoint.
+   One rule per weight, like Google's: Chrome groups faces by their exact weight, so a
+   single `400 500` rule sat in a group of its own that 400 text never picked (N9, #56). */
 @font-face {
   font-family: 'JetBrains Mono';
   font-style: normal;
-  font-weight: 400 500;
+  font-weight: 400;
+  font-display: block;
+  src: url('/fonts/jetbrains-mono-glyphs-400.woff2') format('woff2');
+  unicode-range: U+2190-21FF, U+2304, U+2500-259F, U+25BE, U+25D4;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
   font-display: block;
   src: url('/fonts/jetbrains-mono-glyphs-400.woff2') format('woff2');
   unicode-range: U+2190-21FF, U+2304, U+2500-259F, U+25BE, U+25D4;
@@ -40,7 +50,8 @@
 
 /* ------------------------------------------------------------------ base */
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+/* Anchors and focus scroll to just below the fixed header, not under it (#55). */
+html { scroll-behavior: smooth; scroll-padding-top: var(--header-h); -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   background: var(--black);
@@ -278,7 +289,6 @@ a.section__aside:hover { text-decoration: underline; text-underline-offset: 3px;
 .job__no { grid-column: 1; padding-top: 0.5em; }
 .job__dates { grid-column: 2 / span 2; padding-top: 0.5em; }
 .job__role { grid-column: 4 / span 5; font-size: clamp(22px, 2.5vw, 38px); font-weight: 620; font-variation-settings: 'wdth' 88; line-height: 1.05; letter-spacing: -0.02em; }
-.job__role a:focus-visible { outline: none; }
 .job__at { font-weight: 400; color: var(--soft); }
 .job__summary { grid-column: 4 / span 5; font-size: 16px; max-width: 58ch; color: var(--soft); }
 .job:hover .job__summary, .job:hover .job__at { color: var(--fg); }
@@ -345,9 +355,11 @@ a.section__aside:hover { text-decoration: underline; text-underline-offset: 3px;
 .launch { position: fixed; inset: 0; z-index: 1000; background: #000; opacity: 0; transition: opacity 0.25s; }
 .launch.is-on { opacity: 1; }
 
-/* Scramble overlay: the real text holds the layout while the effect plays on top. */
+/* Scramble overlay: the real text holds the layout while the effect plays on top.
+   Transparent, not visibility:hidden, so it keeps naming the link or heading for
+   screen readers while the overlay (aria-hidden) plays (#52). */
 .is-scrambling { position: relative; }
-.is-scrambling > .scr__real { visibility: hidden; }
+.is-scrambling > .scr__real { opacity: 0; }
 .scr__fx { position: absolute; left: 0; top: 0; white-space: nowrap; pointer-events: none; }
 .contact__email .scr__fx { right: 0; white-space: normal; }
 .scr__g { font-family: var(--font-code); font-weight: 400; font-size: 0.84em; font-variation-settings: normal; letter-spacing: 0; opacity: 0.8; }

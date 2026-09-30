@@ -10,6 +10,7 @@ export const otherLocale = (l: Locale): Locale => (l === 'en' ? 'es' : 'en');
 export const profile = {
   firstName: 'Gerardo',
   lastName: 'Sanchez',
+  fullName: 'Gerardo Sánchez López', // full name, for search engines only (JSON-LD in OnePage.astro)
   role: 'Modern Engineer', // kept in English in both languages, as on the résumé
   timezone: 'America/Monterrey',
   available: true,
@@ -114,7 +115,7 @@ const copy: Record<Locale, Copy> = {
       notes: {
         about: 'Who I am, what I work with',
         experience: (roles, since) => `${roles} roles, ${since}–now`,
-        work: (n) => `${n} live dashboard demos`,
+        work: (n) => `${n} live demos`, // matches the Work header's count
         contact: 'Email, GitHub, LinkedIn',
       },
       basedIn: 'Based in',
@@ -267,7 +268,7 @@ const copy: Record<Locale, Copy> = {
       notes: {
         about: 'Quién soy, con qué trabajo',
         experience: (roles, since) => `${roles} roles, ${since}–hoy`,
-        work: (n) => `${n} demos de dashboards en vivo`,
+        work: (n) => `${n} demos en vivo`,
         contact: 'Correo, GitHub, LinkedIn',
       },
       basedIn: 'Desde',

@@ -14,13 +14,28 @@ interface Props {
 }
 const { locale } = Astro.props;
 const t = site(locale);
+
+// Structured data for search engines: who the page is about, and the profiles the Contact section links.
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.fullName,
+  alternateName: `${profile.firstName} ${profile.lastName}`,
+  url: new URL(`/${locale}/`, Astro.site).href,
+  jobTitle: t.experience.jobs[0].role,
+  sameAs: t.contact.links.map((l) => l.href).filter((href) => href.startsWith('https://')),
+};
 ---
 
 <Base title={`${profile.firstName} ${profile.lastName} — ${profile.role}`} description={t.pitch} lang={locale}>
   <Fragment slot="head">
+    {/* Only this page draws box glyphs (the ASCII name and fields); the demos and 404 never use the font (#56). */}
+    <link rel="preload" href="/fonts/jetbrains-mono-glyphs-400.woff2" as="font" type="font/woff2" crossorigin />
     {locales.map((l) => <link rel="alternate" hreflang={l} href={new URL(`/${l}/`, Astro.site)} />)}
-    <link rel="alternate" hreflang="x-default" href={new URL('/', Astro.site)} />
+    {/* x-default is English, not the bare / language redirect: that one is noindex (#57). */}
+    <link rel="alternate" hreflang="x-default" href={new URL('/en/', Astro.site)} />
     <link rel="canonical" href={new URL(`/${locale}/`, Astro.site)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(person).replaceAll('<', '\\u003c')} />
   </Fragment>
   <a class="skip mono" href="#about">{t.skip}</a>
   <Header locale={locale} />
