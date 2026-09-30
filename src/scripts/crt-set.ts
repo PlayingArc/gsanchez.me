@@ -7,6 +7,7 @@
 
 import { DASH_W, DASH_H } from './dashboards';
 import { scramble } from './scramble';
+import { isTouch } from './touch';
 
 type Rect = { left: number; top: number; width: number; height: number }; // % of the render
 
@@ -84,6 +85,7 @@ export function mountCrt() {
   // Hovering the screen with a mouse lets you try the live demo; leaving puts it back.
   let mouseOver = false;
   const tryLive = (e: PointerEvent) => {
+    if (isTouch()) return; // never frozen on touch (below), so nothing to thaw
     mouseOver = e.type === 'pointerenter' && e.pointerType === 'mouse';
     screen.querySelectorAll('iframe').forEach((f) => (f.inert = !mouseOver));
   };
@@ -118,7 +120,8 @@ export function mountCrt() {
     // Out of the Tab order and the accessibility tree until a mouse is over the screen
     // (above); keyboards and screen readers have "Step inside".
     f.tabIndex = -1;
-    f.inert = !mouseOver;
+    // Not on touch: iOS WebKit paints an inert iframe black, and a tap steps inside anyway.
+    f.inert = !isTouch() && !mouseOver;
     f.title = panels[Number(c.dataset.crtCh)]?.querySelector('.panel__title')?.textContent?.trim() ?? href;
     // astro dev doesn't serve a public/ folder's index.html or extensionless .html (Cloudflare
     // does), e.g. /demos/tarimas/ or /en/demos/money-on-rails/overview.
