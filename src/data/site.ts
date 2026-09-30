@@ -1,5 +1,5 @@
 // Everything personal lives in this folder. Edit these files; the page reads from them.
-// Profile, links and experience are real (#5); so are the projects on the TV wall (#24).
+// Profile, links and experience are real (#5); so are the projects on the TV's channels (#24).
 // Every string a visitor reads exists in English and Spanish: `site(locale)` returns one language.
 
 export type Locale = 'en' | 'es';
@@ -66,9 +66,20 @@ type Copy = {
   experience: { resume: string; tools: string; jobs: Experience[] };
   work: {
     liveDemos: string;
-    open: string;
-    hint: string;
     stepInside: string;
+    // The TV and its tuner dial.
+    set: {
+      channels: string;
+      channelUp: string;
+      channelDown: string;
+      live: string;
+      ownSite: string;
+      liveNote: string;
+      previewNote: string;
+      tag: { live: string; preview: string; tuning: string };
+      keys: { tune: string; step: string; play: string };
+      credit: string;
+    };
     source: string;
     index: string;
     cols: { no: string; project: string; type: string; stack: string; year: string; link: string };
@@ -149,15 +160,26 @@ const copy: Record<Locale, Copy> = {
     },
     work: {
       liveDemos: 'live demos',
-      open: 'open the demo',
-      hint: 'Hover a screen · click to step inside',
       stepInside: 'Step inside ↗',
+      set: {
+        channels: 'Channels',
+        channelUp: 'Channel up',
+        channelDown: 'Channel down',
+        live: 'Live',
+        ownSite: 'Own site',
+        liveNote: 'Live · hover the screen to try it',
+        previewNote: 'Preview · runs on its own site',
+        tag: { live: 'Live', preview: 'Preview', tuning: 'Tuning in…' },
+        keys: { tune: 'tune', step: 'step', play: 'hover the screen to play' },
+        credit: 'TV: “IBM PCjr 4863 Computer” by Freepoly.org, CC BY 4.0',
+      },
       source: 'Source',
       index: 'Index',
       cols: { no: 'No.', project: 'Project', type: 'Type', stack: 'Stack', year: 'Year', link: 'Link' },
       stackLabel: 'Stack',
-      // The TV wall: two case studies, then two demo dashboards. `href` is where
-      // the TV takes you; `preview` picks its screen in src/scripts/dashboards.ts.
+      // The TV's channels: two case studies, then two demo dashboards. `href` is where
+      // the channel takes you (a same-site href also plays live on the screen); `preview`
+      // picks its static screen in src/scripts/dashboards.ts.
       projects: [
         {
           slug: 'money-on-rails',
@@ -291,9 +313,19 @@ const copy: Record<Locale, Copy> = {
     },
     work: {
       liveDemos: 'demos en vivo',
-      open: 'abrir la demo',
-      hint: 'Pasa sobre una pantalla · haz clic para entrar',
       stepInside: 'Entrar ↗',
+      set: {
+        channels: 'Canales',
+        channelUp: 'Canal siguiente',
+        channelDown: 'Canal anterior',
+        live: 'En vivo',
+        ownSite: 'Sitio propio',
+        liveNote: 'En vivo · pasa sobre la pantalla para probarla',
+        previewNote: 'Vista previa · vive en su propio sitio',
+        tag: { live: 'En vivo', preview: 'Vista previa', tuning: 'Sintonizando…' },
+        keys: { tune: 'sintonizar', step: 'cambiar', play: 'pasa sobre la pantalla para jugar' },
+        credit: 'TV: “IBM PCjr 4863 Computer” de Freepoly.org, CC BY 4.0',
+      },
       source: 'Código',
       index: 'Índice',
       cols: { no: 'No.', project: 'Proyecto', type: 'Tipo', stack: 'Stack', year: 'Año', link: 'Enlace' },

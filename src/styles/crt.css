@@ -1,0 +1,286 @@
+/* ------------------------------------------------------------------
+   The TV (Work.astro, src/scripts/crt-set.ts): the channel's details on the
+   left, the set as big as the viewport allows, the tuner dial below.
+   ------------------------------------------------------------------ */
+
+.stage {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.8fr) minmax(0, 2fr);
+  grid-template-areas: 'card tv' 'tuner tuner';
+  align-items: center;
+  gap: clamp(18px, 2vw, 32px) clamp(20px, 3vw, 56px);
+  margin-top: clamp(12px, 2vw, 32px);
+}
+
+/* ------------------------------------------------------------------ the channel's details */
+.stage__card {
+  grid-area: card;
+  padding: clamp(20px, 2.4vw, 40px);
+  border: 2px solid var(--paper);
+  background: linear-gradient(135deg, rgb(77 231 76 / 0.06), transparent 45%), rgb(5 5 5 / 0.9);
+  box-shadow: 10px 10px 0 rgb(77 231 76 / 0.3);
+}
+.panel[hidden] { display: none; }
+.panel { display: flex; flex-direction: column; gap: 14px; }
+.panel__kind { color: var(--green); text-transform: uppercase; letter-spacing: 0.06em; font-size: 13px; }
+.panel__title { font-size: clamp(28px, 2.8vw, 46px); font-weight: 640; font-variation-settings: 'wdth' 80; line-height: 0.95; letter-spacing: -0.03em; }
+.panel__summary { color: var(--soft); max-width: 46ch; }
+.panel__links { display: flex; gap: 18px; }
+.panel__links a { border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+.panel__links a:first-child { color: var(--green); }
+.panel__links a:hover { color: var(--paper); }
+.panel__live { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: rgb(242 244 240 / 0.5); }
+.panel__live[data-live] { color: var(--green); }
+
+/* ------------------------------------------------------------------ the set */
+/* As big as the column allows, but never taller than the viewport minus the tuner. */
+.stage__tv { grid-area: tv; container-type: inline-size; display: flex; justify-content: center; }
+.crt {
+  --ar: calc(1200 / 1282);
+  position: relative;
+  width: min(100cqw, max(380px, 100svh - var(--header-h) - 150px) * var(--ar));
+}
+.crt__hit { position: absolute; inset: 0; pointer-events: none; } /* only the tube takes clicks */
+
+.crt__screen {
+  position: absolute;
+  z-index: 1;
+  overflow: hidden;
+  container-type: inline-size;
+  cursor: zoom-in;
+  pointer-events: auto;
+  background: radial-gradient(ellipse at 45% 40%, #14171a, #030405 78%);
+}
+.crt__screen:has(.crt__ch.is-live:not([hidden])) { cursor: auto; }
+.crt__screen .tv__fx {
+  background:
+    radial-gradient(ellipse 70% 45% at 30% 16%, rgb(255 255 255 / 0.08), transparent 70%),
+    repeating-linear-gradient(to bottom, rgb(0 0 0 / 0.24) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / 0.65) 100%);
+  box-shadow: inset 0 0 6cqw rgb(0 0 0 / 0.75);
+  transition: opacity 0.3s;
+}
+/* Hovering the tube leans in: the scanlines and vignette ease off so the demo reads. */
+@media (hover: hover) { .crt__screen:hover .tv__fx { opacity: 0.45; } }
+
+/* A channel: its static 640×480 screen, scaled to fit and centred (--k, --ox, --oy). */
+.crt__ch { position: absolute; inset: 0; transition: transform 0.2s, filter 0.2s; }
+.crt__ch[hidden] { display: none; }
+.crt__dash { position: absolute; inset: 0; filter: saturate(1.15) contrast(1.06) brightness(1.03) blur(0.25px); }
+.crt__dash .dash {
+  transform: translate(var(--ox, 0), var(--oy, 0)) scale(var(--k, 1));
+  transform-origin: 0 0;
+  text-shadow: 1.4px 0 rgb(255 40 90 / 0.3), -1.4px 0 rgb(40 200 255 / 0.3);
+}
+
+/* Work on this site plays live: the page laid out at desktop width, scaled into the tube. */
+.crt__live {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1024px;
+  height: var(--lh, 768px);
+  border: 0;
+  background: #000;
+  transform: scale(var(--lk, 1));
+  transform-origin: 0 0;
+  opacity: 0;
+  filter: saturate(1.12) contrast(1.05);
+  transition: opacity 0.5s;
+}
+.crt__ch.is-live .crt__live { opacity: 1; }
+.crt__ch.is-live .crt__dash { visibility: hidden; transition: visibility 0s 0.5s; }
+/* On touch there's no hover to play with, and a tiny scrolling page would trap the
+   finger: the demo still plays, but a tap on it steps inside. */
+@media (pointer: coarse) { .crt__live { pointer-events: none; } }
+
+/* Colour bars while warming up. */
+.crt__bars {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: 72% 8% 20%;
+  opacity: 0;
+  pointer-events: none;
+}
+.crt__bars i { grid-row: 1; filter: brightness(0.92); }
+.crt__bars::before { content: ''; grid-row: 2; grid-column: 1 / -1; background: linear-gradient(90deg, #0000c0 0 14.3%, #131313 14.3% 28.6%, #c000c0 28.6% 42.9%, #131313 42.9% 57.1%, #00c0c0 57.1% 71.4%, #131313 71.4% 85.7%, #c0c0c0 85.7%); }
+.crt__bars::after { content: ''; grid-row: 3; grid-column: 1 / -1; background: linear-gradient(90deg, #00214c 0 18%, #fff 18% 36%, #32006a 36% 54%, #131313 54% 72%, #090909 72% 78%, #1d1d1d 78% 84%, #131313 84%); }
+.crt.is-on:not(.has-signal) .crt__bars { opacity: 1; animation: tv-on 0.75s var(--ease) forwards; }
+
+/* Snow: faintly over the bars, full-on while tuning. */
+.crt__snow {
+  position: absolute;
+  inset: -20%;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.6 -0.35'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-color: rgb(30 30 30 / 0.6);
+  animation: snow 0.18s steps(3) infinite;
+}
+.crt.is-on:not(.has-signal) .crt__snow { opacity: 0.28; background-color: transparent; }
+.crt.is-tuning .crt__snow { opacity: 1; }
+.crt.is-tuning .crt__ch { transform: translateY(-6%) scaleY(1.04); filter: brightness(1.7) contrast(1.4); }
+@keyframes snow { 0% { transform: translate(0, 0); } 33% { transform: translate(-7%, 5%); } 66% { transform: translate(6%, -8%); } 100% { transform: translate(-3%, 9%); } }
+
+/* The channel number, flashed on screen as it lands. */
+.crt__osd {
+  position: absolute;
+  z-index: 2;
+  top: 6%;
+  right: 7%;
+  font-family: var(--font-code);
+  font-size: 7.5cqw;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--green);
+  text-shadow: 0 0 1.2cqw rgb(77 231 76 / 0.8), 0.4cqw 0 rgb(255 47 207 / 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.crt.show-osd .crt__osd { opacity: 1; transition: none; }
+
+/* Live / preview tag, and a way in that works over a live demo. */
+.crt__tag, .crt__open {
+  position: absolute;
+  z-index: 3;
+  bottom: 7%;
+  padding: 0.5cqw 1.3cqw;
+  border: 1px solid rgb(242 244 240 / 0.25);
+  background: rgb(5 6 5 / 0.72);
+  color: var(--paper);
+  font-size: max(9px, 2.2cqw);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.crt__tag { left: 9%; pointer-events: none; }
+.crt__tag.is-live { color: #ff5a5a; border-color: rgb(255 90 90 / 0.5); }
+.crt__open { right: 9%; cursor: pointer; opacity: 0; transition: opacity 0.25s, background 120ms, color 120ms; }
+.crt__screen:hover .crt__open, .crt__open:focus-visible { opacity: 1; }
+.crt__open:hover, .crt__open:focus-visible { background: var(--paper); color: var(--ink); outline: none; }
+@media (hover: none) { .crt__open { opacity: 1; } }
+.crt:not(.has-signal) :is(.crt__tag, .crt__open) { display: none; }
+
+/* The monitor's own front controls are channel keys too. */
+.crt__key {
+  position: absolute;
+  z-index: 4;
+  padding: 0;
+  border: 0;
+  border-radius: 8%;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 80ms, background 120ms, box-shadow 120ms;
+}
+.crt__key:active { transform: translateY(1px); background: rgb(0 0 0 / 0.3); }
+.crt__key[aria-pressed='true'] { background: rgb(77 231 76 / 0.12); box-shadow: inset 0 0 0 1.5px rgb(77 231 76 / 0.75), 0 0 10px rgb(77 231 76 / 0.35); }
+.crt__key:focus-visible { outline: 2px dashed var(--green); outline-offset: 3px; }
+@media (hover: hover) { .crt__key:hover { background: rgb(255 255 255 / 0.1); } }
+
+@media (pointer: coarse) {
+  .crt__dash { filter: none; }
+  .crt__snow { animation-duration: 0.3s; }
+}
+
+/* ------------------------------------------------------------------ the tuner */
+.stage__tuner { grid-area: tuner; }
+.tuner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  border: 2px solid var(--paper);
+  background: #070807;
+  box-shadow: 10px 10px 0 rgb(255 47 207 / 0.3);
+}
+.tuner__step {
+  width: clamp(40px, 4.5vw, 64px);
+  border: 0;
+  background: none;
+  color: var(--paper);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 120ms, color 120ms;
+}
+.tuner__step:first-child { border-right: 2px solid var(--paper); }
+.tuner__step:last-child { border-left: 2px solid var(--paper); }
+.tuner__band { position: relative; overflow: hidden; padding-top: 16px; background: radial-gradient(120% 140% at 50% 0%, rgb(77 231 76 / 0.07), transparent 60%); }
+.tuner__scale {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 12px;
+  border-bottom: 1px solid rgb(242 244 240 / 0.18);
+  background-image:
+    linear-gradient(90deg, rgb(242 244 240 / 0.6) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(242 244 240 / 0.22) 1px, transparent 1px);
+  background-size: calc(100% / var(--n) / 2) 9px, calc(100% / var(--n) / 10) 4px;
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+}
+/* Sits off the left edge until the set tunes in, then glides between stations. */
+.tuner__needle {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  left: calc((var(--ch, -1) + 0.5) / var(--n) * 100%);
+  width: 2px;
+  margin-left: -1px;
+  background: linear-gradient(#ff2fcf 0 22px, rgb(255 47 207 / 0.22) 40px);
+  box-shadow: 0 -8px 14px -4px rgb(255 47 207 / 0.7);
+  transition: left 0.6s var(--ease-out);
+  pointer-events: none;
+}
+.tuner__needle::before { content: ''; position: absolute; top: 0; left: -5px; border: 6px solid transparent; border-top-color: #ff2fcf; }
+.tuner__stations { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); }
+.tuner__st {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 5px;
+  padding: 6px 12px 12px;
+  border: 0;
+  border-left: 1px dashed rgb(242 244 240 / 0.14);
+  background: none;
+  color: rgb(242 244 240 / 0.5);
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+  transition: color 150ms, background 150ms;
+}
+.tuner__st:first-child { border-left: 0; }
+.tuner__ch { font-size: 11px; letter-spacing: 0.14em; }
+.tuner__st strong { font-size: clamp(15px, 1.45vw, 22px); font-weight: 640; font-variation-settings: 'wdth' 80; line-height: 1; letter-spacing: -0.01em; color: rgb(242 244 240 / 0.72); transition: color 150ms, text-shadow 150ms; }
+.tuner__st small { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 8px; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
+.tuner__st small b { font-weight: 400; }
+.tuner__st small b.is-live { color: rgb(77 231 76 / 0.8); }
+.tuner__st[aria-pressed='true'] { color: var(--green); }
+.tuner__st[aria-pressed='true'] strong { color: var(--green); text-shadow: 0 0 12px rgb(77 231 76 / 0.55); }
+.tuner__st:focus-visible, .tuner__step:focus-visible { outline: 2px dashed var(--green); outline-offset: -4px; }
+@media (hover: hover) {
+  .tuner__st:hover { color: var(--paper); background: rgb(242 244 240 / 0.05); }
+  .tuner__st:hover strong { color: var(--paper); }
+  .tuner__step:hover { background: var(--paper); color: var(--ink); }
+}
+.tuner__st:active { background: rgb(242 244 240 / 0.1); }
+
+.tuner__foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 22px; margin-top: 12px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgb(242 244 240 / 0.42); }
+.tuner__credit { text-transform: none; letter-spacing: 0.02em; }
+.tuner__credit:hover { color: var(--paper); }
+.tuner__keys { display: flex; flex-wrap: wrap; gap: 6px 22px; }
+.tuner__keys kbd { display: inline-block; min-width: 1.7em; padding: 1px 4px; border: 1px solid rgb(242 244 240 / 0.3); font: inherit; text-align: center; }
+
+/* ------------------------------------------------------------------ narrow screens */
+@media (max-width: 960px) {
+  .stage { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'tv' 'tuner' 'card'; }
+  .crt { width: min(100cqw, max(300px, 100svh - var(--header-h) - 170px) * var(--ar)); }
+}
+@media (max-width: 640px) {
+  .tuner__st { padding: 6px 4px 12px; }
+  .tuner__st strong { font-size: 13px; }
+  .tuner__st small, .tuner__keys { display: none; }
+  .panel__summary { font-size: 14px; }
+}
