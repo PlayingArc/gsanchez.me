@@ -82,8 +82,17 @@ export function mountCrt() {
     const f = document.createElement('iframe');
     f.className = 'crt__live';
     f.title = panels[Number(c.dataset.crtCh)]?.querySelector('.panel__title')?.textContent?.trim() ?? href;
-    // astro dev doesn't serve a public/ folder's index.html (Cloudflare does), e.g. /demos/tarimas/.
-    f.src = import.meta.env.DEV && href.startsWith('/demos/') ? `${href}index.html` : href;
+    // astro dev doesn't serve a public/ folder's index.html or extensionless .html (Cloudflare
+    // does), e.g. /demos/tarimas/ or /en/demos/money-on-rails/overview.
+    f.src = !import.meta.env.DEV
+      ? href
+      : href.startsWith('/demos/')
+        ? `${href}index.html`
+        : href.includes('/demos/money-on-rails/')
+          ? `${href}.html`
+          : href;
+    // The demo's own pages: links under this path (its tabs) stay on the screen.
+    const home = new URL(href, location.href).pathname.replace(/[^/]*$/, '');
     f.addEventListener('load', () => {
       const doc = f.contentDocument;
       if (doc) {
@@ -98,7 +107,7 @@ export function mountCrt() {
             const a = (e.target as Element).closest?.('a[href]') as HTMLAnchorElement | null;
             if (!a) return;
             const u = new URL(a.href);
-            if (u.origin !== location.origin || u.pathname !== f.contentWindow!.location.pathname) {
+            if (u.origin !== location.origin || !u.pathname.startsWith(home)) {
               e.preventDefault();
               location.href = u.href;
             }

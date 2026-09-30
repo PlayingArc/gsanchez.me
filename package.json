@@ -9,6 +9,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "sync:tarimas": "node scripts/sync-tarimas.mjs",
+    "sync:money": "node scripts/sync-money.mjs",
     "deploy": "astro build && wrangler deploy",
     "cf:dev": "astro build && wrangler dev",
     "og:images": "node scripts/og-images.mjs"

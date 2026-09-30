@@ -1,7 +1,7 @@
 // Screenshots the built site into the 1200×630 share pictures under public/og/ (Open Graph, Twitter).
 // Serve a build first (`npm run build && npm run preview`), then:
 //   CHROME=/path/to/chrome npm run og:images [-- http://localhost:4321]
-// Re-run it when the hero, a dashboard or App Tarimas changes how it looks.
+// Re-run it when the hero, a dashboard, Money on Rails or App Tarimas changes how it looks.
 import { chromium } from 'playwright-core';
 import { mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -57,6 +57,7 @@ for (const l of ['en', 'es']) {
   await shoot(`home-${l}`, `/${l}/`, hideClock);
   await shoot(`retail-${l}`, `/${l}/demos/retail/`);
   await shoot(`clinic-${l}`, `/${l}/demos/clinic/`);
+  await shoot(`money-${l}`, `/${l}/demos/money-on-rails/overview`);
 }
 await shoot('tarimas', '/demos/tarimas/', fillTarimas);
 
