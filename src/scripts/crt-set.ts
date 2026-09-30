@@ -124,7 +124,6 @@ export function mountCrt() {
   const land = (i: number) => {
     current = i;
     crt.classList.add('has-signal');
-    stage.style.setProperty('--ch', String(i));
     chans.forEach((c, k) => (c.hidden = k !== i));
     gos.forEach((g) => g.setAttribute('aria-pressed', String(Number(g.dataset.crtGo) === i)));
     panels.forEach((p) => {

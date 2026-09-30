@@ -67,17 +67,15 @@ type Copy = {
   work: {
     liveDemos: string;
     stepInside: string;
-    // The TV and its tuner dial.
+    // The TV, its channel details and the pager that flips channels.
     set: {
       channels: string;
       channelUp: string;
       channelDown: string;
-      live: string;
-      ownSite: string;
+      signal: string;
       liveNote: string;
       previewNote: string;
       tag: { live: string; preview: string; tuning: string };
-      keys: { tune: string; step: string; play: string };
       credit: string;
     };
     source: string;
@@ -165,12 +163,10 @@ const copy: Record<Locale, Copy> = {
         channels: 'Channels',
         channelUp: 'Channel up',
         channelDown: 'Channel down',
-        live: 'Live',
-        ownSite: 'Own site',
+        signal: 'Signal',
         liveNote: 'Live · hover the screen to try it',
         previewNote: 'Preview · runs on its own site',
         tag: { live: 'Live', preview: 'Preview', tuning: 'Tuning in…' },
-        keys: { tune: 'tune', step: 'step', play: 'hover the screen to play' },
         credit: 'TV: “IBM PCjr 4863 Computer” by Freepoly.org, CC BY 4.0',
       },
       source: 'Source',
@@ -318,12 +314,10 @@ const copy: Record<Locale, Copy> = {
         channels: 'Canales',
         channelUp: 'Canal siguiente',
         channelDown: 'Canal anterior',
-        live: 'En vivo',
-        ownSite: 'Sitio propio',
+        signal: 'Señal',
         liveNote: 'En vivo · pasa sobre la pantalla para probarla',
         previewNote: 'Vista previa · vive en su propio sitio',
         tag: { live: 'En vivo', preview: 'Vista previa', tuning: 'Sintonizando…' },
-        keys: { tune: 'sintonizar', step: 'cambiar', play: 'pasa sobre la pantalla para jugar' },
         credit: 'TV: “IBM PCjr 4863 Computer” de Freepoly.org, CC BY 4.0',
       },
       source: 'Código',
