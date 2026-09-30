@@ -7,7 +7,6 @@
 
 import { DASH_W, DASH_H } from './dashboards';
 import { scramble } from './scramble';
-import { isTouch } from './touch';
 
 type Rect = { left: number; top: number; width: number; height: number }; // % of the render
 
@@ -109,11 +108,11 @@ export function mountCrt() {
   };
 
   // Made the first time its channel is tuned and then kept, so a demo's state
-  // survives flipping away and back. Not on touch screens, where there's no hover to
-  // try it with: those keep the static preview.
+  // survives flipping away and back. Touch screens get it too (the static preview
+  // rendered black on the iPhone); crt.css makes a tap on it step inside.
   const goLive = (c: HTMLElement) => {
     const href = c.dataset.live;
-    if (!href || isTouch() || c.querySelector('iframe')) return;
+    if (!href || c.querySelector('iframe')) return;
     const f = document.createElement('iframe');
     f.className = 'crt__live';
     // Out of the Tab order and the accessibility tree until a mouse is over the screen
