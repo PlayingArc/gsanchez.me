@@ -7,7 +7,7 @@ Gerardo Sanchez's one-page portfolio: who he is, what he has built, and dashboar
 ### The TV
 
 **TV**:
-The one CRT set in the portfolio section (a rendered IBM PCjr Color Display). A visitor flips through the shown work on it, one channel at a time, and zooming into its screen leads to the real thing.
+The one CRT set in the portfolio section (a rendered IBM PCjr Color Display). A visitor flips through the shown work on it, one channel at a time, and stepping inside its screen leads to the real thing.
 _Avoid_: TV wall, CRT wall, work grid, portfolio grid
 
 **Channel**:

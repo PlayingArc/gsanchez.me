@@ -2,8 +2,8 @@
 // bars when it scrolls into view, then tunes to CH 01. Tuning plays a burst of
 // snow, swaps the screen, flashes the channel number and shows the channel's
 // details. Work hosted on this site plays live on the screen (a same-origin
-// iframe you can hover and click); stepping inside zooms the screen to fill the
-// viewport before opening the real thing.
+// iframe you can hover and click); stepping inside switches the set off and the
+// whole viewport on, as a big TV showing the real thing.
 
 import { DASH_W, DASH_H } from './dashboards';
 import { scramble } from './scramble';
@@ -32,6 +32,7 @@ export const CRT = {
 const LIVE_W = 1024;
 
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const pad = (i: number) => String(i + 1).padStart(2, '0');
 
 export function mountCrt() {
@@ -96,10 +97,7 @@ export function mountCrt() {
     f.addEventListener('load', () => {
       const doc = f.contentDocument;
       if (doc) {
-        // On the set, drop the demo's own "back to gsanchez.me" bar and its scrollbars.
-        const st = doc.createElement('style');
-        st.textContent = '.dz-frame{display:none!important} html{scrollbar-width:none} ::-webkit-scrollbar{display:none}';
-        doc.head.append(st);
+        onSet(doc);
         // A link out of the demo takes the whole page there, not the little screen.
         doc.addEventListener(
           'click',
@@ -159,7 +157,7 @@ export function mountCrt() {
     try {
       href = chans[i].querySelector('iframe')?.contentWindow?.location.href ?? href;
     } catch {}
-    launch(screen, chans[i].querySelector('[data-dash]')!, href);
+    launch(crt, chans[i], href);
   };
 
   gos.forEach((g) => g.addEventListener('click', () => tune(Number(g.dataset.crtGo))));
@@ -197,40 +195,86 @@ export function mountCrt() {
     { threshold: 0.35 },
   ).observe(crt);
 
-  // Coming back with the Back button can restore the page mid-zoom; clear it.
+  // Coming back with the Back button can restore the page mid-launch; clear it.
   addEventListener('pageshow', (e) => {
     if (!e.persisted) return;
     document.querySelector('.launch')?.remove();
     document.documentElement.classList.remove('is-launching');
+    crt.classList.remove('is-leaving');
+    chans.forEach((c) => {
+      if (!c.classList.contains('is-inside')) return;
+      c.hidePopover();
+      c.removeAttribute('popover');
+      c.classList.remove('is-inside');
+      const f = c.querySelector('iframe');
+      f?.removeAttribute('style');
+      if (f?.contentDocument) onSet(f.contentDocument);
+    });
   });
 }
 
-// Zoom from the screen to fill the viewport, then open the real thing. The CRT
-// filter fades away on the way in, so you arrive at the plain screen.
-function launch(screenEl: Element, dash: Element, href: string) {
-  if (document.querySelector('.launch')) return;
-  const from = screenEl.getBoundingClientRect();
+// On the set, a demo drops its own "back to gsanchez.me" bar and its scrollbars; stepping
+// inside puts them back, as the real page has them.
+function onSet(doc: Document, on = true) {
+  doc.querySelector('style[data-on-set]')?.remove();
+  if (!on) return;
+  const st = doc.createElement('style');
+  st.dataset.onSet = '';
+  st.textContent = '.dz-frame{display:none!important} html{scrollbar-width:none} ::-webkit-scrollbar{display:none}';
+  doc.head.append(st);
+}
 
-  const fw = Math.min(innerWidth, (innerHeight * DASH_W) / DASH_H);
-  const fh = (fw * DASH_H) / DASH_W;
-  const fx = (innerWidth - fw) / 2;
-  const fy = (innerHeight - fh) / 2;
-  const startTransform = `translate(${from.left - fx}px, ${from.top - fy}px) scale(${from.width / fw})`;
+// Step inside. The set switches off to a dot, then the whole viewport switches on as the
+// big TV showing the real page: the live demo already playing on the set, lifted into the
+// top layer (a popover, so the iframe isn't moved and doesn't reload) at the window's
+// size. It's loaded, drawn and in the state you left it, and the power-on ends on it
+// unfiltered, so the navigation swaps identical pixels instead of jumping from a picture
+// of the page to the page. A channel not on air ends on black instead.
+function launch(crt: HTMLElement, chan: HTMLElement, href: string) {
+  if (crt.classList.contains('is-leaving')) return;
+  if (reduced()) {
+    location.href = href;
+    return;
+  }
+  const f = chan.hidden ? null : chan.querySelector<HTMLIFrameElement>('iframe.crt__live');
+  // Re-lay the demo out at the window's size (letterboxed in the tube) as the set starts
+  // to collapse, so its charts have settled at that size by the time it's full-screen.
+  const resize = () => {
+    const doc = f?.contentDocument;
+    if (!f || !doc) return false;
+    const r = chan.getBoundingClientRect();
+    const k = Math.min(r.width / innerWidth, r.height / innerHeight);
+    f.style.cssText = `width:${innerWidth}px;height:${innerHeight}px;left:${(r.width - innerWidth * k) / 2}px;top:${(r.height - innerHeight * k) / 2}px;transform:scale(${k})`;
+    onSet(doc, false);
+    f.contentWindow?.scrollTo(0, 0); // the real page opens at the top
+    return true;
+  };
+  const onAir =
+    f && chan.classList.contains('is-live') && resize()
+      ? Promise.resolve(true)
+      : !f
+        ? Promise.resolve(false)
+        : Promise.race([
+            new Promise<boolean>((r) => f.addEventListener('load', () => r(resize()), { once: true })),
+            wait(4000).then(() => false),
+          ]);
+  crt.classList.add('is-leaving');
 
-  const veil = document.createElement('div');
-  veil.className = 'launch';
-  veil.innerHTML = `
-    <div class="launch__screen" style="left:${fx}px;top:${fy}px;width:${fw}px;height:${fh}px;--k:${fw / DASH_W};transform:${startTransform}">
-      <div class="launch__img">${dash.innerHTML}</div>
-      <div class="tv__fx"></div>
-    </div>`;
-  document.body.append(veil);
-  document.documentElement.classList.add('is-launching');
-  const screen = veil.querySelector<HTMLElement>('.launch__screen')!;
-
-  veil.getBoundingClientRect(); // commit the start state so the zoom transitions
-  veil.classList.add('is-open');
-  screen.style.transform = 'none';
-
-  setTimeout(() => (location.href = href), reduced() ? 0 : 800);
+  Promise.all([wait(420), onAir]).then(([, ok]) => {
+    document.documentElement.classList.add('is-launching');
+    if (!ok || !f) {
+      const black = document.createElement('div');
+      black.className = 'launch';
+      document.body.append(black);
+      black.getBoundingClientRect();
+      black.classList.add('is-on');
+      setTimeout(() => (location.href = href), 250);
+      return;
+    }
+    f.style.left = f.style.top = f.style.transform = '';
+    chan.popover = 'manual';
+    chan.classList.add('is-inside');
+    chan.showPopover();
+    setTimeout(() => (location.href = href), 800);
+  });
 }
