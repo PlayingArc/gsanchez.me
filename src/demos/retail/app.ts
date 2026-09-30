@@ -420,6 +420,7 @@ export function mountRetail(root: HTMLElement) {
   new ResizeObserver(() => {
     if (root.clientWidth === lastWidth) return;
     lastWidth = root.clientWidth;
+    selects.forEach(fit); // their text scales with the window
     cancelAnimationFrame(frame);
     frame = requestAnimationFrame(renderCharts);
   }).observe(root);
