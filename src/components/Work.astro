@@ -137,8 +137,9 @@ const bars = ['#c0c0c0', '#c0c000', '#00c0c0', '#00c000', '#c000c0', '#c00000', 
             <img class="tv__body" src={CRT.body} width={CRT.image[0]} height={CRT.image[1]} alt="" loading="lazy" decoding="async" />
             <img class="tv__glass" src={CRT.glass} width={CRT.image[0]} height={CRT.image[1]} alt="" loading="lazy" decoding="async" />
           </div>
-          {projects.slice(0, CRT.keys.length).map((p, i) => (
-            <button type="button" class="crt__key" data-crt-go={i} style={pct(CRT.keys[i])} aria-label={`CH ${ch(i)} — ${p.title}`} />
+          {/* A pointer-only extra: the pager is the channel control for keyboards and screen readers. */}
+          {projects.slice(0, CRT.keys.length).map((_, i) => (
+            <button type="button" class="crt__key" data-crt-go={i} style={pct(CRT.keys[i])} tabindex="-1" aria-hidden="true" />
           ))}
         </div>
       </div>
