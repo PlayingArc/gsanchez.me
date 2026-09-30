@@ -3,3 +3,14 @@
 # search; production is the bare domain only (www redirects before reaching the Worker).
 https://:preview.gsanchez.me/*
   X-Robots-Tag: noindex
+
+# Every host, previews included, so a preview shows anything these would break (#59).
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# HSTS on the production host only, without includeSubDomains or preload, so previews and
+# other subdomains are never pinned to it. No CSP yet: the TV's live iframes, the inline
+# scripts and style attributes, and Google Fonts need a policy worked out and tested first.
+https://gsanchez.me/*
+  Strict-Transport-Security: max-age=31536000
