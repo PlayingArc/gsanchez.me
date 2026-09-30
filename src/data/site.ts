@@ -77,6 +77,7 @@ type Copy = {
       channelDown: string;
       signal: string;
       liveNote: string;
+      tryNote: string; // how to try a live demo on the screen; not shown on touch screens
       previewNote: string;
       tag: { live: string; preview: string; tuning: string };
       credit: string;
@@ -168,7 +169,8 @@ const copy: Record<Locale, Copy> = {
         channelUp: 'Channel up',
         channelDown: 'Channel down',
         signal: 'Signal',
-        liveNote: 'Live · hover the screen to try it',
+        liveNote: 'Live',
+        tryNote: 'hover the screen to try it',
         previewNote: 'Preview · runs on its own site',
         tag: { live: 'Live', preview: 'Preview', tuning: 'Tuning in…' },
         credit: 'TV: “IBM PCjr 4863 Computer” by Freepoly.org, CC BY 4.0',
@@ -320,7 +322,8 @@ const copy: Record<Locale, Copy> = {
         channelUp: 'Canal siguiente',
         channelDown: 'Canal anterior',
         signal: 'Señal',
-        liveNote: 'En vivo · pasa sobre la pantalla para probarla',
+        liveNote: 'En vivo',
+        tryNote: 'pasa sobre la pantalla para probarla',
         previewNote: 'Vista previa · vive en su propio sitio',
         tag: { live: 'En vivo', preview: 'Vista previa', tuning: 'Sintonizando…' },
         credit: 'TV: “IBM PCjr 4863 Computer” de Freepoly.org, CC BY 4.0',

@@ -61,7 +61,16 @@ const bars = ['#c0c0c0', '#c0c000', '#00c0c0', '#00c000', '#c000c0', '#c00000', 
                   </div>
                   <div>
                     <dt class="mono">{s.signal}</dt>
-                    <dd class:list={[isLive(p.href) && 'is-live']}>{isLive(p.href) ? `● ${s.liveNote}` : `▶ ${s.previewNote}`}</dd>
+                    <dd class:list={[isLive(p.href) && 'is-live']}>
+                      {isLive(p.href) ? (
+                        <>
+                          ● {s.liveNote}
+                          <span class="panel__try">{` · ${s.tryNote}`}</span>
+                        </>
+                      ) : (
+                        `▶ ${s.previewNote}`
+                      )}
+                    </dd>
                   </div>
                 </dl>
                 <p class="panel__links">

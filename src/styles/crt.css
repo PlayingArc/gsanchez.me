@@ -26,6 +26,8 @@
 .panel__spec div { display: grid; grid-template-columns: 6.5em minmax(0, 1fr); gap: 12px; align-items: baseline; padding: 7px 0; border-top: 1px solid var(--line); }
 .panel__spec dt { font-size: 11px; color: var(--soft); }
 .panel__spec dd.is-live { color: var(--green); }
+/* Touch screens don't load the live demo (crt-set.ts), so there's nothing to hover. */
+@media (hover: none) { .panel__try { display: none; } }
 .panel__links { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; font-size: 13px; }
 .panel__links a:first-child { padding: 8px 14px; border-radius: 6px; background: var(--green); color: var(--ink); font-weight: 600; transition: transform 0.25s var(--ease); }
 .panel__links a:first-child:hover { transform: translateY(-1px); }
