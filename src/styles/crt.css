@@ -174,6 +174,10 @@
 .crt.is-tuning .crt__snow { opacity: 1; }
 .crt.is-tuning .crt__ch { transform: translateY(-6%) scaleY(1.04); filter: brightness(1.7) contrast(1.4); }
 .crt.is-curved.is-tuning .crt__ch { filter: url(#crt-curve) brightness(1.7) contrast(1.4); }
+/* iOS WebKit paints an iframe under an SVG filter black, so on touch the live demo
+   stays flat (its static preview still bends). */
+.is-touch .crt.is-curved .crt__ch.is-live { filter: none; }
+.is-touch .crt.is-curved.is-tuning .crt__ch.is-live { filter: brightness(1.7) contrast(1.4); }
 @keyframes snow { 0% { transform: translate(0, 0); } 33% { transform: translate(-7%, 5%); } 66% { transform: translate(6%, -8%); } 100% { transform: translate(-3%, 9%); } }
 
 /* The channel number, flashed on screen as it lands. */
