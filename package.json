@@ -12,7 +12,8 @@
     "sync:money": "node scripts/sync-money.mjs",
     "deploy": "astro build && wrangler deploy",
     "cf:dev": "astro build && wrangler dev",
-    "og:images": "node scripts/og-images.mjs"
+    "og:images": "node scripts/og-images.mjs",
+    "crt:curve": "node scripts/crt-curve-map.mjs"
   },
   "dependencies": {
     "astro": "^7.3.5",

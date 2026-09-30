@@ -96,7 +96,26 @@ const bars = ['#c0c0c0', '#c0c000', '#00c0c0', '#00c000', '#c000c0', '#c00000', 
       <div class="stage__tv">
         <div class="crt" data-crt style={`aspect-ratio:${CRT.image[0]} / ${CRT.image[1]}`}>
           {/* Clicking a static screen steps inside; a live demo keeps its clicks. */}
+          {/* The tube's bend (CRT.curve): bows the picture into the glass, the three guns a touch
+              misconverged toward the edges, with a phosphor bloom. crt-set.ts sizes it to the screen. */}
+          <svg class="crt__defs" width="0" height="0" aria-hidden="true">
+            <filter id="crt-curve" filterUnits="userSpaceOnUse" x="0" y="0" width="0" height="0" color-interpolation-filters="sRGB">
+              <feImage href={CRT.curve.map} x="0" y="0" width="0" height="0" preserveAspectRatio="none" result="map" />
+              {['r', 'g', 'b'].map((gun) => (
+                <feDisplacementMap in="SourceGraphic" in2="map" xChannelSelector="R" yChannelSelector="G" result={gun} />
+              ))}
+              <feColorMatrix in="r" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r1" />
+              <feColorMatrix in="g" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="g1" />
+              <feColorMatrix in="b" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="b1" />
+              <feComposite in="r1" in2="g1" operator="arithmetic" k2="1" k3="1" result="rg" />
+              <feComposite in="rg" in2="b1" operator="arithmetic" k2="1" k3="1" result="rgb" />
+              <feGaussianBlur in="rgb" result="soft" />
+              <feComponentTransfer in="soft" result="glow"><feFuncA type="linear" slope="0.45" /></feComponentTransfer>
+              <feBlend in="glow" in2="rgb" mode="screen" />
+            </filter>
+          </svg>
           <div class="crt__hit" data-crt-enter>
+            <span class="crt__tube" style={`${pct(CRT.screen)};border-radius:${CRT.screen.radius}`} />
             <span class="crt__screen" style={`${pct(CRT.screen)};border-radius:${CRT.screen.radius}`}>
               {projects.map((p, i) => (
                 <span class="crt__ch" data-crt-ch={i} data-href={p.href} data-live={isLive(p.href) ? p.href : undefined} hidden>
