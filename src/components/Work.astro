@@ -30,34 +30,64 @@ const bars = ['#c0c0c0', '#c0c000', '#00c0c0', '#00c000', '#c000c0', '#c00000', 
     </div>
 
     <div class="stage" data-stage style={`--n:${projects.length}`}>
-      <div class="stage__card" aria-live="polite">
-        {
-          projects.map((p, i) => (
-            <article class="panel" data-panel={i} hidden={i !== 0}>
-              <p class="panel__kind mono">
-                CH {ch(i)} // <span data-scramble-child>{p.kind}</span> · {p.year}
-              </p>
-              <h3 class="panel__title">
-                <span data-scramble-child>{p.title}</span>
-              </h3>
-              <p class="panel__summary">{p.summary}</p>
-              <ul class="tags" aria-label={t.work.stackLabel}>
-                {p.stack.map((x) => (
-                  <li class="pill pill--glow mono">{x}</li>
-                ))}
-              </ul>
-              <p class="panel__links mono">
-                <a href={p.href} data-launch={i}>
-                  {t.work.stepInside}
-                </a>
-                {p.repo && <a href={p.repo}>{t.work.source}</a>}
-              </p>
-              <p class="panel__live mono" data-live={isLive(p.href) || undefined}>
-                {isLive(p.href) ? `● ${s.liveNote}` : `▶ ${s.previewNote}`}
-              </p>
-            </article>
-          ))
-        }
+      {/* The channel on air, as an exhibit label, and a pager to flip channels. */}
+      <div class="placard">
+        <div aria-live="polite">
+          {
+            projects.map((p, i) => (
+              <article class="panel" data-panel={i} hidden={i !== 0}>
+                <p class="panel__count mono">
+                  <b>{ch(i)}</b> / {String(projects.length).padStart(2, '0')}
+                </p>
+                <h3 class="panel__title">
+                  <span data-scramble-child>{p.title}</span>
+                </h3>
+                <p class="panel__summary">{p.summary}</p>
+                <dl class="panel__spec">
+                  <div>
+                    <dt class="mono">{t.work.cols.type}</dt>
+                    <dd>
+                      <span data-scramble-child>{p.kind}</span>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt class="mono">{t.work.cols.year}</dt>
+                    <dd>{p.year}</dd>
+                  </div>
+                  <div>
+                    <dt class="mono">{t.work.cols.stack}</dt>
+                    <dd>{p.stack.join(', ')}</dd>
+                  </div>
+                  <div>
+                    <dt class="mono">{s.signal}</dt>
+                    <dd class:list={[isLive(p.href) && 'is-live']}>{isLive(p.href) ? `● ${s.liveNote}` : `▶ ${s.previewNote}`}</dd>
+                  </div>
+                </dl>
+                <p class="panel__links">
+                  <a href={p.href} data-launch={i}>
+                    {t.work.stepInside}
+                  </a>
+                  {p.repo && <a href={p.repo}>{t.work.source} ↗</a>}
+                </p>
+              </article>
+            ))
+          }
+        </div>
+        <nav class="pager" aria-label={s.channels}>
+          <button type="button" class="pager__arrow" data-crt-step="-1" aria-label={s.channelDown}>←</button>
+          <div class="pager__ticks">
+            {
+              projects.map((p, i) => (
+                <button type="button" class="pager__tick" data-crt-go={i} aria-label={`CH ${ch(i)} — ${p.title}`}>
+                  <span class="mono">{ch(i)}</span>
+                  <small>{p.title}</small>
+                </button>
+              ))
+            }
+          </div>
+          <button type="button" class="pager__arrow" data-crt-step="1" aria-label={s.channelUp}>→</button>
+        </nav>
+        <a class="placard__credit" href={CRT.source}>{s.credit}</a>
       </div>
 
       {/* The TV: a render of the IBM PCjr Color Display (see the prototype/single-crt branch,
@@ -91,38 +121,6 @@ const bars = ['#c0c0c0', '#c0c000', '#00c0c0', '#00c000', '#c000c0', '#c00000', 
             <button type="button" class="crt__key" data-crt-go={i} style={pct(CRT.keys[i])} aria-label={`CH ${ch(i)} — ${p.title}`} />
           ))}
         </div>
-      </div>
-
-      {/* The tuner: a backlit dial strip; a needle glides to the station on air. */}
-      <div class="stage__tuner">
-        <nav class="tuner" aria-label={s.channels}>
-          <button type="button" class="tuner__step mono" data-crt-step="-1" aria-label={s.channelDown}>◀</button>
-          <div class="tuner__band">
-            <span class="tuner__scale" aria-hidden="true" />
-            <span class="tuner__needle" aria-hidden="true" />
-            <div class="tuner__stations">
-              {projects.map((p, i) => (
-                <button type="button" class="tuner__st" data-crt-go={i} aria-label={`CH ${ch(i)} — ${p.title}`}>
-                  <span class="tuner__ch mono">CH {ch(i)}</span>
-                  <strong>{p.title}</strong>
-                  <small class="mono">
-                    {p.kind}
-                    <b class:list={[isLive(p.href) && 'is-live']}>{isLive(p.href) ? `● ${s.live}` : `↗ ${s.ownSite}`}</b>
-                  </small>
-                </button>
-              ))}
-            </div>
-          </div>
-          <button type="button" class="tuner__step mono" data-crt-step="1" aria-label={s.channelUp}>▶</button>
-        </nav>
-        <p class="tuner__foot mono">
-          <a class="tuner__credit" href={CRT.source}>{s.credit}</a>
-          <span class="tuner__keys" aria-hidden="true">
-            <span><kbd>1</kbd>–<kbd>{projects.length}</kbd> {s.keys.tune}</span>
-            <span><kbd>−</kbd> <kbd>+</kbd> {s.keys.step}</span>
-            <span>{s.keys.play}</span>
-          </span>
-        </p>
       </div>
     </div>
   </div>

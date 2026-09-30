@@ -1,44 +1,68 @@
 /* ------------------------------------------------------------------
-   The TV (Work.astro, src/scripts/crt-set.ts): the channel's details on the
-   left, the set as big as the viewport allows, the tuner dial below.
+   The TV (Work.astro, src/scripts/crt-set.ts): the channel on air as an
+   exhibit label on the left, with a pager under it; the set as big as the
+   viewport allows.
    ------------------------------------------------------------------ */
 
 .stage {
   display: grid;
-  grid-template-columns: minmax(260px, 0.8fr) minmax(0, 2fr);
-  grid-template-areas: 'card tv' 'tuner tuner';
-  align-items: center;
+  grid-template-columns: minmax(300px, 0.9fr) minmax(0, 2fr);
+  grid-template-areas: 'placard tv';
+  align-items: end;
   gap: clamp(18px, 2vw, 32px) clamp(20px, 3vw, 56px);
   margin-top: clamp(12px, 2vw, 32px);
 }
 
-/* ------------------------------------------------------------------ the channel's details */
-.stage__card {
-  grid-area: card;
-  padding: clamp(20px, 2.4vw, 40px);
-  border: 2px solid var(--paper);
-  background: linear-gradient(135deg, rgb(77 231 76 / 0.06), transparent 45%), rgb(5 5 5 / 0.9);
-  box-shadow: 10px 10px 0 rgb(77 231 76 / 0.3);
-}
+/* ------------------------------------------------------------------ the channel's label */
+.placard { grid-area: placard; display: flex; flex-direction: column; gap: 34px; min-width: 0; padding-bottom: 4%; }
 .panel[hidden] { display: none; }
-.panel { display: flex; flex-direction: column; gap: 14px; }
-.panel__kind { color: var(--green); text-transform: uppercase; letter-spacing: 0.06em; font-size: 13px; }
-.panel__title { font-size: clamp(28px, 2.8vw, 46px); font-weight: 640; font-variation-settings: 'wdth' 80; line-height: 0.95; letter-spacing: -0.03em; }
-.panel__summary { color: var(--soft); max-width: 46ch; }
-.panel__links { display: flex; gap: 18px; }
-.panel__links a { border-bottom: 1px solid currentColor; padding-bottom: 2px; }
-.panel__links a:first-child { color: var(--green); }
-.panel__links a:hover { color: var(--paper); }
-.panel__live { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: rgb(242 244 240 / 0.5); }
-.panel__live[data-live] { color: var(--green); }
+.panel { display: grid; gap: 18px; }
+.panel__count { color: var(--soft); }
+.panel__count b { font-weight: 400; color: var(--green); }
+.panel__title { font-size: clamp(40px, 4.2vw, 72px); font-weight: 680; font-variation-settings: 'wdth' 75; line-height: 0.9; letter-spacing: -0.035em; }
+.panel__summary { color: var(--soft); max-width: 40ch; }
+.panel__spec { border-bottom: 1px solid var(--line); font-size: 14px; }
+.panel__spec div { display: grid; grid-template-columns: 6.5em minmax(0, 1fr); gap: 12px; align-items: baseline; padding: 7px 0; border-top: 1px solid var(--line); }
+.panel__spec dt { font-size: 11px; color: var(--soft); }
+.panel__spec dd.is-live { color: var(--green); }
+.panel__links { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; font-size: 13px; }
+.panel__links a:first-child { padding: 8px 14px; border-radius: 6px; background: var(--green); color: var(--ink); font-weight: 600; transition: transform 0.25s var(--ease); }
+.panel__links a:first-child:hover { transform: translateY(-1px); }
+.panel__links a + a { border-bottom: 1px solid currentColor; color: var(--soft); }
+.panel__links a + a:hover { color: var(--paper); }
+
+/* The pager: arrows either side of one tick per channel; the one on air is lit. */
+.pager { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: end; gap: 12px; }
+.pager__arrow { width: 38px; height: 38px; border: 1px solid var(--line); border-radius: 50%; transition: background 120ms, color 120ms; }
+.pager__ticks { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 6px; }
+.pager__tick { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; padding-top: 9px; border-top: 2px solid rgb(242 244 240 / 0.2); color: rgb(242 244 240 / 0.45); text-align: left; transition: border-color 150ms, color 150ms; }
+.pager__tick span { font-size: 11px; }
+/* Only the channel on air (or under the pointer) names itself, running over its hidden
+   neighbours' names; the last one runs leftward, clear of the arrow. */
+.pager__tick small { width: max-content; font-size: 12px; white-space: nowrap; opacity: 0; transition: opacity 150ms; }
+.pager__tick:last-child { align-items: flex-end; }
+.pager__tick:last-child span { align-self: flex-start; }
+.pager__tick[aria-pressed='true'] { border-top-color: var(--green); color: var(--paper); }
+.pager__tick[aria-pressed='true'] span { color: var(--green); }
+.pager__tick[aria-pressed='true'] small { opacity: 1; }
+.pager__tick:focus-visible, .pager__arrow:focus-visible { outline: 2px dashed var(--green); outline-offset: 3px; }
+@media (hover: hover) {
+  .pager__tick:not([aria-pressed='true']):hover { border-top-color: var(--paper); color: var(--paper); }
+  .pager__tick:hover small { opacity: 1; }
+  .pager__arrow:hover { background: var(--paper); color: var(--ink); }
+}
+.pager__tick:active { border-top-color: var(--paper); }
+
+.placard__credit { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.02em; color: rgb(242 244 240 / 0.38); }
+.placard__credit:hover { color: var(--paper); }
 
 /* ------------------------------------------------------------------ the set */
-/* As big as the column allows, but never taller than the viewport minus the tuner. */
+/* As big as the column allows, but never taller than the viewport. */
 .stage__tv { grid-area: tv; container-type: inline-size; display: flex; justify-content: center; }
 .crt {
   --ar: calc(1200 / 1282);
   position: relative;
-  width: min(100cqw, max(380px, 100svh - var(--header-h) - 150px) * var(--ar));
+  width: min(100cqw, max(380px, 100svh - var(--header-h) - 70px) * var(--ar));
 }
 .crt__hit { position: absolute; inset: 0; pointer-events: none; } /* only the tube takes clicks */
 
@@ -185,102 +209,12 @@
   .crt__snow { animation-duration: 0.3s; }
 }
 
-/* ------------------------------------------------------------------ the tuner */
-.stage__tuner { grid-area: tuner; }
-.tuner {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  border: 2px solid var(--paper);
-  background: #070807;
-  box-shadow: 10px 10px 0 rgb(255 47 207 / 0.3);
-}
-.tuner__step {
-  width: clamp(40px, 4.5vw, 64px);
-  border: 0;
-  background: none;
-  color: var(--paper);
-  font-size: 14px;
-  cursor: pointer;
-  transition: background 120ms, color 120ms;
-}
-.tuner__step:first-child { border-right: 2px solid var(--paper); }
-.tuner__step:last-child { border-left: 2px solid var(--paper); }
-.tuner__band { position: relative; overflow: hidden; padding-top: 16px; background: radial-gradient(120% 140% at 50% 0%, rgb(77 231 76 / 0.07), transparent 60%); }
-.tuner__scale {
-  position: absolute;
-  inset: 0 0 auto;
-  height: 12px;
-  border-bottom: 1px solid rgb(242 244 240 / 0.18);
-  background-image:
-    linear-gradient(90deg, rgb(242 244 240 / 0.6) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(242 244 240 / 0.22) 1px, transparent 1px);
-  background-size: calc(100% / var(--n) / 2) 9px, calc(100% / var(--n) / 10) 4px;
-  background-repeat: repeat-x;
-  background-position: 0 100%;
-}
-/* Sits off the left edge until the set tunes in, then glides between stations. */
-.tuner__needle {
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  bottom: 0;
-  left: calc((var(--ch, -1) + 0.5) / var(--n) * 100%);
-  width: 2px;
-  margin-left: -1px;
-  background: linear-gradient(#ff2fcf 0 22px, rgb(255 47 207 / 0.22) 40px);
-  box-shadow: 0 -8px 14px -4px rgb(255 47 207 / 0.7);
-  transition: left 0.6s var(--ease-out);
-  pointer-events: none;
-}
-.tuner__needle::before { content: ''; position: absolute; top: 0; left: -5px; border: 6px solid transparent; border-top-color: #ff2fcf; }
-.tuner__stations { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); }
-.tuner__st {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  justify-items: center;
-  align-content: start;
-  gap: 5px;
-  padding: 6px 12px 12px;
-  border: 0;
-  border-left: 1px dashed rgb(242 244 240 / 0.14);
-  background: none;
-  color: rgb(242 244 240 / 0.5);
-  font: inherit;
-  text-align: center;
-  cursor: pointer;
-  transition: color 150ms, background 150ms;
-}
-.tuner__st:first-child { border-left: 0; }
-.tuner__ch { font-size: 11px; letter-spacing: 0.14em; }
-.tuner__st strong { font-size: clamp(15px, 1.45vw, 22px); font-weight: 640; font-variation-settings: 'wdth' 80; line-height: 1; letter-spacing: -0.01em; color: rgb(242 244 240 / 0.72); transition: color 150ms, text-shadow 150ms; }
-.tuner__st small { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 8px; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
-.tuner__st small b { font-weight: 400; }
-.tuner__st small b.is-live { color: rgb(77 231 76 / 0.8); }
-.tuner__st[aria-pressed='true'] { color: var(--green); }
-.tuner__st[aria-pressed='true'] strong { color: var(--green); text-shadow: 0 0 12px rgb(77 231 76 / 0.55); }
-.tuner__st:focus-visible, .tuner__step:focus-visible { outline: 2px dashed var(--green); outline-offset: -4px; }
-@media (hover: hover) {
-  .tuner__st:hover { color: var(--paper); background: rgb(242 244 240 / 0.05); }
-  .tuner__st:hover strong { color: var(--paper); }
-  .tuner__step:hover { background: var(--paper); color: var(--ink); }
-}
-.tuner__st:active { background: rgb(242 244 240 / 0.1); }
-
-.tuner__foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 22px; margin-top: 12px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgb(242 244 240 / 0.42); }
-.tuner__credit { text-transform: none; letter-spacing: 0.02em; }
-.tuner__credit:hover { color: var(--paper); }
-.tuner__keys { display: flex; flex-wrap: wrap; gap: 6px 22px; }
-.tuner__keys kbd { display: inline-block; min-width: 1.7em; padding: 1px 4px; border: 1px solid rgb(242 244 240 / 0.3); font: inherit; text-align: center; }
-
 /* ------------------------------------------------------------------ narrow screens */
 @media (max-width: 960px) {
-  .stage { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'tv' 'tuner' 'card'; }
+  .stage { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'tv' 'placard'; }
   .crt { width: min(100cqw, max(300px, 100svh - var(--header-h) - 170px) * var(--ar)); }
+  .placard { padding-bottom: 0; }
 }
 @media (max-width: 640px) {
-  .tuner__st { padding: 6px 4px 12px; }
-  .tuner__st strong { font-size: 13px; }
-  .tuner__st small, .tuner__keys { display: none; }
   .panel__summary { font-size: 14px; }
 }
