@@ -11,7 +11,7 @@ export const profile = {
   firstName: 'Gerardo',
   lastName: 'Sanchez',
   fullName: 'Gerardo Sánchez López', // full name, for search engines only (JSON-LD in OnePage.astro)
-  role: 'Modern Engineer', // kept in English in both languages, as on the résumé
+  role: 'Data & AI Engineer', // kept in English in both languages, as on the résumé
   timezone: 'America/Monterrey',
   available: true,
   email: 'hello@gsanchez.me',
@@ -101,16 +101,16 @@ const copy: Record<Locale, Copy> = {
     header: { status: '(Open to new roles)', cta: 'Get in touch →' },
     location: 'Monterrey, Mexico',
     pitch:
-      'I turn scattered business data into dashboards and AI tools people actually use, from the warehouse to the screen.',
+      'I turn scattered business data into dashboards and AI tools that people actually use, from the warehouse to the screen.',
     statement: ['I build', 'data systems', 'that turn', 'operations', 'into', 'answers.'],
     about: [
-      'I trained as a physicist at UANL, where my thesis simulated gravitational microlensing to build a 223k light-curve dataset for a machine-learning classifier. Then I went into industry and found the same problem everywhere: the data exists, but nobody can see it.',
-      'At a Monterrey food-manufacturing group I led the data side of an ERP rollout and gave management its first live view of sales, production and costs. Now I freelance: warehouses on Google Cloud, dashboards, and LLM-powered tools, like Money on Rails, my budgeting app built on the YNAB API.',
+      'I studied physics at UANL. For my thesis I simulated gravitational microlensing and built a dataset of 223k light curves to train a machine-learning classifier. In industry I kept running into the same problem: the data exists, but nobody can see it.',
+      'At a food-manufacturing group in Monterrey, I led the data side of an ERP rollout and gave management its first live view of sales, production and costs. Now I freelance, building data warehouses on Google Cloud, dashboards and LLM-powered tools. On my own time I build Money on Rails, a budget analysis app on top of the YNAB API.',
     ],
     now: [
       ['Currently', 'Freelance data & AI engineering'],
       ['Building', 'Money on Rails'],
-      ['Based in', 'Monterrey, Mexico · open to remote & relocation'],
+      ['Based in', 'Monterrey, Mexico · open to remote work or relocation'],
     ],
     hero: {
       portfolio: 'Portfolio',
@@ -137,7 +137,7 @@ const copy: Record<Locale, Copy> = {
           role: 'Independent Data & AI Engineer',
           company: 'Corporate clients',
           summary:
-            'Build serverless data platforms on Google Cloud for corporate clients: Cloud Functions, Pub/Sub and BigQuery, modelled with dbt, with a Looker Studio dashboard for leadership on top. Shipped a Meta Conversions API service that feeds offline sales back to Meta, in production within a week. I run and maintain what I ship on monthly service agreements.',
+            'I build serverless data platforms on Google Cloud: Cloud Functions, Pub/Sub and BigQuery, modelled with dbt, with a Looker Studio dashboard for leadership on top. I shipped a Meta Conversions API service that sends offline sales back to Meta; it was in production within a week. I run and maintain what I ship under monthly service agreements.',
           tags: ['GCP', 'BigQuery', 'dbt', 'Python', 'Looker Studio', 'Meta CAPI'],
         },
         {
@@ -146,7 +146,7 @@ const copy: Record<Locale, Copy> = {
           role: 'Lead Data Analyst',
           company: 'TortiRegias · Nyjisa · Chilokia',
           summary:
-            'Led the data side of an Alpha ERP rollout across the whole group, working with every department head. Built the Power BI production dashboard and Dashboard de Mantenimiento, the first live view of operations management had. Shipped App Tarimas, which cut Walmart pallet labelling to about two minutes, and automated reports worth roughly two months of manual work a year.',
+            'Led the data side of the Alpha ERP rollout across the group, working with every department head. Built a Power BI production dashboard and a maintenance dashboard (Dashboard de Mantenimiento) that gave management its first live view of operations. Shipped App Tarimas, which cut Walmart pallet labelling to about two minutes, and automated reports that took roughly two months of manual work a year.',
           tags: ['SQL', 'Power BI', 'Python', 'Streamlit', 'React'],
         },
         {
@@ -155,7 +155,7 @@ const copy: Record<Locale, Copy> = {
           role: 'Undergraduate Researcher',
           company: 'UANL · Facultad de Ciencias Físico Matemáticas',
           summary:
-            'Thesis on gravitational microlensing. Derived the lensing model from first principles, simulated it in Fortran across a wide parameter sweep, and produced 223k labelled light curves to train a classifier that detects microlensing events.',
+            'Thesis on gravitational microlensing. Derived the lensing model from first principles, simulated it in Fortran over a wide parameter sweep, and produced 223k labelled light curves to train a classifier that detects microlensing events.',
           tags: ['Fortran', 'Python', 'Machine learning'],
         },
       ],
@@ -236,12 +236,12 @@ const copy: Record<Locale, Copy> = {
         { label: 'Email', href: `mailto:${profile.email}`, handle: profile.email },
         { label: 'Résumé', href: profile.resumeUrl, handle: 'PDF' },
       ],
-      builtWith: 'Built with Astro · ASCII after play.core',
-      palette: 'Palette after',
+      builtWith: 'Built with Astro · ASCII based on play.core',
+      palette: 'Palette sampled from',
       backToTop: 'Back to top ↑',
     },
     notFound: {
-      title: '404 — Not found',
+      title: 'Not found',
       kicker: 'Error 404 · No signal',
       heading: 'This channel is off the air.',
       back: '← Back to gsanchez.me',
@@ -252,27 +252,27 @@ const copy: Record<Locale, Copy> = {
     langName: 'Español',
     switchLabel: 'ES',
     skip: 'Saltar al contenido',
-    nav: { about: 'Sobre mí', experience: 'Experiencia', work: 'Trabajo', contact: 'Contacto' },
-    header: { status: '(Abierto a nuevos roles)', cta: 'Escríbeme →' },
+    nav: { about: 'Sobre mí', experience: 'Experiencia', work: 'Proyectos', contact: 'Contacto' },
+    header: { status: '(Abierto a ofertas de trabajo)', cta: 'Escríbeme →' },
     location: 'Monterrey, México',
     pitch:
-      'Convierto datos de negocio dispersos en dashboards y herramientas de IA que la gente sí usa, del data warehouse a la pantalla.',
+      'Convierto los datos dispersos de una empresa en dashboards y herramientas de IA que la gente sí usa, desde el data warehouse hasta la pantalla.',
     statement: ['Construyo', 'sistemas de datos', 'que convierten', 'la operación', 'en', 'respuestas.'],
     about: [
-      'Me formé como físico en la UANL, donde mi tesis simuló microlentes gravitacionales para construir un dataset de 223 mil curvas de luz para un clasificador de machine learning. Luego entré a la industria y encontré el mismo problema en todos lados: los datos existen, pero nadie los puede ver.',
-      'En un grupo de manufactura de alimentos en Monterrey dirigí la parte de datos de la implementación de un ERP y le di a la dirección su primera vista en vivo de ventas, producción y costos. Ahora trabajo como freelance: data warehouses en Google Cloud, dashboards y herramientas con LLMs, como Money on Rails, mi app de presupuestos construida sobre la API de YNAB.',
+      'Estudié Física en la UANL. En mi tesis simulé microlentes gravitacionales y generé un dataset de 223 mil curvas de luz para entrenar un clasificador de machine learning. Ya en la industria me topé una y otra vez con el mismo problema: los datos existen, pero nadie los puede ver.',
+      'En un grupo de manufactura de alimentos en Monterrey dirigí la parte de datos de la implementación de un ERP, y por primera vez la dirección pudo ver ventas, producción y costos en tiempo real. Hoy trabajo como freelance: data warehouses en Google Cloud, dashboards y herramientas basadas en LLMs. Por mi cuenta desarrollo Money on Rails, una app de análisis de presupuestos que se conecta a la API de YNAB.',
     ],
     now: [
-      ['Actualmente', 'Ingeniería de datos e IA, freelance'],
-      ['Construyendo', 'Money on Rails'],
-      ['Desde', 'Monterrey, México · abierto a remoto y reubicación'],
+      ['Actualmente', 'Ingeniería de datos e IA como freelance'],
+      ['Desarrollando', 'Money on Rails'],
+      ['Ubicación', 'Monterrey, México · disponible para remoto o reubicación'],
     ],
     hero: {
       portfolio: 'Portafolio',
       onThisPage: 'En esta página',
       notes: {
         about: 'Quién soy, con qué trabajo',
-        experience: (roles, since) => `${roles} roles, ${since}–hoy`,
+        experience: (roles, since) => `${roles} puestos, ${since}–hoy`,
         work: (n) => `${n} demos en vivo`,
         contact: 'Correo, GitHub, LinkedIn',
       },
@@ -290,7 +290,7 @@ const copy: Record<Locale, Copy> = {
           role: 'Ingeniero de Datos e IA independiente',
           company: 'Clientes corporativos',
           summary:
-            'Construyo plataformas de datos serverless en Google Cloud para clientes corporativos: Cloud Functions, Pub/Sub y BigQuery, modeladas con dbt, con un dashboard en Looker Studio para la dirección. Entregué un servicio de Meta Conversions API que envía las ventas offline de vuelta a Meta, en producción en una semana. Opero y mantengo lo que entrego con contratos de servicio mensuales.',
+            'Construyo plataformas de datos serverless en Google Cloud: Cloud Functions, Pub/Sub y BigQuery, con modelado en dbt y un dashboard en Looker Studio para la dirección. Desarrollé un servicio con la Meta Conversions API que envía las ventas offline de regreso a Meta; quedó en producción en una semana. Opero y doy mantenimiento a lo que entrego mediante contratos de servicio mensuales.',
           tags: ['GCP', 'BigQuery', 'dbt', 'Python', 'Looker Studio', 'Meta CAPI'],
         },
         {
@@ -299,16 +299,16 @@ const copy: Record<Locale, Copy> = {
           role: 'Lead Data Analyst',
           company: 'TortiRegias · Nyjisa · Chilokia',
           summary:
-            'Dirigí la parte de datos de la implementación del ERP Alpha en todo el grupo, trabajando con cada jefe de área. Construí el dashboard de producción en Power BI y el Dashboard de Mantenimiento, la primera vista en vivo de la operación que tuvo la dirección. Entregué App Tarimas, que redujo el etiquetado de tarimas de Walmart a unos dos minutos, y automaticé reportes que equivalían a unos dos meses de trabajo manual al año.',
+            'Dirigí la parte de datos de la implementación del ERP Alpha en todo el grupo, de la mano de cada jefe de área. Construí un dashboard de producción en Power BI y el Dashboard de Mantenimiento, con los que la dirección vio la operación en tiempo real por primera vez. Desarrollé App Tarimas, que redujo a unos dos minutos el etiquetado de tarimas para Walmart, y automaticé reportes que sumaban unos dos meses de trabajo manual al año.',
           tags: ['SQL', 'Power BI', 'Python', 'Streamlit', 'React'],
         },
         {
           start: '2022',
           end: '2023',
-          role: 'Investigador de licenciatura',
+          role: 'Tesista de licenciatura',
           company: 'UANL · Facultad de Ciencias Físico Matemáticas',
           summary:
-            'Tesis sobre microlentes gravitacionales. Derivé el modelo de la lente desde primeros principios, lo simulé en Fortran sobre un amplio barrido de parámetros y generé 223 mil curvas de luz etiquetadas para entrenar un clasificador que detecta eventos de microlente.',
+            'Tesis sobre microlentes gravitacionales. Derivé el modelo de la lente a partir de primeros principios, lo simulé en Fortran con un amplio barrido de parámetros y generé 223 mil curvas de luz etiquetadas para entrenar un clasificador que detecta eventos de microlente.',
           tags: ['Fortran', 'Python', 'Machine learning'],
         },
       ],
@@ -387,14 +387,14 @@ const copy: Record<Locale, Copy> = {
         { label: 'Correo', href: `mailto:${profile.email}`, handle: profile.email },
         { label: 'CV', href: profile.resumeUrl, handle: 'PDF' },
       ],
-      builtWith: 'Hecho con Astro · ASCII a partir de play.core',
-      palette: 'Paleta a partir de',
+      builtWith: 'Hecho con Astro · ASCII basado en play.core',
+      palette: 'Paleta tomada de',
       backToTop: 'Volver arriba ↑',
     },
     notFound: {
-      title: '404 — No encontrado',
+      title: 'Página no encontrada',
       kicker: 'Error 404 · Sin señal',
-      heading: 'Este canal está fuera del aire.',
+      heading: 'Este canal salió del aire.',
       back: '← Volver a gsanchez.me',
     },
   },

@@ -22,7 +22,7 @@ const t = site(Astro.props.locale);
         <li class="job" data-dim-item data-reveal data-delay={i * 80}>
           <span class="job__no mono">{String(i + 1).padStart(2, '0')}</span>
           <span class="job__dates mono">
-            {job.start} — {job.end}
+            {job.start} – {job.end}
           </span>
           <h3 class="job__role">
             {job.href ? (
