@@ -10,6 +10,7 @@ export const otherLocale = (l: Locale): Locale => (l === 'en' ? 'es' : 'en');
 export const profile = {
   firstName: 'Gerardo',
   lastName: 'Sanchez',
+  fullName: 'Gerardo Sánchez López', // full name, for search engines only (JSON-LD in OnePage.astro)
   role: 'Modern Engineer', // kept in English in both languages, as on the résumé
   timezone: 'America/Monterrey',
   available: true,
