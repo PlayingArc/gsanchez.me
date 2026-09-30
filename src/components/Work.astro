@@ -119,7 +119,7 @@ const bars = ['#c0c0c0', '#c0c000', '#00c0c0', '#00c000', '#c000c0', '#c00000', 
             <span class="crt__tube" style={`${pct(CRT.screen)};border-radius:${CRT.screen.radius}`} />
             <span class="crt__screen" style={`${pct(CRT.screen)};border-radius:${CRT.screen.radius}`}>
               {projects.map((p, i) => (
-                <span class="crt__ch" data-crt-ch={i} data-href={p.href} data-live={isLive(p.href) ? p.href : undefined} hidden>
+                <span class="crt__ch" data-crt-ch={i} data-href={p.href} data-live={isLive(p.href) ? p.href : undefined} hidden={i !== 0}>
                   <span class="crt__dash" data-dash set:html={renderDash(p.preview, Astro.props.locale)} />
                 </span>
               ))}

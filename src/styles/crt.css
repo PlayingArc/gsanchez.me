@@ -117,6 +117,8 @@
 /* A channel: its static 640×480 screen, scaled to fit and centred (--k, --ox, --oy). */
 .crt__ch { position: absolute; inset: 0; transition: transform 0.2s, filter 0.2s; }
 .crt__ch[hidden] { display: none; }
+/* CH 01 is served on air for a page without JavaScript; with it, the set warms up first. */
+.js .crt:not(.has-signal) .crt__ch { display: none; }
 .crt__dash { position: absolute; inset: 0; filter: saturate(1.15) contrast(1.06) brightness(1.03) blur(0.25px); }
 .crt__dash .dash {
   transform: translate(var(--ox, 0), var(--oy, 0)) scale(var(--k, 1));
