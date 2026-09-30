@@ -19,7 +19,8 @@ const t = site(locale);
 <Base title={`${profile.firstName} ${profile.lastName} — ${profile.role}`} description={t.pitch} lang={locale}>
   <Fragment slot="head">
     {locales.map((l) => <link rel="alternate" hreflang={l} href={new URL(`/${l}/`, Astro.site)} />)}
-    <link rel="alternate" hreflang="x-default" href={new URL('/', Astro.site)} />
+    {/* x-default is English, not the bare / language redirect: that one is noindex (#57). */}
+    <link rel="alternate" hreflang="x-default" href={new URL('/en/', Astro.site)} />
     <link rel="canonical" href={new URL(`/${locale}/`, Astro.site)} />
   </Fragment>
   <a class="skip mono" href="#about">{t.skip}</a>

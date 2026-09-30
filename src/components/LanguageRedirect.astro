@@ -38,7 +38,7 @@ const imageUrl = new URL(image, Astro.site);
     <meta name="twitter:image:alt" content={title} />
     <link rel="alternate" hreflang="en" href={new URL(en, Astro.site)} />
     <link rel="alternate" hreflang="es" href={new URL(es, Astro.site)} />
-    <link rel="alternate" hreflang="x-default" href={new URL(path, Astro.site)} />
+    <link rel="alternate" hreflang="x-default" href={new URL(en, Astro.site)} />
     <script is:inline define:vars={{ en, es }}>
       const langs = navigator.languages?.length ? navigator.languages : [navigator.language || 'en'];
       const first = langs.find((l) => /^(en|es)\b/i.test(l)) ?? 'en';

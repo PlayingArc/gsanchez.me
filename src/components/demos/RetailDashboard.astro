@@ -25,6 +25,7 @@ const last = data.months.length - 1;
     <link rel="canonical" href={new URL(path(locale), Astro.site)} />
     <link rel="alternate" hreflang="en" href={new URL(path('en'), Astro.site)} />
     <link rel="alternate" hreflang="es" href={new URL(path('es'), Astro.site)} />
+    <link rel="alternate" hreflang="x-default" href={new URL(path('en'), Astro.site)} />
   </Fragment>
 
   <DemoFrame back={t.frameBack} note={t.frameNote} langLabel={t.frameLang} langHref={path(other)} langCode={other} />
