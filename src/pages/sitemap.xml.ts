@@ -2,7 +2,8 @@
 import type { APIRoute } from 'astro';
 import { locales } from '../data/site';
 
-const bilingual = ['/', '/demos/retail/', '/demos/clinic/'];
+const moneyOnRails = ['overview', 'money-flow', 'plan', 'plan-quality'].map((s) => `/demos/money-on-rails/${s}`);
+const bilingual = ['/', '/demos/retail/', '/demos/clinic/', ...moneyOnRails];
 const single = ['/demos/tarimas/']; // App Tarimas is Spanish only
 
 export const GET: APIRoute = ({ site }) => {

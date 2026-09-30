@@ -189,7 +189,7 @@ const copy: Record<Locale, Copy> = {
           summary:
             "Analytics for YNAB that YNAB itself doesn't give you: how closely you followed your plan, how well the plan is built, and where each month's money went. The demo runs on an invented household, no sign-in.",
           stack: ['Next.js', 'TypeScript', 'YNAB API', 'Postgres', 'ECharts', 'OpenAI'],
-          href: 'https://moneyonrails.app/demo/en/overview',
+          href: '/en/demos/money-on-rails/overview',
           preview: 'money',
         },
         {
@@ -340,7 +340,7 @@ const copy: Record<Locale, Copy> = {
           summary:
             'Análisis para YNAB que YNAB no te da: qué tanto seguiste tu plan, qué tan bien está armado y a dónde se fue el dinero de cada mes. La demo usa un hogar inventado, sin iniciar sesión.',
           stack: ['Next.js', 'TypeScript', 'YNAB API', 'Postgres', 'ECharts', 'OpenAI'],
-          href: 'https://moneyonrails.app/demo/es/overview',
+          href: '/es/demos/money-on-rails/overview',
           preview: 'money',
         },
         {
