@@ -7,20 +7,45 @@
 import { writeFileSync } from 'node:fs';
 import { deflateSync } from 'node:zlib';
 
-// The bend grows with u⁴ (u from −1 to 1 across each axis), so the middle of the tube stays nearly
-// flat and the curve piles up at the rim: 0 at the centre, 1 at the middle of each edge, 2 at the
-// corners, along contours shaped like the tube's rounded opening. BEND is how far the rim pulls in;
-// EDGE is where the middle of each edge lands (1 = right on the rim of the glass).
-const BEND = Number(process.env.BEND ?? 0.1);
-const EDGE = Number(process.env.EDGE ?? 0.995);
-const ZOOM = EDGE / (1 + BEND);
+// The bend grows with |ux|ᴾ + |uy|ᴾ (u from −1 to 1 across each axis): nearly flat across the middle
+// of the tube, then piling up at the rim, hardest in the corners, along contours shaped like the tube's
+// rounded opening. The higher POWER, the wider the flat middle and the nearer the rim the bend starts.
+// BEND is how far the rim pulls in.
+const POWER = Number(process.env.POWER ?? 6);
+const BEND = Number(process.env.BEND ?? 0.08);
 // Must match CRT.curve.scale: the largest shift the map can hold, as a fraction of the screen's width.
 const SCALE = Number(process.env.SCALE ?? 0.1);
-// The tube's opening (CRT.screen, CRT.image): height over width.
+// Must match the largest of CRT.curve.guns: the gun that lands furthest out.
+const GUN = 1.012;
+// The tube's opening (CRT.screen, CRT.image): height over width, and its corner radii (6% / 8% of
+// the width / height), in u.
 const ASPECT = (0.523 * 1282) / (0.758 * 1200);
+const RX = 0.12;
+const RY = 0.16;
+
+const rim = (ux, uy) => 1 + BEND * (Math.abs(ux) ** POWER + Math.abs(uy) ** POWER);
+const visible = (ux, uy) => {
+  const cx = Math.abs(ux) - (1 - RX);
+  const cy = Math.abs(uy) - (1 - RY);
+  return cx <= 0 || cy <= 0 || (cx / RX) ** 2 + (cy / RY) ** 2 <= 1;
+};
 
 const W = 768;
 const H = Math.round(W * ASPECT);
+
+// ZOOM pulls the whole picture back just enough that no visible pixel of the tube, for any gun,
+// samples off the picture's edge (which would leave it black). A hair less, for the map's rounding.
+let ZOOM = Infinity;
+for (let j = 0; j <= H; j++) {
+  for (let i = 0; i <= W; i++) {
+    const ux = (i / W) * 2 - 1;
+    const uy = (j / H) * 2 - 1;
+    if (!visible(ux, uy)) continue;
+    // |u · (1 + GUN · (rim · ZOOM − 1))| ≤ 1 on each axis
+    for (const u of [ux, uy]) if (u) ZOOM = Math.min(ZOOM, (1 + (1 / Math.abs(u) - 1) / GUN) / rim(ux, uy));
+  }
+}
+ZOOM *= 0.997;
 
 // One row per scanline, each led by PNG filter type 1 (Sub: bytes stored as the step from the pixel
 // to their left), which keeps a smooth gradient like this one small.
@@ -33,9 +58,9 @@ for (let j = 0; j < H; j++) {
   for (let i = 0; i < W; i++) {
     const ux = ((i + 0.5) / W) * 2 - 1;
     const uy = ((j + 0.5) / H) * 2 - 1;
-    const rim = 1 + BEND * (ux ** 4 + uy ** 4);
-    const sx = ux * rim * ZOOM;
-    const sy = uy * rim * ZOOM;
+    const k = rim(ux, uy) * ZOOM;
+    const sx = ux * k;
+    const sy = uy * k;
     const dx = (sx - ux) / 2; // in screen widths
     const dy = ((sy - uy) / 2) * ASPECT;
     worst = Math.max(worst, Math.abs(dx), Math.abs(dy));
@@ -77,4 +102,7 @@ const png = Buffer.concat([
   chunk('IEND', Buffer.alloc(0)),
 ]);
 writeFileSync('public/tv/ibm-pcjr-curve.png', png);
-console.log(`public/tv/ibm-pcjr-curve.png: ${W}×${H}, ${(png.length / 1024).toFixed(1)} KB, largest shift ${worst.toFixed(4)} of SCALE ${SCALE}`);
+console.log(
+  `public/tv/ibm-pcjr-curve.png: ${W}×${H}, ${(png.length / 1024).toFixed(1)} KB, largest shift ${worst.toFixed(4)} of SCALE ${SCALE}, ` +
+    `zoom ${ZOOM.toFixed(4)} (edges lose ${((1 - rim(1, 0) * ZOOM) * 50).toFixed(1)}% across, ${((1 - rim(0, 1) * ZOOM) * 50).toFixed(1)}% down)`,
+);
