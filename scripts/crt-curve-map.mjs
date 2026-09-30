@@ -11,7 +11,7 @@ import { deflateSync } from 'node:zlib';
 // of the tube, then piling up at the rim, hardest in the corners, along contours shaped like the tube's
 // rounded opening. The higher POWER, the wider the flat middle and the nearer the rim the bend starts.
 // BEND is how far the rim pulls in.
-const POWER = Number(process.env.POWER ?? 6);
+const POWER = Number(process.env.POWER ?? 8);
 const BEND = Number(process.env.BEND ?? 0.08);
 // Must match CRT.curve.scale: the largest shift the map can hold, as a fraction of the screen's width.
 const SCALE = Number(process.env.SCALE ?? 0.1);
