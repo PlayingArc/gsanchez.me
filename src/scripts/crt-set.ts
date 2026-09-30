@@ -203,9 +203,11 @@ export function mountCrt() {
     b.addEventListener('click', () => tune((current < 0 ? 0 : current) + Number(b.dataset.crtStep))),
   );
   crt.querySelector('[data-crt-enter]')!.addEventListener('click', () => (current < 0 ? tune(0) : enter(current)));
-  // The details' "Step inside" and the index below.
+  // The details' "Step inside" and the index below. A modified or middle click is left to
+  // the browser (a new tab or window), like any link.
   document.querySelectorAll<HTMLAnchorElement>('[data-launch]').forEach((a) =>
     a.addEventListener('click', (e) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
       e.preventDefault();
       enter(Number(a.dataset.launch));
     }),

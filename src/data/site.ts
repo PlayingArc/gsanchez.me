@@ -161,7 +161,7 @@ const copy: Record<Locale, Copy> = {
     },
     work: {
       liveDemos: 'live demos',
-      stepInside: 'Step inside ↗',
+      stepInside: 'Step inside →',
       set: {
         label: (n) => `TV: keys 1 to ${n} pick a channel, plus and minus flip through them`,
         channels: 'Channels',
@@ -313,7 +313,7 @@ const copy: Record<Locale, Copy> = {
     },
     work: {
       liveDemos: 'demos en vivo',
-      stepInside: 'Entrar ↗',
+      stepInside: 'Entrar →',
       set: {
         label: (n) => `TV: las teclas 1 a ${n} eligen el canal; más y menos los recorren`,
         channels: 'Canales',
