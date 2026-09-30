@@ -3,8 +3,9 @@
 //   [data-scramble-hover]  re-decodes on hover/focus (links, labels)
 //   [data-reveal]          slides up, then decodes any [data-scramble-child] inside
 //
-// The real text keeps its place in the layout (just hidden) while an overlay
-// plays the effect on top, so nothing around it ever moves.
+// The real text keeps its place in the layout (transparent, so screen readers still
+// read it) while an aria-hidden overlay plays the effect on top, so nothing around
+// it ever moves.
 
 const GLYPHS = '#%&*+=-:/\\<>[]{}░▒▚▀×÷01';
 const STEP_MS = 70; // how often an unsettled glyph changes

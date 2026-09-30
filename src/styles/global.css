@@ -355,9 +355,11 @@ a.section__aside:hover { text-decoration: underline; text-underline-offset: 3px;
 .launch { position: fixed; inset: 0; z-index: 1000; background: #000; opacity: 0; transition: opacity 0.25s; }
 .launch.is-on { opacity: 1; }
 
-/* Scramble overlay: the real text holds the layout while the effect plays on top. */
+/* Scramble overlay: the real text holds the layout while the effect plays on top.
+   Transparent, not visibility:hidden, so it keeps naming the link or heading for
+   screen readers while the overlay (aria-hidden) plays (#52). */
 .is-scrambling { position: relative; }
-.is-scrambling > .scr__real { visibility: hidden; }
+.is-scrambling > .scr__real { opacity: 0; }
 .scr__fx { position: absolute; left: 0; top: 0; white-space: nowrap; pointer-events: none; }
 .contact__email .scr__fx { right: 0; white-space: normal; }
 .scr__g { font-family: var(--font-code); font-weight: 400; font-size: 0.84em; font-variation-settings: normal; letter-spacing: 0; opacity: 0.8; }
