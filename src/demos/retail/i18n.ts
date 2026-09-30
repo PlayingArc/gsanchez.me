@@ -1,10 +1,10 @@
 import type { Locale } from '../kit/format';
 
 const en = {
-  title: 'Casa Zenzontle sales and stock',
-  metaDescription: 'A demo dashboard for Casa Zenzontle, an invented home-goods retailer with eight stores and an online shop. Built by Gerardo Sanchez on invented data.',
+  title: 'Sales dashboard · Casa Zenzontle',
+  metaDescription: 'A demo sales dashboard for Casa Zenzontle, an invented home-goods retailer with eight stores and an online shop: sales against target, stores, products and slow-moving stock. Built by Gerardo Sanchez on invented data.',
   frameBack: 'gsanchez.me',
-  frameNote: 'Demo dashboard. Casa Zenzontle is invented, and so is every number.',
+  frameNote: 'Demo sales dashboard. Casa Zenzontle is invented, and so is every number.',
   frameLang: 'Español',
   tagline: 'Home goods from eight stores in Monterrey, Mexico City and Guadalajara, and online.',
   // filter sentence
@@ -90,10 +90,10 @@ const en = {
 type Strings = typeof en;
 
 const es: Strings = {
-  title: 'Casa Zenzontle: ventas e inventario',
-  metaDescription: 'Un dashboard de demostración para Casa Zenzontle, una tienda de artículos para el hogar inventada, con ocho sucursales y tienda en línea. Hecho por Gerardo Sanchez con datos inventados.',
+  title: 'Dashboard de ventas · Casa Zenzontle',
+  metaDescription: 'Un dashboard de ventas de demostración para Casa Zenzontle, una tienda inventada de artículos para el hogar con ocho sucursales y tienda en línea: ventas contra meta, tiendas, productos e inventario que no se mueve. Hecho por Gerardo Sanchez con datos inventados.',
   frameBack: 'gsanchez.me',
-  frameNote: 'Dashboard de demostración. Casa Zenzontle es inventada, igual que cada número.',
+  frameNote: 'Dashboard de ventas de demostración. Casa Zenzontle no existe, y los números tampoco.',
   frameLang: 'English',
   tagline: 'Artículos para el hogar en ocho tiendas de Monterrey, Ciudad de México y Guadalajara, y en línea.',
   showing: 'Mostrando',
@@ -125,7 +125,7 @@ const es: Strings = {
   noPrior: 'No hay un periodo anterior en los datos para comparar.',
   ofTarget: (p: string) => `${p} de la meta`,
   trendTitle: 'Ventas netas por mes',
-  trendHint: 'Haz clic en un mes para verlo solo. Con Shift, amplías el rango.',
+  trendHint: 'Haz clic en un mes para verlo solo. Con Shift + clic amplías el rango.',
   inStore: 'En tienda',
   online: 'En línea',
   target: 'Meta',
@@ -134,7 +134,7 @@ const es: Strings = {
   catTitle: 'Categorías',
   allCategoriesCrumb: 'Todas las categorías',
   catHint: 'Haz clic en una categoría para ver sus productos.',
-  prodHint: 'Haz clic en un producto para filtrar todo por él.',
+  prodHint: 'Haz clic en un producto para filtrar todas las vistas por él.',
   stockTitle: 'Lo que se queda en bodega',
   stockHint: 'Cada punto es un producto; entre más grande, más vende. El inventario es de ambos canales, así que el filtro de canal no aplica aquí.',
   stockZone: 'Lento y sobreinventariado',

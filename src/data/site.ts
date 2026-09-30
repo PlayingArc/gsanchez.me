@@ -179,7 +179,8 @@ const copy: Record<Locale, Copy> = {
       index: 'Index',
       cols: { no: 'No.', project: 'Project', type: 'Type', stack: 'Stack', year: 'Year', link: 'Link' },
       stackLabel: 'Stack',
-      // The TV's channels: two case studies, then two demo dashboards. `href` is where
+      // The TV's channels: two case studies, then two demo dashboards, which are titled by
+      // what they show (the fictional company is named in the summary). `href` is where
       // the channel takes you (a same-site href also plays live on the screen); `preview`
       // picks its static screen in src/scripts/dashboards.ts.
       projects: [
@@ -189,7 +190,7 @@ const copy: Record<Locale, Copy> = {
           kind: 'Case study',
           year: '2026',
           summary:
-            "Analytics for YNAB that YNAB itself doesn't give you: how closely you followed your plan, how well the plan is built, and where each month's money went. The demo runs on an invented household, no sign-in.",
+            "Money on Rails connects to YNAB and tells you what YNAB won't: an adherence rating for how closely you followed your plan, a plan-quality score for how well it's built (needs, wants and savings split, emergency fund, true expenses), and a chart of where each month's money went. The invite-only 1.0 shipped in September 2026. Try it on an invented household, no sign-in.",
           stack: ['Next.js', 'TypeScript', 'YNAB API', 'Postgres', 'ECharts', 'OpenAI'],
           href: '/en/demos/money-on-rails/overview',
           preview: 'money',
@@ -200,29 +201,29 @@ const copy: Record<Locale, Copy> = {
           kind: 'Case study',
           year: '2025',
           summary:
-            'Builds the logistics label for every pallet of a Walmart order: capture the order, drag its boxes onto pallets, print. It cut labelling to about two minutes. The demo uses sample products and is in Spanish, as the app is.',
+            'The pallet-labelling app I built for Walmart orders at a food-manufacturing group in Monterrey (tarima is Spanish for pallet). Capture the order, drag its boxes onto pallets, and it prints the logistics label for each one. It cut labelling to about two minutes. The demo uses sample products and is in Spanish, like the app.',
           stack: ['React', 'Ant Design', 'dnd-kit', 'Barcodes'],
           href: '/demos/tarimas/',
           preview: 'tarimas',
         },
         {
           slug: 'casa-zenzontle',
-          title: 'Casa Zenzontle',
+          title: 'Sales dashboard',
           kind: 'Demo dashboard',
           year: '2026',
           summary:
-            'Sales for an invented home-goods retailer with eight stores and an online shop: net sales against target by month, store, category and product, with filters that read as a sentence and charts that filter each other.',
+            'Built for Casa Zenzontle, an invented home-goods retailer with eight stores and an online shop. It shows whether sales are on target, which stores and products are falling behind, and which stock isn’t moving. The filters read as a plain sentence, and clicking any chart filters the rest.',
           stack: ['TypeScript', 'SVG', 'Astro'],
           href: '/en/demos/retail/',
           preview: 'retail',
         },
         {
           slug: 'molara-dental',
-          title: 'Molara Dental',
+          title: 'Appointments dashboard',
           kind: 'Demo dashboard',
           year: '2026',
           summary:
-            'Chairs, no-shows and revenue for an invented chain of five dental clinics: when the chairs are full, where and how far ahead no-shows happen, where revenue comes from, and which patients are due back.',
+            'Built for Molara Dental, an invented chain of five dental clinics. It shows when the chairs sit empty, which bookings turn into no-shows and what they cost, which dentists and treatments bring in the revenue, and whether patients come back for their six-month check-up. Click a cell or a bar and every view follows.',
           stack: ['TypeScript', 'SVG', 'Astro'],
           href: '/en/demos/clinic/',
           preview: 'clinic',
@@ -317,14 +318,14 @@ const copy: Record<Locale, Copy> = {
       liveDemos: 'demos en vivo',
       stepInside: 'Entrar →',
       set: {
-        label: (n) => `TV: las teclas 1 a ${n} eligen el canal; más y menos los recorren`,
+        label: (n) => `TV: las teclas del 1 al ${n} eligen un canal; más y menos cambian de canal`,
         channels: 'Canales',
         channelUp: 'Canal siguiente',
         channelDown: 'Canal anterior',
         signal: 'Señal',
         liveNote: 'En vivo',
-        tryNote: 'pasa sobre la pantalla para probarla',
-        previewNote: 'Vista previa · vive en su propio sitio',
+        tryNote: 'pasa el cursor sobre la pantalla para probarla',
+        previewNote: 'Vista previa · se abre en su propio sitio',
         tag: { live: 'En vivo', preview: 'Vista previa', tuning: 'Sintonizando…' },
         credit: 'TV: “IBM PCjr 4863 Computer” de Freepoly.org, CC BY 4.0',
       },
@@ -340,7 +341,7 @@ const copy: Record<Locale, Copy> = {
           kind: 'Caso de estudio',
           year: '2026',
           summary:
-            'Análisis para YNAB que YNAB no te da: qué tanto seguiste tu plan, qué tan bien está armado y a dónde se fue el dinero de cada mes. La demo usa un hogar inventado, sin iniciar sesión.',
+            'Money on Rails se conecta a YNAB y te dice lo que YNAB no: una calificación de apego (qué tanto seguiste tu plan), una de calidad del plan (qué tan bien está armado: reparto entre necesidades, gustos y ahorro, fondo de emergencia y gastos reales) y una gráfica de a dónde se fue el dinero de cada mes. La versión 1.0, por invitación, salió en septiembre de 2026. Pruébala con un hogar inventado, sin iniciar sesión.',
           stack: ['Next.js', 'TypeScript', 'YNAB API', 'Postgres', 'ECharts', 'OpenAI'],
           href: '/es/demos/money-on-rails/overview',
           preview: 'money',
@@ -351,29 +352,29 @@ const copy: Record<Locale, Copy> = {
           kind: 'Caso de estudio',
           year: '2025',
           summary:
-            'Genera la etiqueta logística de cada tarima de un pedido de Walmart: capturas el pedido, arrastras sus cajas a las tarimas e imprimes. Bajó el etiquetado a unos dos minutos. La demo usa productos de ejemplo.',
+            'La app para etiquetar las tarimas de los pedidos de Walmart que desarrollé en un grupo de manufactura de alimentos en Monterrey. Capturas el pedido, arrastras sus cajas a las tarimas y la app imprime la etiqueta logística de cada una. Redujo el etiquetado a unos dos minutos. La demo usa productos de ejemplo.',
           stack: ['React', 'Ant Design', 'dnd-kit', 'Códigos de barras'],
           href: '/demos/tarimas/',
           preview: 'tarimas',
         },
         {
           slug: 'casa-zenzontle',
-          title: 'Casa Zenzontle',
+          title: 'Dashboard de ventas',
           kind: 'Dashboard de demostración',
           year: '2026',
           summary:
-            'Ventas de una tienda inventada de artículos para el hogar, con ocho sucursales y tienda en línea: ventas netas contra meta por mes, tienda, categoría y producto, con filtros que se leen como una frase y gráficas que se filtran entre sí.',
+            'Hecho para Casa Zenzontle, una tienda inventada de artículos para el hogar con ocho sucursales y tienda en línea. Muestra si las ventas van en meta, qué tiendas y productos se están quedando atrás y qué inventario no se mueve. Los filtros se leen como una frase, y un clic en cualquier gráfica filtra las demás.',
           stack: ['TypeScript', 'SVG', 'Astro'],
           href: '/es/demos/retail/',
           preview: 'retail',
         },
         {
           slug: 'molara-dental',
-          title: 'Molara Dental',
+          title: 'Dashboard de citas',
           kind: 'Dashboard de demostración',
           year: '2026',
           summary:
-            'Sillones, inasistencias e ingresos de una cadena inventada de cinco clínicas dentales: cuándo se llenan los sillones, dónde y con cuánta anticipación faltan los pacientes, de dónde vienen los ingresos y quién debe volver.',
+            'Hecho para Molara Dental, una cadena inventada de cinco clínicas dentales. Muestra a qué horas se quedan vacíos los sillones, qué citas terminan en inasistencia y cuánto cuestan, qué dentistas y tratamientos generan los ingresos y si los pacientes regresan a su revisión de seis meses. Un clic en una celda o una barra filtra todas las vistas.',
           stack: ['TypeScript', 'SVG', 'Astro'],
           href: '/es/demos/clinic/',
           preview: 'clinic',
