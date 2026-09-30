@@ -1,18 +1,24 @@
 ---
 import { site, type Locale } from '../data/site';
 import { renderDash } from '../scripts/dashboards';
+import { CRT } from '../scripts/crt-set';
 import '../styles/screens.css';
+import '../styles/crt.css';
 
 interface Props {
   locale: Locale;
 }
 const t = site(Astro.props.locale);
+const s = t.work.set;
 const projects = t.work.projects;
+const ch = (i: number) => String(i + 1).padStart(2, '0');
+// Work hosted on this site plays live on the screen; the rest show a static rendering.
+const isLive = (href: string) => href.startsWith('/');
+const pct = (r: { left: number; top: number; width: number; height: number }) =>
+  `left:${r.left}%;top:${r.top}%;width:${r.width}%;height:${r.height}%`;
 
-// How big each TV is relative to the wall's base height. The first two sit on
-// top of the other two, so they are a little smaller.
-const sizes = [0.9, 0.97, 1.06, 1];
-const rows = [projects.slice(0, 2), projects.slice(2, 4)];
+// Colour bars while the set warms up, before it lands on channel 01.
+const bars = ['#c0c0c0', '#c0c000', '#00c0c0', '#00c000', '#c000c0', '#c00000', '#0000c0'];
 ---
 
 <section class="work" id="work" data-theme="black">
@@ -23,61 +29,101 @@ const rows = [projects.slice(0, 2), projects.slice(2, 4)];
       <span class="section__aside mono">{String(projects.length).padStart(2, '0')} {t.work.liveDemos}</span>
     </div>
 
-    <div class="wall" data-wall>
-      {
-        rows.map((row, r) => (
-          <div class:list={['wall__row', r === 0 && 'wall__row--top']}>
-            {row.map((p) => {
-              const i = projects.indexOf(p);
-              return (
-                <a
-                  class="tv"
-                  href={p.href}
-                  style={`--f:${sizes[i] ?? 1}`}
-                  data-tv={i}
-                  data-preview={p.preview}
-                  aria-label={`${p.title} — ${t.work.open}`}
-                >
-                  <span class="tv__screen">
-                    <span class="tv__img" data-dash set:html={renderDash(p.preview, Astro.props.locale)} />
-                    <span class="tv__fx" aria-hidden="true" />
-                  </span>
-                  <img class="tv__body" src="/tv/field-black.webp" width="1200" height="980" alt="" loading="lazy" decoding="async" />
-                  <img class="tv__glass" src="/tv/field-black-glass.webp" width="1200" height="980" alt="" loading="lazy" decoding="async" />
+    <div class="stage" data-stage style={`--n:${projects.length}`}>
+      <div class="stage__card" aria-live="polite">
+        {
+          projects.map((p, i) => (
+            <article class="panel" data-panel={i} hidden={i !== 0}>
+              <p class="panel__kind mono">
+                CH {ch(i)} // <span data-scramble-child>{p.kind}</span> · {p.year}
+              </p>
+              <h3 class="panel__title">
+                <span data-scramble-child>{p.title}</span>
+              </h3>
+              <p class="panel__summary">{p.summary}</p>
+              <ul class="tags" aria-label={t.work.stackLabel}>
+                {p.stack.map((x) => (
+                  <li class="pill pill--glow mono">{x}</li>
+                ))}
+              </ul>
+              <p class="panel__links mono">
+                <a href={p.href} data-launch={i}>
+                  {t.work.stepInside}
                 </a>
-              );
-            })}
-          </div>
-        ))
-      }
-    </div>
+                {p.repo && <a href={p.repo}>{t.work.source}</a>}
+              </p>
+              <p class="panel__live mono" data-live={isLive(p.href) || undefined}>
+                {isLive(p.href) ? `● ${s.liveNote}` : `▶ ${s.previewNote}`}
+              </p>
+            </article>
+          ))
+        }
+      </div>
 
-    <div class="wall__caption" aria-live="polite">
-      {
-        projects.map((p, i) => (
-          <article class="panel" data-panel={i} hidden={i !== 0}>
-            <p class="panel__kind mono">
-              <span data-scramble-child>{p.kind}</span> · {p.year}
-            </p>
-            <h3 class="panel__title">
-              <span data-scramble-child>{p.title}</span>
-            </h3>
-            <p class="panel__summary">{p.summary}</p>
-            <ul class="tags" aria-label={t.work.stackLabel}>
-              {p.stack.map((s) => (
-                <li class="pill pill--glow mono">{s}</li>
+      {/* The TV: a render of the IBM PCjr Color Display (see the prototype/single-crt branch,
+          prototype/crt-premade/) with the live screen behind its cut-out glass, the glass
+          reflections on top, and the monitor's four front controls as channel keys. */}
+      <div class="stage__tv">
+        <div class="crt" data-crt style={`aspect-ratio:${CRT.image[0]} / ${CRT.image[1]}`}>
+          {/* Clicking a static screen steps inside; a live demo keeps its clicks. */}
+          <div class="crt__hit" data-crt-enter>
+            <span class="crt__screen" style={`${pct(CRT.screen)};border-radius:${CRT.screen.radius}`}>
+              {projects.map((p, i) => (
+                <span class="crt__ch" data-crt-ch={i} data-href={p.href} data-live={isLive(p.href) ? p.href : undefined} hidden>
+                  <span class="crt__dash" data-dash set:html={renderDash(p.preview, Astro.props.locale)} />
+                </span>
               ))}
-            </ul>
-            <p class="panel__links mono">
-              <a href={p.href} data-launch={i}>
-                {t.work.stepInside}
-              </a>
-              {p.repo && <a href={p.repo}>{t.work.source}</a>}
-            </p>
-          </article>
-        ))
-      }
-      <p class="wall__hint mono">{t.work.hint}</p>
+              <span class="crt__bars" aria-hidden="true">
+                {bars.map((c) => (
+                  <i style={`background:${c}`} />
+                ))}
+              </span>
+              <span class="crt__snow" aria-hidden="true" />
+              <span class="crt__osd" data-crt-osd aria-hidden="true" />
+              <span class="tv__fx" aria-hidden="true" />
+              <span class="crt__tag mono" data-crt-tag data-live-text={s.tag.live} data-preview-text={s.tag.preview} data-tuning-text={s.tag.tuning} aria-hidden="true" />
+              <button type="button" class="crt__open mono">⤢ {t.work.stepInside.replace(' ↗', '')}</button>
+            </span>
+            <img class="tv__body" src={CRT.body} width={CRT.image[0]} height={CRT.image[1]} alt="" loading="lazy" decoding="async" />
+            <img class="tv__glass" src={CRT.glass} width={CRT.image[0]} height={CRT.image[1]} alt="" loading="lazy" decoding="async" />
+          </div>
+          {projects.slice(0, CRT.keys.length).map((p, i) => (
+            <button type="button" class="crt__key" data-crt-go={i} style={pct(CRT.keys[i])} aria-label={`CH ${ch(i)} — ${p.title}`} />
+          ))}
+        </div>
+      </div>
+
+      {/* The tuner: a backlit dial strip; a needle glides to the station on air. */}
+      <div class="stage__tuner">
+        <nav class="tuner" aria-label={s.channels}>
+          <button type="button" class="tuner__step mono" data-crt-step="-1" aria-label={s.channelDown}>◀</button>
+          <div class="tuner__band">
+            <span class="tuner__scale" aria-hidden="true" />
+            <span class="tuner__needle" aria-hidden="true" />
+            <div class="tuner__stations">
+              {projects.map((p, i) => (
+                <button type="button" class="tuner__st" data-crt-go={i} aria-label={`CH ${ch(i)} — ${p.title}`}>
+                  <span class="tuner__ch mono">CH {ch(i)}</span>
+                  <strong>{p.title}</strong>
+                  <small class="mono">
+                    {p.kind}
+                    <b class:list={[isLive(p.href) && 'is-live']}>{isLive(p.href) ? `● ${s.live}` : `↗ ${s.ownSite}`}</b>
+                  </small>
+                </button>
+              ))}
+            </div>
+          </div>
+          <button type="button" class="tuner__step mono" data-crt-step="1" aria-label={s.channelUp}>▶</button>
+        </nav>
+        <p class="tuner__foot mono">
+          <a class="tuner__credit" href={CRT.source}>{s.credit}</a>
+          <span class="tuner__keys" aria-hidden="true">
+            <span><kbd>1</kbd>–<kbd>{projects.length}</kbd> {s.keys.tune}</span>
+            <span><kbd>−</kbd> <kbd>+</kbd> {s.keys.step}</span>
+            <span>{s.keys.play}</span>
+          </span>
+        </p>
+      </div>
     </div>
   </div>
 

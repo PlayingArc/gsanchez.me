@@ -4,20 +4,24 @@ Gerardo Sanchez's one-page portfolio: who he is, what he has built, and dashboar
 
 ## Language
 
-### The wall
-
-**TV wall**:
-The stacked arrangement of TVs in the portfolio section, one TV per piece of shown work.
-_Avoid_: CRT wall, work grid, portfolio grid
+### The TV
 
 **TV**:
-A single CRT set on the wall. Its screen shows a stylized rendering of one case study or demo dashboard, and zooming into it leads to the real thing.
-_Avoid_: Set, screen, card
+The one CRT set in the portfolio section (a rendered IBM PCjr Color Display). A visitor flips through the shown work on it, one channel at a time, and zooming into its screen leads to the real thing.
+_Avoid_: TV wall, CRT wall, work grid, portfolio grid
+
+**Channel**:
+One piece of shown work on the TV. Work hosted on this site plays live on the screen and can be tried there; work hosted elsewhere shows a stylized rendering (a preview).
+_Avoid_: Slide, tab, card
+
+**Tuner**:
+The dial under the TV that lists the channels and shows, with its needle, which one is on air.
+_Avoid_: Menu, selector, carousel
 
 ### Shown work
 
 **Case study**:
-Real work Gerardo built that is shown on the wall and can be opened by a visitor (e.g. Money on Rails, App Tarimas).
+Real work Gerardo built that is shown on the TV and can be opened by a visitor (e.g. Money on Rails, App Tarimas).
 _Avoid_: Project, real dashboard
 
 **Demo dashboard**:

@@ -1,7 +1,7 @@
 // What each TV shows: a stylized render of the real thing behind it, drawn as
 // HTML+SVG at a fixed 640×480 (4:3, the field monitor's tube) and scaled to
 // fit. Figures are copied from each demo's own screen; nothing here is live.
-// Rendered at build time only; the wall reuses the markup when it zooms in.
+// Rendered at build time only; the TV reuses the markup when it zooms in.
 // Styles live in src/styles/screens.css.
 
 import type { Preview } from '../data/site';

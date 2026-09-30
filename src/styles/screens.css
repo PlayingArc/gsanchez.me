@@ -1,6 +1,6 @@
 /* ------------------------------------------------------------------
    TV screens (src/scripts/dashboards.ts). Everything here is in the
-   screen's own 640×480 pixel space; the wall scales it by --k.
+   screen's own 640×480 pixel space; the TV scales it by --k.
    Each screen wears the colours of the real thing behind it.
    ------------------------------------------------------------------ */
 
