@@ -1,0 +1,16 @@
+1:"$Sreact.fragment"
+2:I[22016,["/es/demos/money-on-rails/_next/static/chunks/22i43cg4l4-dq.js"],""]
+3:I[97367,["/es/demos/money-on-rails/_next/static/chunks/18_fu3dcy2zle.js","/es/demos/money-on-rails/_next/static/chunks/1zik0__q-o2sn.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+8:I[97367,["/es/demos/money-on-rails/_next/static/chunks/18_fu3dcy2zle.js","/es/demos/money-on-rails/_next/static/chunks/1zik0__q-o2sn.js"],"ViewportBoundary"]
+9:I[97367,["/es/demos/money-on-rails/_next/static/chunks/18_fu3dcy2zle.js","/es/demos/money-on-rails/_next/static/chunks/1zik0__q-o2sn.js"],"MetadataBoundary"]
+a:I[27201,["/es/demos/money-on-rails/_next/static/chunks/18_fu3dcy2zle.js","/es/demos/money-on-rails/_next/static/chunks/1zik0__q-o2sn.js"],"IconMark"]
+7:X
+0:{"buildId":"2tsnAWh0GhrplOlEcJArR","data":[{"rsc":["$","$1","c",{"children":[[["$","meta",null,{"httpEquiv":"refresh","content":"0; url=/es/demos/money-on-rails/overview"}],["$","$L2",null,{"href":"/overview","className":"text-sm font-medium text-accent hover:underline","children":"Abrir la demo"}]],[["$","script","script-0",{"src":"/es/demos/money-on-rails/_next/static/chunks/22i43cg4l4-dq.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":"$@6","staleTime":"$7","varyParams":null},{"rsc":["$","$1","h",{"children":[null,["$","$L8",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L9",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Demo de Money on Rails"}],["$","meta","1",{"name":"description","content":"Money on Rails con un hogar inventado: la Calificación de apego, la Calificación de calidad del plan, de dónde vino el dinero y a dónde se fue."}],["$","link","2",{"rel":"alternate","hrefLang":"en","href":"https://gsanchez.me/en/demos/money-on-rails/overview"}],["$","link","3",{"rel":"alternate","hrefLang":"es","href":"https://gsanchez.me/es/demos/money-on-rails/overview"}],["$","link","4",{"rel":"icon","href":"/es/demos/money-on-rails/favicon.ico?favicon.2vob68tjqpejf.ico","sizes":"256x256","type":"image/x-icon"}],["$","$La","5",{}]]}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"isPartial":"$@b","staleTime":"$7","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@c","rootVaryParams":null,"needsRuntimeRequest":"$@d"}
+5:null
+d:true
+7:300
+7:C
+c:0
+b:"$undefined"
+6:"$undefined"
