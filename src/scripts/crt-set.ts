@@ -20,6 +20,9 @@ export const CRT = {
   source: 'https://sketchfab.com/3d-models/ibm-pcjr-4863-computer-freepolyorg-1c3c3cd0643d44d49a1771048da74c62',
   image: [1200, 1282] as const,
   screen: { left: 12.9, top: 5.9, width: 75.8, height: 52.3, radius: '6% / 8%' },
+  /** The tube's bend (scripts/crt-curve-map.mjs): a displacement map, the largest shift it holds as
+   *  a fraction of the screen's width, and how far each gun (red, green, blue) lands along it. */
+  curve: { map: '/tv/ibm-pcjr-curve.png', scale: 0.065, guns: [1.012, 1, 0.988] as const },
   keys: [
     { left: 56.25, top: 64.7, width: 3.4, height: 3.1 },
     { left: 62.1, top: 64.7, width: 3.4, height: 3.1 },
@@ -55,7 +58,27 @@ export function mountCrt() {
     screen.style.setProperty('--oy', `${(h - DASH_H * k) / 2}px`);
     screen.style.setProperty('--lk', String(w / LIVE_W));
     screen.style.setProperty('--lh', `${(h * LIVE_W) / w}px`);
+    bend(w, h);
   }).observe(screen);
+
+  // The filter works in the screen's pixels, so it's sized to it. It stays off until its map has
+  // loaded: a browser that won't fetch it keeps the flat picture instead of losing it.
+  const curve = document.querySelector<SVGFilterElement>('#crt-curve');
+  const bend = (w: number, h: number) => {
+    if (!curve) return;
+    for (const el of [curve, curve.querySelector('feImage')!]) {
+      el.setAttribute('width', String(w));
+      el.setAttribute('height', String(h));
+    }
+    curve.querySelectorAll('feDisplacementMap').forEach((d, i) => d.setAttribute('scale', String(w * CRT.curve.scale * CRT.curve.guns[i])));
+    curve.querySelector('feGaussianBlur')!.setAttribute('stdDeviation', String(Math.max(2, w / 220)));
+  };
+  const map = new Image();
+  map.src = CRT.curve.map;
+  map.decode().then(
+    () => crt.classList.add('is-curved'),
+    () => {},
+  );
 
   let current = -1;
   let osdTimer = 0;

@@ -84,6 +84,32 @@
   box-shadow: inset 0 0 6cqw rgb(0 0 0 / 0.75);
   transition: opacity 0.3s;
 }
+/* The glass is convex: light falls off toward the rim in a pillow (the corners darkest), a
+   sheen bows across the top-left, and the bezel's lip shades the edge. */
+.crt__screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 95% 70% at 34% 14%, rgb(255 255 255 / 0.09), transparent 55%),
+    radial-gradient(ellipse 60% 16% at 50% 104%, rgb(255 255 255 / 0.05), transparent 70%),
+    radial-gradient(ellipse 120% 110% at 50% 50%, transparent 58%, rgb(0 0 0 / 0.35) 80%, rgb(0 0 0 / 0.8) 100%),
+    radial-gradient(ellipse 150% 70% at 50% 50%, transparent 62%, rgb(0 0 0 / 0.3) 100%),
+    radial-gradient(ellipse 70% 150% at 50% 50%, transparent 62%, rgb(0 0 0 / 0.3) 100%);
+  box-shadow:
+    inset 0 0 0 1px rgb(0 0 0 / 0.9),
+    inset 0 0.8cqw 1.6cqw rgb(0 0 0 / 0.7),
+    inset 0 -0.4cqw 1.2cqw rgb(0 0 0 / 0.5);
+}
+/* ...and bends the picture behind it (CRT.curve). Only the picture: the scanlines stay flat, as bent
+   1px lines alias into moiré. Its corners fall into the tube's black. */
+.crt__defs { position: absolute; width: 0; height: 0; }
+.crt__tube { position: absolute; z-index: 0; background: #020303; pointer-events: none; }
+.crt.is-curved :is(.crt__ch, .crt__bars) { filter: url(#crt-curve); }
+
 /* Hovering the tube leans in: the scanlines and vignette ease off so the demo reads. */
 @media (hover: hover) { .crt__screen:hover .tv__fx { opacity: 0.45; } }
 
@@ -147,6 +173,7 @@
 .crt.is-on:not(.has-signal) .crt__snow { opacity: 0.28; background-color: transparent; }
 .crt.is-tuning .crt__snow { opacity: 1; }
 .crt.is-tuning .crt__ch { transform: translateY(-6%) scaleY(1.04); filter: brightness(1.7) contrast(1.4); }
+.crt.is-curved.is-tuning .crt__ch { filter: url(#crt-curve) brightness(1.7) contrast(1.4); }
 @keyframes snow { 0% { transform: translate(0, 0); } 33% { transform: translate(-7%, 5%); } 66% { transform: translate(6%, -8%); } 100% { transform: translate(-3%, 9%); } }
 
 /* The channel number, flashed on screen as it lands. */
