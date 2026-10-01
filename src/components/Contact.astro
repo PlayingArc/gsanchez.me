@@ -36,7 +36,7 @@ const t = site(Astro.props.locale);
 
   <footer class="footer mono">
     <span>© {new Date().getFullYear()} {profile.firstName} {profile.lastName}</span>
-    <span>{t.contact.builtWith}</span>
+    <span>{t.contact.builtWith} · <a href={profile.sourceUrl} target="_blank" rel="noopener">{t.contact.source} ↗</a></span>
     <span>{t.contact.palette} <i>Cyberfeminism Index</i> (2023)</span>
     <a href="#top">{t.contact.backToTop}</a>
   </footer>
