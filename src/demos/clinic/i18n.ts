@@ -1,10 +1,10 @@
 import type { Locale } from '../kit/format';
 
 const en = {
-  title: 'Molara Dental chairs, no-shows and revenue',
-  metaDescription: 'A demo dashboard for Molara Dental, an invented chain of five dental clinics in Querétaro. Built by Gerardo Sanchez on invented data.',
+  title: 'Appointments dashboard · Molara Dental',
+  metaDescription: 'A demo appointments dashboard for Molara Dental, an invented chain of five dental clinics in Querétaro: chair utilisation, no-shows and what they cost, revenue by dentist and treatment, and six-month recall. Built by Gerardo Sanchez on invented data.',
   frameBack: 'gsanchez.me',
-  frameNote: 'Demo dashboard. Molara Dental is invented, and so is every number.',
+  frameNote: 'Demo appointments dashboard. Molara Dental is invented, and so is every number.',
   frameLang: 'Español',
   tagline: 'Five dental clinics across Querétaro.',
   // filter sentence
@@ -109,10 +109,10 @@ const en = {
 type Strings = typeof en;
 
 const es: Strings = {
-  title: 'Molara Dental: sillones, inasistencias e ingresos',
-  metaDescription: 'Un dashboard de demostración para Molara Dental, una cadena inventada de cinco clínicas dentales en Querétaro. Hecho por Gerardo Sanchez con datos inventados.',
+  title: 'Dashboard de citas · Molara Dental',
+  metaDescription: 'Un dashboard de citas de demostración para Molara Dental, una cadena inventada de cinco clínicas dentales en Querétaro: ocupación de sillones, inasistencias y su costo, ingresos por dentista y tratamiento, y revisiones semestrales. Hecho por Gerardo Sanchez con datos inventados.',
   frameBack: 'gsanchez.me',
-  frameNote: 'Dashboard de demostración. Molara Dental es inventada, igual que cada número.',
+  frameNote: 'Dashboard de citas de demostración. Molara Dental no existe, y los números tampoco.',
   frameLang: 'English',
   tagline: 'Cinco clínicas dentales en Querétaro.',
   showing: 'Mostrando',
@@ -148,8 +148,8 @@ const es: Strings = {
   heatUtil: 'Ocupación',
   heatNoShow: 'Inasistencias',
   heatShow: 'Ver',
-  heatHintUtil: 'Parte del tiempo de sillón con un paciente, por día y hora. Haz clic en una celda para filtrar todo por ella.',
-  heatHintNoShow: 'Parte de las citas agendadas a las que nadie llegó, por día y hora. Haz clic en una celda para filtrar todo por ella.',
+  heatHintUtil: 'Porcentaje del tiempo de sillón con un paciente, por día y hora. Haz clic en una celda para filtrar todas las vistas por ella.',
+  heatHintNoShow: 'Porcentaje de citas agendadas a las que el paciente no llegó, por día y hora. Haz clic en una celda para filtrar todas las vistas por ella.',
   heatClosed: 'Cerrado',
   days: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
   daysLong: ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
@@ -165,12 +165,12 @@ const es: Strings = {
   byTreatment: 'Por tratamiento',
   hintClinic: 'Haz clic en una clínica para ver a sus dentistas.',
   hintDentist: 'Haz clic en un dentista para ver sus tratamientos.',
-  hintTreatment: 'Haz clic en un tratamiento para filtrar todo por él.',
+  hintTreatment: 'Haz clic en un tratamiento para filtrar todas las vistas por él.',
   patientsTitle: '¿Estamos conservando pacientes?',
   visitsBy: 'Visitas por mes',
   newPatients: 'Nuevos',
   returning: 'Recurrentes',
-  patientsHint: 'Haz clic en un mes para verlo solo. Con Shift, amplías el rango.',
+  patientsHint: 'Haz clic en un mes para verlo solo. Con Shift + clic amplías el rango.',
   recallTitle: 'Revisión semestral cumplida',
   recallHint: 'Pacientes que debían volver a su revisión de seis meses y sí vinieron. La revisión se asigna al dentista, así que los filtros de tratamiento, hora y anticipación no aplican.',
   tableTitle: 'Detalle',
@@ -202,7 +202,7 @@ const es: Strings = {
   tipKept: 'Cumplidas',
   tipNew: 'Pacientes nuevos',
   tipReturning: 'Pacientes recurrentes',
-  tipNewShare: 'Parte de nuevos',
+  tipNewShare: 'Porcentaje de nuevos',
   filterBy: (x: string) => `Filtrar por ${x}`,
   slotName: (day: string, hour: string) => `${day} ${hour}`,
   noscript: 'Este dashboard necesita JavaScript para dibujar sus gráficas.',
