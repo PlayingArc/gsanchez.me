@@ -16,6 +16,7 @@ export const profile = {
   available: true,
   email: 'hello@gsanchez.me',
   resumeUrl: '/gerardo-sanchez-resume.pdf', // public CV, no phone; source ~/Documents/CVs/build/cv_modern_engineer_2026.html
+  sourceUrl: 'https://github.com/PlayingArc/gsanchez.me', // public mirror of this repo (scripts/publish-mirror.sh)
 };
 
 export type Link = { label: string; href: string; handle: string };
@@ -87,8 +88,10 @@ type Copy = {
     cols: { no: string; project: string; type: string; stack: string; year: string; link: string };
     stackLabel: string;
     projects: Project[];
+    // This site, shown as work of its own under the index so nobody assumes it was bought.
+    thisSite: { heading: string; title: string; summary: string; built: string; builtValue: string; stack: string[]; notes: string[] };
   };
-  contact: { links: Link[]; builtWith: string; palette: string; backToTop: string };
+  contact: { links: Link[]; builtWith: string; source: string; palette: string; backToTop: string };
   notFound: { title: string; kicker: string; heading: string; back: string };
 };
 
@@ -229,6 +232,19 @@ const copy: Record<Locale, Copy> = {
           preview: 'clinic',
         },
       ],
+      thisSite: {
+        heading: 'This site',
+        title: 'gsanchez.me',
+        summary:
+          'I designed and built this site myself, the TV included. It is a static Astro site on Cloudflare Workers, in English and Spanish, and the dashboards on the TV are real code running live, not screenshots.',
+        built: 'Built',
+        builtValue: 'By me, with AI coding agents working from GitHub issues; every pull request gets its own preview deploy before it merges',
+        stack: ['Astro', 'TypeScript', 'SVG filters', 'Cloudflare Workers'],
+        notes: [
+          'The TV is a render of an IBM PCjr monitor with the live page behind its glass. An SVG displacement filter bends the picture like a curved tube and pulls the three colour guns slightly apart.',
+          'On iPhones that filter turned the live screen black: WebKit can’t draw it over an iframe. I traced it on a real phone and shipped the fix.',
+        ],
+      },
     },
     contact: {
       links: [
@@ -237,7 +253,8 @@ const copy: Record<Locale, Copy> = {
         { label: 'Email', href: `mailto:${profile.email}`, handle: profile.email },
         { label: 'Résumé', href: profile.resumeUrl, handle: 'PDF' },
       ],
-      builtWith: 'Built with Astro · ASCII based on play.core',
+      builtWith: 'Designed and built by me · Astro on Cloudflare Workers · ASCII based on play.core',
+      source: 'Source code',
       palette: 'Palette sampled from',
       backToTop: 'Back to top ↑',
     },
@@ -380,6 +397,19 @@ const copy: Record<Locale, Copy> = {
           preview: 'clinic',
         },
       ],
+      thisSite: {
+        heading: 'Este sitio',
+        title: 'gsanchez.me',
+        summary:
+          'Diseñé y construí este sitio yo mismo, incluida la TV. Es un sitio estático en Astro sobre Cloudflare Workers, en inglés y español, y los dashboards de la TV son código real corriendo en vivo, no capturas de pantalla.',
+        built: 'Hecho',
+        builtValue: 'Por mí, con agentes de IA que trabajan a partir de issues de GitHub; cada pull request tiene su propio deploy de prueba antes de integrarse',
+        stack: ['Astro', 'TypeScript', 'Filtros SVG', 'Cloudflare Workers'],
+        notes: [
+          'La TV es un render de un monitor IBM PCjr con la página en vivo detrás del cristal. Un filtro de desplazamiento SVG curva la imagen como un tubo de rayos catódicos y separa un poco los tres cañones de color.',
+          'En iPhone ese filtro dejaba la pantalla en negro: WebKit no lo puede dibujar sobre un iframe. Lo rastreé en un teléfono real y publiqué la corrección.',
+        ],
+      },
     },
     contact: {
       links: [
@@ -388,7 +418,8 @@ const copy: Record<Locale, Copy> = {
         { label: 'Correo', href: `mailto:${profile.email}`, handle: profile.email },
         { label: 'CV', href: profile.resumeUrl, handle: 'PDF' },
       ],
-      builtWith: 'Hecho con Astro · ASCII basado en play.core',
+      builtWith: 'Diseñado y hecho por mí · Astro sobre Cloudflare Workers · ASCII basado en play.core',
+      source: 'Código fuente',
       palette: 'Paleta tomada de',
       backToTop: 'Volver arriba ↑',
     },

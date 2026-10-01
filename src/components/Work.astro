@@ -1,5 +1,5 @@
 ---
-import { site, type Locale } from '../data/site';
+import { profile, site, type Locale } from '../data/site';
 import { renderDash } from '../scripts/dashboards';
 import { CRT } from '../scripts/crt-set';
 import '../styles/screens.css';
@@ -11,6 +11,7 @@ interface Props {
 const t = site(Astro.props.locale);
 const s = t.work.set;
 const projects = t.work.projects;
+const own = t.work.thisSite;
 const ch = (i: number) => String(i + 1).padStart(2, '0');
 // Work hosted on this site plays live on the screen; the rest show a static rendering.
 const isLive = (href: string) => href.startsWith('/');
@@ -190,5 +191,43 @@ const bars = ['#c0c0c0', '#c0c000', '#00c0c0', '#00c000', '#c000c0', '#c00000', 
         }
       </tbody>
     </table>
+  </div>
+
+  {/* The site itself, as work of its own: without it a visitor may assume it was bought. */}
+  <div class="section work__site">
+    <div class="section__head">
+      <span class="pill mono">03.2</span>
+      <h2 class="section__title mono">{own.heading}</h2>
+    </div>
+    <article class="work__site-panel" data-reveal>
+      <div class="panel">
+        <h3 class="panel__title">
+          <span data-scramble-child>{own.title}</span>
+        </h3>
+        <p class="panel__summary">{own.summary}</p>
+        <dl class="panel__spec">
+          <div>
+            <dt class="mono">{t.work.cols.year}</dt>
+            <dd>2026</dd>
+          </div>
+          <div>
+            <dt class="mono">{t.work.cols.stack}</dt>
+            <dd>{own.stack.join(', ')}</dd>
+          </div>
+          <div>
+            <dt class="mono">{own.built}</dt>
+            <dd>{own.builtValue}</dd>
+          </div>
+        </dl>
+      </div>
+      <div class="panel work__site-side">
+        <ul class="work__site-notes">
+          {own.notes.map((n) => <li>{n}</li>)}
+        </ul>
+        <p class="panel__links">
+          <a href={profile.sourceUrl} target="_blank" rel="noopener">{t.work.source} ↗</a>
+        </p>
+      </div>
+    </article>
   </div>
 </section>

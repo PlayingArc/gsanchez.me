@@ -341,6 +341,14 @@ a.section__aside:hover { text-decoration: underline; text-underline-offset: 3px;
 @keyframes roll { to { transform: translateY(460%); } }
 
 .work__index { padding-top: clamp(40px, 6vw, 80px); }
+.work__site { padding-top: clamp(40px, 6vw, 80px); }
+.work__site-panel { display: grid; gap: 32px; }
+@media (min-width: 900px) { .work__site-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(40px, 6vw, 96px); } .work__site-side { align-content: end; } }
+.work__site-panel .panel__summary, .work__site-notes { max-width: 60ch; }
+.work__site-notes { display: grid; gap: 14px; color: var(--soft); font-size: 15px; }
+.work__site-notes li { display: flex; gap: 0.6em; }
+.work__site-notes li::before { content: '>'; font-family: var(--font-mono); color: var(--green); }
+.footer span a { text-decoration: underline; text-underline-offset: 3px; }
 .table { width: 100%; border-collapse: collapse; }
 .table th, .table td { text-align: left; padding: 14px 8px; border-top: 1px solid var(--line); vertical-align: baseline; }
 .table thead th { color: var(--soft); border-top: 0; padding-top: 0; font-weight: 400; }
