@@ -15,7 +15,7 @@ export const profile = {
   timezone: 'America/Monterrey',
   available: true,
   email: 'hello@gsanchez.me',
-  resumeUrl: '/gerardo-sanchez-resume.pdf', // public CV, no phone; source ~/Documents/CVs/build/cv_modern_engineer_2026.html
+  resumeUrl: '/gerardo-sanchez-resume.pdf', // public CV, no phone; source resume/resume.html (npm run resume)
   sourceUrl: 'https://github.com/PlayingArc/gsanchez.me', // public mirror of this repo (scripts/publish-mirror.sh)
 };
 
