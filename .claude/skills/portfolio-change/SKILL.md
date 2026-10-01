@@ -48,7 +48,7 @@ Done when: every row of the change is edited or checked, and `rg -i '<old name o
 
 ## 4. Regenerate the résumé
 
-`resume/resume.html` follows site.ts's English copy: it may be terser, never contradicting it. It is public (the repo is mirrored): no phone number, and the only email is `hello@gsanchez.me`.
+`resume/resume.html` follows site.ts's English copy: it may be terser, never contradicting it. Selected Projects lists every project on the site, **including the site itself** (gsanchez.me, from `work.thisSite`, linking the public mirror); never drop an entry to make the page fit. If `npm run resume` reports overflow, tighten wording or spacing instead. It is public (the repo is mirrored): no phone number, and the only email is `hello@gsanchez.me`.
 
 ```
 npm run resume    # prints to public/gerardo-sanchez-resume.pdf; CHROME=... to override /usr/bin/chromium
